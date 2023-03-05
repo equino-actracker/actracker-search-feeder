@@ -12,19 +12,27 @@ pipeline {
 
     stages {
 
-//        stage('Check release readiness') {
-//            steps {
-//                sh 'git branch -m ${CHANGE_BRANCH}'
-//                sh './gradlew --no-daemon --stacktrace verifyRelease'
-//            }
-//        }
+        stage('Check release readiness') {
+            steps {
+                sh 'git branch -m ${CHANGE_BRANCH}'
+                sh './gradlew --no-daemon --stacktrace verifyRelease'
+            }
+        }
+
+        stage('Set project version') {
+            steps {
+                // Creates build/ovh.equino.version/currentVersion file
+                sh './gradlew --no-daemon build'
+                script {
+                    currentBuild.displayName = readFile file: 'build/ovh.equino.version/currentVersion'
+                }
+                sh './mvnw versions:set -DnewVersion=`cat build/ovh.equino.version/currentVersion`'
+            }
+        }
 
         stage('Build') {
             steps {
                 sh './mvnw clean verify'
-//                script {
-//                    currentBuild.displayName = readFile file: 'build/ovh.equino.version/currentVersion'
-//                }
             }
         }
 

@@ -1,0 +1,10 @@
+// Gradle buildscript exists only to ensure versioning. Don't use it to build project
+
+pluginManagement {
+    repositories {
+        maven { url 'https://nexus.cloud.equino.ovh/repository/m2' }
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'actracker-search-feeder'
