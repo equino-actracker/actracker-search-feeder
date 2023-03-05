@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>ovh.equino.actracker-search-feeder</groupId>
 	<artifactId>actracker-search-feeder-main-springboot</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.0</version>
 	<name>actracker-search-feeder-main-springboot</name>
 	<description>Search engine feeder for ACTracker project</description>
 	<properties>

@@ -4,27 +4,11 @@
 
     <groupId>ovh.equino.actracker-search-feeder</groupId>
     <artifactId>actracker-search-feeder</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>actracker-search-feeder-main-springboot</module>
     </modules>
-
-    <!-- For Version plugin: -->
-    <scm>
-        <developerConnection>scm:git:https://github.com/marcinciapa/actracker-search-feeder</developerConnection>
-      <tag>actracker-search-feeder-0.0.1</tag>
-  </scm>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>3.0.0-M7</version>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
