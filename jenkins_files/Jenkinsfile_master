@@ -20,21 +20,29 @@ pipeline {
 
     stages {
 
-//        stage('Upgrade version') {
-//            steps {
-//                withCredentials([string(credentialsId: 'JenkinsGitHubPluginClassicToken', variable: 'TOKEN')]) {
-//                    sh './gradlew --no-daemon --stacktrace clean release -PequinoVersion.gitUsername=$GH_ACTOR -PequinoVersion.gitPassword=$TOKEN'
-//                }
-//            }
-//        }
+        stage('Upgrade version') {
+            steps {
+                withCredentials([string(credentialsId: 'JenkinsGitHubPluginClassicToken', variable: 'TOKEN')]) {
+                    sh './gradlew --no-daemon --stacktrace clean release -PequinoVersion.gitUsername=$GH_ACTOR -PequinoVersion.gitPassword=$TOKEN'
+                }
+            }
+        }
+
+        stage('Set project version') {
+            steps {
+                sh 'git branch -m master'
+                // Creates build/ovh.equino.version/currentVersion file:
+                sh './gradlew --no-daemon build'
+                script {
+                    currentBuild.displayName = readFile file: 'build/ovh.equino.version/currentVersion'
+                }
+                sh './mvnw versions:set -DnewVersion=`cat build/ovh.equino.version/currentVersion`'
+            }
+        }
 
         stage('Build') {
             steps {
-                sh 'git branch -m master'
                 sh './mvnw clean verify'
-//                script {
-//                    currentBuild.displayName = readFile file: 'build/ovh.equino.version/currentVersion'
-//                }
             }
         }
 
