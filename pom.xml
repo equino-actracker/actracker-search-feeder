@@ -12,12 +12,30 @@
         <module>actracker-search-feeder-main-springboot</module>
     </modules>
 
+    <properties>
+        <jkube.generator.name>registry.cloud.equino.ovh/actracker/actracker-search-feeder:%l</jkube.generator.name>
+        <jkube.build.strategy>jib</jkube.build.strategy>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>2.15.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.jkube</groupId>
+                <artifactId>kubernetes-maven-plugin</artifactId>
+                <version>1.11.0</version>
+<!--                <configuration>-->
+<!--                    <buildStrategy>jib</buildStrategy>-->
+                    <!--                    <images>-->
+                    <!--                        <image>-->
+                    <!--                            <name>registry.cloud.equino.ovh/actracker/actracker-search-feeder:%l</name>-->
+                    <!--                        </image>-->
+                    <!--                    </images>-->
+<!--                </configuration>-->
             </plugin>
         </plugins>
     </build>
