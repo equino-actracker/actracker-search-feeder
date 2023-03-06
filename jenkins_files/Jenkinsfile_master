@@ -60,13 +60,13 @@ pipeline {
             }
         }
 
-//        stage('Deploy') {
-//            steps {
-//                withKubeConfig([credentialsId: 'MadritKubeConfig', namespace: 'equino-int']) {
-//                    sh './gradlew --no-daemon --stacktrace k8sResource k8sApply -Prelease.ignoreUncommittedChanges'
-//                }
-//            }
-//        }
+        stage('Deploy') {
+            steps {
+                withKubeConfig([credentialsId: 'MadritKubeConfig', namespace: 'equino-int']) {
+                    sh './mvnw k8s:resource k8s:apply'
+                }
+            }
+        }
 
     }
 
