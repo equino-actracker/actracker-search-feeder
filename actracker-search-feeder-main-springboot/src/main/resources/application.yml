@@ -2,7 +2,7 @@ spring:
   rabbitmq:
     host: ${actracker-search-feeder.rabbitmq.host:localhost}
     port: ${actracker-search-feeder.rabbitmq.port:5672}
-    vhost: ${actracker-search-feeder.rabbitmq.vhost:/}
+    virtual-host: ${actracker-search-feeder.rabbitmq.vhost:/}
     username: ${actracker-search-feeder.rabbitmq.username:guest}
     password: ${actracker-search-feeder.rabbitmq.password:guest}
 server:
