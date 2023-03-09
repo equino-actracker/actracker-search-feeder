@@ -1,5 +1,11 @@
 spec:
   template:
     spec:
+      containers:
+        - envFrom:
+            - secretRef:
+                name: actracker-search-feeder-rabbitmq-secret
+            - configMapRef:
+                name: actracker-search-feeder-config
       imagePullSecrets:
         - name: equino-registry
