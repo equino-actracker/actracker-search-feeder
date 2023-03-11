@@ -10,6 +10,8 @@
 
     <modules>
         <module>actracker-search-feeder-main-springboot</module>
+        <module>actracker-search-feeder-index-elastic</module>
+        <module>actracker-search-feeder-mq-rabbit</module>
     </modules>
 
     <properties>
@@ -30,6 +32,36 @@
                 <groupId>org.eclipse.jkube</groupId>
                 <artifactId>kubernetes-maven-plugin</artifactId>
                 <version>1.11.0</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.0.4</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.dkanejs.maven.plugins</groupId>
+                <artifactId>docker-compose-maven-plugin</artifactId>
+                <version>4.0.0</version>
+                <configuration>
+                    <composeFiles>
+                        <composeFile>${project.basedir}/src/main/resources/docker/docker-compose.yml</composeFile>
+                    </composeFiles>
+                    <detachedMode>true</detachedMode>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>
