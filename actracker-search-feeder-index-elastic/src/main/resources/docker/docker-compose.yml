@@ -1,13 +1,17 @@
 version: '3'
 services:
 
-  rabbitmq:
-    image: 'rabbitmq:3.11.9-management'
+  elasticsearch:
+    image: 'elasticsearch:8.6.2'
     ports:
-      - 5672:5672
-      - 15672:15672
-    hostname: 'actracker-rabbit'
+      - 9200:9200
+      - 9300:9300
+    environment:
+      discovery.type: single-node
+      ELASTIC_PASSWORD: elastic
+      xpack.security.http.ssl.enabled: false
+      xpack.security.transport.ssl.enabled: false
 
-networks: # networks indentation moved to top level
+networks:
   default:
-    name: rabbitmq-network
+    name: elasticsearch-network
