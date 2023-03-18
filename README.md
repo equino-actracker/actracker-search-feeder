@@ -11,12 +11,16 @@ The Actracker domain events are consumed from Equino RabbitMQ cluster.
 Locally setup infrastructure is required to run the application. The maven goal `docker-compose:up` should be run prior 
 to application startup to ensure, that all the required infrastructure has been set up locally 
 (docker and docker-compose needs to be installed):
+
 `./mvnw docker-compose:up`
+
 `./mvnw docker-compose:down`
 
 ## Running application
 To run the application locally `ActrackerSearchFeederApplication` must be run. It's a class starting the Spring Boot container.
-Alternatively, Maven Spring Boot plugin can be used: `./mvnw spring-boot:run`
+Alternatively, Maven Spring Boot plugin can be used:
+
+`./mvnw spring-boot:run`
 
 # Build pipelines
 There are build pipelines defined in jenkins_files directory.
