@@ -9,9 +9,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>actracker-search-feeder-main-springboot</module>
-        <module>actracker-search-feeder-index-elastic</module>
-        <module>actracker-search-feeder-mq-rabbit</module>
+        <module>actracker-search-feeder-main</module>
     </modules>
 
     <properties>
@@ -56,9 +54,7 @@
                 <artifactId>docker-compose-maven-plugin</artifactId>
                 <version>4.0.0</version>
                 <configuration>
-                    <composeFiles>
-                        <composeFile>${project.basedir}/src/main/resources/docker/docker-compose.yml</composeFile>
-                    </composeFiles>
+
                     <detachedMode>true</detachedMode>
                     <skip>true</skip>
                 </configuration>
