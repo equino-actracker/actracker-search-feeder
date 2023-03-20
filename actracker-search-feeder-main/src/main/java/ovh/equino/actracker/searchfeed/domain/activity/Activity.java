@@ -4,12 +4,14 @@ import ovh.equino.actracker.searchfeed.domain.Version;
 
 import java.time.Instant;
 
-public class Activity {
+public record Activity(
 
-    private ActivityId id;
-    private Version version;
-    private Instant startTime;
-    private Instant endTime;
+        ActivityId id,
+        Version version,
+        Instant startTime,
+        Instant endTime
+
+) {
 
     public ActivityId id() {
         return id;

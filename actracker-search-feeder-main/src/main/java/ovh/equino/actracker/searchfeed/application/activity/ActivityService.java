@@ -17,20 +17,24 @@ public class ActivityService {
         this.activityStore = activityStore;
     }
 
-    void indexActivity(Activity activity) {
+    public void indexActivity(Activity activity) {
         ActivityId activityId = activity.id();
         Optional<Activity> storedActivity = activityStore.get(activityId);
 
         storedActivity.ifPresentOrElse(
-                stored -> replaceIfApplicable(stored, activity),
-                () -> activityStore.put(activityId, activity)
+                (stored) -> reindexIfOutdated(stored, activity),
+                () -> index(activity)
         );
     }
 
-    private void replaceIfApplicable(Activity stored, Activity activity) {
+    private void reindexIfOutdated(Activity stored, Activity activity) {
         if (activity.shouldReplace(stored)) {
-            activityStore.put(activity.id(), activity);
-            activityIndex.index(activity);
+            index(activity);
         }
+    }
+
+    private void index(Activity activity) {
+        activityStore.put(activity.id(), activity);
+        activityIndex.index(activity);
     }
 }
