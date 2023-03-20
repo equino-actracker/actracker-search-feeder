@@ -5,14 +5,19 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ovh.equino.actracker.searchfeed.infrastructure.messaging.MessageDispatcher;
 
 @Configuration
 class AmqpConfig {
 
     private static final String EXCHANGE_NAME = "notification.X.topic";
     private static final String QUEUE_NAME = "notification.Q";
+
+    @Autowired
+    private MessageDispatcher messageDispatcher;
 
     @Bean
     TopicExchange topic() {
@@ -31,6 +36,6 @@ class AmqpConfig {
 
     @RabbitListener(queues = QUEUE_NAME)
     void receiveMessage(String message) {
-        System.out.printf("Received message: %s%n", message);
+        messageDispatcher.dispatchMessage(message);
     }
 }
