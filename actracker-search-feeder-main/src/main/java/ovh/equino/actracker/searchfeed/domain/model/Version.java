@@ -1,4 +1,4 @@
-package ovh.equino.actracker.searchfeed.domain;
+package ovh.equino.actracker.searchfeed.domain.model;
 
 public record Version(long version) {
 

@@ -1,8 +1,8 @@
 package ovh.equino.actracker.searchfeed.infrastructure.messaging.activity;
 
 import ovh.equino.actracker.domain.activity.ActivityChangedNotification;
-import ovh.equino.actracker.searchfeed.application.activity.ActivityService;
-import ovh.equino.actracker.searchfeed.domain.activity.Activity;
+import ovh.equino.actracker.searchfeed.application.ActivityService;
+import ovh.equino.actracker.searchfeed.domain.model.activity.Activity;
 
 public class ActivityHandler {
 
