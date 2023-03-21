@@ -1,8 +1,8 @@
-package ovh.equino.actracker.searchfeed.infrastructure.persistence.memory.activity;
+package ovh.equino.actracker.searchfeed.infrastructure.persistence.memory;
 
-import ovh.equino.actracker.searchfeed.domain.activity.Activity;
-import ovh.equino.actracker.searchfeed.domain.activity.ActivityId;
-import ovh.equino.actracker.searchfeed.domain.activity.ActivityStore;
+import ovh.equino.actracker.searchfeed.domain.model.activity.Activity;
+import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
+import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityStore;
 
 import java.util.HashMap;
 import java.util.Map;

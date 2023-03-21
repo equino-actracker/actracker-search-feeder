@@ -1,9 +1,9 @@
-package ovh.equino.actracker.searchfeed.application.activity;
+package ovh.equino.actracker.searchfeed.application;
 
-import ovh.equino.actracker.searchfeed.domain.activity.Activity;
-import ovh.equino.actracker.searchfeed.domain.activity.ActivityId;
-import ovh.equino.actracker.searchfeed.domain.activity.ActivityIndex;
-import ovh.equino.actracker.searchfeed.domain.activity.ActivityStore;
+import ovh.equino.actracker.searchfeed.domain.model.activity.Activity;
+import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
+import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityIndex;
+import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityStore;
 
 import java.util.Optional;
 

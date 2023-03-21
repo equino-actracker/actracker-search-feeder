@@ -1,4 +1,4 @@
-package ovh.equino.actracker.searchfeed.domain.activity;
+package ovh.equino.actracker.searchfeed.domain.model.activity;
 
 public interface ActivityIndex {
 

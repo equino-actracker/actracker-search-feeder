@@ -4,14 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import ovh.equino.actracker.domain.activity.ActivityChangedNotification;
-import ovh.equino.actracker.searchfeed.infrastructure.messaging.activity.ActivityHandler;
 
 public class MessageDispatcher {
 
-    private final ActivityHandler activityHandler;
+    private final NotificationHandler<ActivityChangedNotification> activityHandler;
     private final ObjectMapper objectMapper;
 
-    MessageDispatcher(ActivityHandler activityHandler) {
+    MessageDispatcher(NotificationHandler<ActivityChangedNotification> activityHandler) {
         this.activityHandler = activityHandler;
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());

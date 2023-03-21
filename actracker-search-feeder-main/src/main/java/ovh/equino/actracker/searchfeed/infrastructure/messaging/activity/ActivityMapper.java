@@ -1,9 +1,9 @@
 package ovh.equino.actracker.searchfeed.infrastructure.messaging.activity;
 
 import ovh.equino.actracker.domain.activity.ActivityChangedNotification;
-import ovh.equino.actracker.searchfeed.domain.Version;
-import ovh.equino.actracker.searchfeed.domain.activity.Activity;
-import ovh.equino.actracker.searchfeed.domain.activity.ActivityId;
+import ovh.equino.actracker.searchfeed.domain.model.Version;
+import ovh.equino.actracker.searchfeed.domain.model.activity.Activity;
+import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
 
 class ActivityMapper {
 

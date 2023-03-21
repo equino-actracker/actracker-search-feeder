@@ -1,6 +1,6 @@
-package ovh.equino.actracker.searchfeed.domain.activity;
+package ovh.equino.actracker.searchfeed.domain.model.activity;
 
-import ovh.equino.actracker.searchfeed.domain.Version;
+import ovh.equino.actracker.searchfeed.domain.model.Version;
 
 import java.time.Instant;
 
