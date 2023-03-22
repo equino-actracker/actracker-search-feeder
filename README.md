@@ -1,5 +1,16 @@
 # Purpose of actracker-search-feeder
-The purpose of this project is replicating Actracker bounded context into the Actracker search engine.
+This application has been created with learning the following topics in mind:
+- DDD methodology
+- Messaging (event consumption)
+- Elastic Search (data ingestion)
+- Spring Boot (using as many framework features as possible)
+- Kubernetes
+- Maven
+- Observability and debugging (the application is intentionally not bullet-prove, performance tests for sure will point a need for metrics, debugging, tweaking)
+
+# Role of actracker-search-feeder in Actracker project
+The role of this application is replicating Actracker bounded context into the Actracker search engine
+to run search and analytics query on them.
 
 # Architecture
 The application runs as a Spring Boot container. 
@@ -9,7 +20,7 @@ The Actracker domain events are consumed from Equino RabbitMQ cluster.
 
 ## Setting up infrastructure
 Locally setup infrastructure is required to run the application. The maven goal `docker-compose:up` should be run prior 
-to application startup to ensure, that all the required infrastructure has been set up locally 
+to application startup to ensure that all the required infrastructure components have been set up locally 
 (docker and docker-compose needs to be installed):
 
 `./mvnw docker-compose:up`
@@ -40,8 +51,8 @@ Gradle plugin and deploys the application to integration environment.
 The application version is maintained automatically with the [equino-version](https://github.com/marcinciapa/equino-gradle-plugins/blob/master/equino-version/README.md)
 Gradle plugin.
 The current version is passed to the POM using the [versions-maven-plugin](https://www.mojohaus.org/versions/versions-maven-plugin/).
-This is the only purpose of Gradle being present in actracker-search-feeder project. The build lifecycle is maintained using Maven.
+Maintaining the version is the only purpose of Gradle being present in actracker-search-feeder repository. The build lifecycle is maintained using Maven.
 
 # Deployment
-actracker-search-feeder is deployed to [Equino Kubernetes cluster](https://github.com/marcinciapa/equino-kubernetes) from Jenkins pipelines.
+The application is deployed to [Equino Kubernetes cluster](https://github.com/marcinciapa/equino-kubernetes) from Jenkins pipelines.
 The deployment is handled by Maven [jkube](https://www.eclipse.org/jkube/docs/kubernetes-maven-plugin/) plugin.
