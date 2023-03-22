@@ -8,7 +8,7 @@ This application has been created with learning the following topics in mind:
 - Maven
 - Observability and debugging (the application is intentionally not bullet-prove, performance tests for sure will point a need for metrics, debugging, tweaking)
 
-# Role of actracker-feeder in Actracker feeder
+# Role of actracker-search-feeder in Actracker project
 The role of this application is replicating Actracker bounded context into the Actracker search engine
 to run search and analytics query on them.
 
@@ -54,5 +54,5 @@ The current version is passed to the POM using the [versions-maven-plugin](https
 Maintaining the version is the only purpose of Gradle being present in actracker-search-feeder repository. The build lifecycle is maintained using Maven.
 
 # Deployment
-actracker-search-feeder is deployed to [Equino Kubernetes cluster](https://github.com/marcinciapa/equino-kubernetes) from Jenkins pipelines.
+The application is deployed to [Equino Kubernetes cluster](https://github.com/marcinciapa/equino-kubernetes) from Jenkins pipelines.
 The deployment is handled by Maven [jkube](https://www.eclipse.org/jkube/docs/kubernetes-maven-plugin/) plugin.
