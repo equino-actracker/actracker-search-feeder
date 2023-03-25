@@ -1,4 +1,4 @@
-package ovh.equino.actracker.searchfeed.application;
+package ovh.equino.actracker.searchfeed.domain.services;
 
 import ovh.equino.actracker.searchfeed.domain.model.activity.Activity;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
@@ -7,14 +7,14 @@ import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityStore;
 
 import java.util.Optional;
 
-public class ActivityService {
+public class IndexActivityService {
 
-    private final ActivityIndex activityIndex;
     private final ActivityStore activityStore;
+    private final ActivityIndex activityIndex;
 
-    ActivityService(ActivityIndex activityIndex, ActivityStore activityStore) {
-        this.activityIndex = activityIndex;
+    IndexActivityService(ActivityStore activityStore, ActivityIndex activityIndex) {
         this.activityStore = activityStore;
+        this.activityIndex = activityIndex;
     }
 
     public void indexActivity(Activity activity) {
