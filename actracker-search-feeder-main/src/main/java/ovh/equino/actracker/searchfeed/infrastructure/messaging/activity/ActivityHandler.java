@@ -1,14 +1,13 @@
 package ovh.equino.actracker.searchfeed.infrastructure.messaging.activity;
 
 import ovh.equino.actracker.domain.activity.ActivityChangedNotification;
-import ovh.equino.actracker.searchfeed.application.ActivityService;
-import ovh.equino.actracker.searchfeed.domain.model.activity.Activity;
+import ovh.equino.actracker.searchfeed.application.activity.ActivityService;
+import ovh.equino.actracker.searchfeed.application.activity.IndexActivityCommand;
 import ovh.equino.actracker.searchfeed.infrastructure.messaging.NotificationHandler;
 
 class ActivityHandler implements NotificationHandler<ActivityChangedNotification> {
 
-    private final ActivityService activityService; // [MC] Should infrastructure module depend on application? Probably
-    private final ActivityMapper activityMapper = new ActivityMapper();
+    private final ActivityService activityService;
 
     ActivityHandler(ActivityService activityService) {
         this.activityService = activityService;
@@ -16,7 +15,14 @@ class ActivityHandler implements NotificationHandler<ActivityChangedNotification
 
     @Override
     public void handleNotification(ActivityChangedNotification activityChangedNotification) {
-        Activity activity = activityMapper.toActivity(activityChangedNotification);
-        activityService.indexActivity(activity);
+
+        IndexActivityCommand indexActivityCommand = new IndexActivityCommand(
+                activityChangedNotification.id(),
+                activityChangedNotification.version(),
+                activityChangedNotification.activity().startTime(),
+                activityChangedNotification.activity().endTime()
+        );
+
+        activityService.indexActivity(indexActivityCommand);
     }
 }
