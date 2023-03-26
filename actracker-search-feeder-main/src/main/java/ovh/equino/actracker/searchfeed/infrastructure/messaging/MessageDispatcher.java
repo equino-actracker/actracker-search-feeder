@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import ovh.equino.actracker.domain.activity.ActivityChangedNotification;
 
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+
 public class MessageDispatcher {
 
     private final NotificationHandler<ActivityChangedNotification> activityHandler;
@@ -14,6 +16,7 @@ public class MessageDispatcher {
         this.activityHandler = activityHandler;
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
+        this.objectMapper.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     public void dispatchMessage(String rawMessage) {
