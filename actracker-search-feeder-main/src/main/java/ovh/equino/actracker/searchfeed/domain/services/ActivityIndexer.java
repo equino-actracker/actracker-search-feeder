@@ -10,39 +10,47 @@ import java.util.Optional;
 public class ActivityIndexer {
 
     private final ActivityStore activityStore;
-    private final ActivityIndex activityIndex;
+    private final ActivityIndex indexer;
 
     ActivityIndexer(ActivityStore activityStore, ActivityIndex activityIndex) {
         this.activityStore = activityStore;
-        this.activityIndex = activityIndex;
+        this.indexer = activityIndex;
     }
 
-    public void indexActivity(Activity activity) {
-        ActivityId activityId = activity.id();
+    public void indexActivity(Activity activityToIndex) {
+        ActivityId activityId = activityToIndex.id();
         Optional<Activity> storedActivity = activityStore.get(activityId);
 
         storedActivity.ifPresentOrElse(
-                (stored) -> reindexIfOutdated(stored, activity),
-                () -> indexOrDelete(activity)
+                (stored) -> saveOrDeleteIfOverrides(stored, activityToIndex),
+                () -> indexIfNotDeleted(activityToIndex)
         );
     }
 
-    private void reindexIfOutdated(Activity stored, Activity activity) {
-        if (activity.shouldReplace(stored)) {
-            indexOrDelete(activity);
-        }
-    }
-
-    private void index(Activity activity) {
+    private void indexIfNotDeleted(Activity activity) {
         activityStore.put(activity.id(), activity);
-        activityIndex.index(activity);
+        if (notDeleted(activity)) {
+            indexer.index(activity);
+        }
     }
 
-    private void indexOrDelete(Activity activity) {
-        if (activity.saveDeleted()) {
-            activityIndex.delete(activity.id());
-        } else {
-            activityIndex.index(activity);
+    private void saveOrDeleteIfOverrides(Activity storedActivity, Activity newActivity) {
+        if (newActivity.shouldReplace(storedActivity)) {
+            reindexOrDelete(newActivity);
         }
+    }
+
+    private void reindexOrDelete(Activity activity) {
+        ActivityId activityId = activity.id();
+        activityStore.put(activityId, activity);
+        if (notDeleted(activity)) {
+            indexer.index(activity);
+        } else {
+            indexer.delete(activityId);
+        }
+    }
+
+    private boolean notDeleted(Activity activity) {
+        return !activity.softDeleted();
     }
 }
