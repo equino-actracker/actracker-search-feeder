@@ -18,6 +18,7 @@ class ActivityHandler implements NotificationHandler<ActivityChangedNotification
 
         IndexActivityCommand indexActivityCommand = new IndexActivityCommand(
                 activityChangedNotification.id(),
+                activityChangedNotification.activity().deleted(),
                 activityChangedNotification.version(),
                 activityChangedNotification.activity().startTime(),
                 activityChangedNotification.activity().endTime()
