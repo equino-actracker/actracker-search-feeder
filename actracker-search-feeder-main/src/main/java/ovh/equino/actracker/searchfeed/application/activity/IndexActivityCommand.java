@@ -8,6 +8,7 @@ import java.util.UUID;
 public record IndexActivityCommand(
 
         UUID id,
+        boolean softDeleted,
         long version,
         Instant startTime,
         Instant endTime

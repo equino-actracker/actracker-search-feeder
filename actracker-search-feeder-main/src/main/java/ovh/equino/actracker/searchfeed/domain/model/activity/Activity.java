@@ -7,6 +7,7 @@ import java.time.Instant;
 public record Activity(
 
         ActivityId id,
+        boolean saveDeleted,
         Version version,
         Instant startTime,
         Instant endTime

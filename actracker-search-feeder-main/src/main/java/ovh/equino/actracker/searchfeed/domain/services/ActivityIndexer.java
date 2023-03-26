@@ -7,12 +7,12 @@ import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityStore;
 
 import java.util.Optional;
 
-public class IndexActivityService {
+public class ActivityIndexer {
 
     private final ActivityStore activityStore;
     private final ActivityIndex activityIndex;
 
-    IndexActivityService(ActivityStore activityStore, ActivityIndex activityIndex) {
+    ActivityIndexer(ActivityStore activityStore, ActivityIndex activityIndex) {
         this.activityStore = activityStore;
         this.activityIndex = activityIndex;
     }
@@ -23,18 +23,26 @@ public class IndexActivityService {
 
         storedActivity.ifPresentOrElse(
                 (stored) -> reindexIfOutdated(stored, activity),
-                () -> index(activity)
+                () -> indexOrDelete(activity)
         );
     }
 
     private void reindexIfOutdated(Activity stored, Activity activity) {
         if (activity.shouldReplace(stored)) {
-            index(activity);
+            indexOrDelete(activity);
         }
     }
 
     private void index(Activity activity) {
         activityStore.put(activity.id(), activity);
         activityIndex.index(activity);
+    }
+
+    private void indexOrDelete(Activity activity) {
+        if (activity.saveDeleted()) {
+            activityIndex.delete(activity.id());
+        } else {
+            activityIndex.index(activity);
+        }
     }
 }
