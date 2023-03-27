@@ -31,7 +31,7 @@ class AmqpConfig {
 
     @Bean
     Binding notificationBinding(TopicExchange exchange, Queue queue) {
-        return BindingBuilder.bind(queue).to(exchange).with("#");
+        return BindingBuilder.bind(queue).to(exchange).with("ActivityChangedNotification");
     }
 
     @RabbitListener(queues = QUEUE_NAME)
