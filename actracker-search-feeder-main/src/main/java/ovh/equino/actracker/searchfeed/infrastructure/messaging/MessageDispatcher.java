@@ -41,9 +41,7 @@ public class MessageDispatcher {
             Notification<?> notification = objectMapper.readValue(rawMessage, javaType);
             handlerForType(notificationType).handleNotification(notification);
         } catch (JsonProcessingException e) {
-            // TODO uncomment
-//            throw new RuntimeException(e);
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

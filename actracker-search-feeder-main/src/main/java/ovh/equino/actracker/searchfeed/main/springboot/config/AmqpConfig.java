@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ovh.equino.actracker.searchfeed.infrastructure.messaging.MessageDispatcher;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
@@ -41,11 +40,7 @@ class AmqpConfig {
                 )
                 .toList();
 
-        // TODO remove
-        ArrayList<Binding> bindings1 = new ArrayList<>(bindings);
-        bindings1.add(BindingBuilder.bind(queue).to(exchange).with("ActivityChangedNotification"));
-
-        return new Declarables(bindings1);
+        return new Declarables(bindings);
     }
 
     @RabbitListener(queues = QUEUE_NAME)
