@@ -1,14 +1,13 @@
 package ovh.equino.actracker.searchfeed.main.springboot.config;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ovh.equino.actracker.searchfeed.infrastructure.messaging.MessageDispatcher;
+
+import java.util.List;
 
 @Configuration
 class AmqpConfig {
@@ -30,8 +29,18 @@ class AmqpConfig {
     }
 
     @Bean
-    Binding notificationBinding(TopicExchange exchange, Queue queue) {
-        return BindingBuilder.bind(queue).to(exchange).with("ActivityChangedNotification");
+    Declarables notificationBinding(TopicExchange exchange, Queue queue) {
+
+        List<Binding> bindings = messageDispatcher.supportedNotificationTypes().stream()
+                .map(notificationType ->
+                        BindingBuilder
+                                .bind(queue)
+                                .to(exchange)
+                                .with(notificationType.getCanonicalName())
+                )
+                .toList();
+
+        return new Declarables(bindings);
     }
 
     @RabbitListener(queues = QUEUE_NAME)

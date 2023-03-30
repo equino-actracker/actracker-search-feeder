@@ -1,5 +1,6 @@
 package ovh.equino.actracker.searchfeed.infrastructure.messaging.activity;
 
+import ovh.equino.actracker.domain.Notification;
 import ovh.equino.actracker.domain.activity.ActivityChangedNotification;
 import ovh.equino.actracker.searchfeed.application.activity.ActivityService;
 import ovh.equino.actracker.searchfeed.application.activity.IndexActivityCommand;
@@ -14,16 +15,23 @@ class ActivityHandler implements NotificationHandler<ActivityChangedNotification
     }
 
     @Override
-    public void handleNotification(ActivityChangedNotification activityChangedNotification) {
+    public void handleNotification(Notification<?> activityChangedNotification) {
+
+        Notification<ActivityChangedNotification> notification = (Notification<ActivityChangedNotification>) activityChangedNotification;
 
         IndexActivityCommand indexActivityCommand = new IndexActivityCommand(
-                activityChangedNotification.id(),
-                activityChangedNotification.activity().deleted(),
-                activityChangedNotification.version(),
-                activityChangedNotification.activity().startTime(),
-                activityChangedNotification.activity().endTime()
+                notification.id(),
+                notification.data().activity().deleted(),
+                notification.version(),
+                notification.data().activity().startTime(),
+                notification.data().activity().endTime()
         );
 
         activityService.indexActivity(indexActivityCommand);
+    }
+
+    @Override
+    public Class<ActivityChangedNotification> supportedNotificationType() {
+        return ActivityChangedNotification.class;
     }
 }
