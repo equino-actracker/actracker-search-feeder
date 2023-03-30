@@ -29,7 +29,7 @@
         <dependency>
             <groupId>ovh.equino.actracker-api</groupId>
             <artifactId>actracker-api-domain</artifactId>
-            <version>0.5.0-71533a6</version>
+            <version>0.5.0-4c0f1cc</version>
             <!-->TODO update version</!-->
         </dependency>
         <dependency>
