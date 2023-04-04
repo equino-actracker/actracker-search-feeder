@@ -1,9 +1,9 @@
 package ovh.equino.actracker.searchfeed.domain.model;
 
-public interface EntityIndex<Id extends EntityId, E extends Entity<Id>> {
+public interface EntityIndex<ID extends EntityId, ENTITY extends Entity<ID>> {
 
-    void index(E entity);
+    void index(ENTITY entity);
 
-    void delete(Id id);
+    void delete(ID id);
 
 }

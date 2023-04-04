@@ -8,17 +8,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-abstract class InMemoryEntityStore<Id extends EntityId, E extends Entity<Id>> implements EntityStore<Id, E> {
+abstract class InMemoryEntityStore<ID extends EntityId, ENTITY extends Entity<ID>> implements EntityStore<ID, ENTITY> {
 
-    private final Map<Id, E> storedEntities = new HashMap<>();
+    private final Map<ID, ENTITY> storedEntities = new HashMap<>();
 
     @Override
-    public Optional<E> get(Id id) {
+    public Optional<ENTITY> get(ID id) {
         return Optional.ofNullable(storedEntities.get(id));
     }
 
     @Override
-    public void put(Id id, E entity) {
+    public void put(ID id, ENTITY entity) {
         storedEntities.put(id, entity);
     }
 

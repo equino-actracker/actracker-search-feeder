@@ -3,7 +3,7 @@ package ovh.equino.actracker.searchfeed.application.activity;
 import ovh.equino.actracker.searchfeed.domain.model.Version;
 import ovh.equino.actracker.searchfeed.domain.model.activity.Activity;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
-import ovh.equino.actracker.searchfeed.domain.services.ActivityIndexer;
+import ovh.equino.actracker.searchfeed.domain.services.activity.ActivityIndexer;
 
 public class ActivityService {
 

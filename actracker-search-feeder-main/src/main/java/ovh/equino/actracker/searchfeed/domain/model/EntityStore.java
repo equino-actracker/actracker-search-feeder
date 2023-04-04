@@ -2,10 +2,10 @@ package ovh.equino.actracker.searchfeed.domain.model;
 
 import java.util.Optional;
 
-public interface EntityStore<Id extends EntityId, E extends Entity<Id>> {
+public interface EntityStore<ID extends EntityId, ENTITY extends Entity<ID>> {
 
-    Optional<E> get(Id id);
+    Optional<ENTITY> get(ID id);
 
-    void put(Id id, E entity);
+    void put(ID id, ENTITY entity);
 
 }
