@@ -29,7 +29,7 @@ public class ActivityIndexer {
 
     private void indexIfNotDeleted(Activity activity) {
         activityStore.put(activity.id(), activity);
-        if (notDeleted(activity)) {
+        if (activity.isNotDeleted()) {
             indexer.index(activity);
         }
     }
@@ -43,14 +43,11 @@ public class ActivityIndexer {
     private void reindexOrDelete(Activity activity) {
         ActivityId activityId = activity.id();
         activityStore.put(activityId, activity);
-        if (notDeleted(activity)) {
+        if (activity.isNotDeleted()) {
             indexer.index(activity);
         } else {
             indexer.delete(activityId);
         }
     }
 
-    private boolean notDeleted(Activity activity) {
-        return !activity.softDeleted();
-    }
 }

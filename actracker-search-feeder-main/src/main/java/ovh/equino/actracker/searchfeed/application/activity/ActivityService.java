@@ -16,8 +16,8 @@ public class ActivityService {
     public void indexActivity(IndexActivityCommand command) {
         Activity activity = new Activity(
                 new ActivityId(command.id()),
-                command.softDeleted(),
                 new Version(command.version()),
+                command.softDeleted(),
                 command.startTime(),
                 command.endTime()
         );

@@ -1,27 +1,18 @@
 package ovh.equino.actracker.searchfeed.domain.model.activity;
 
+import ovh.equino.actracker.searchfeed.domain.model.Entity;
 import ovh.equino.actracker.searchfeed.domain.model.Version;
 
 import java.time.Instant;
 
-public record Activity(
+public final class Activity extends Entity<ActivityId> {
 
-        ActivityId id,
-        boolean softDeleted,
-        Version version,
-        Instant startTime,
-        Instant endTime
+        private final Instant startTime;
+        private final Instant endTime;
 
-) {
-
-    public ActivityId id() {
-        return id;
-    }
-
-    public boolean shouldReplace(Activity otherActivity) {
-        if (otherActivity == null) {
-            return true;
+        public Activity(ActivityId id, Version version, boolean softDeleted, Instant startTime, Instant endTime) {
+                super(id, version, softDeleted);
+                this.startTime = startTime;
+                this.endTime = endTime;
         }
-        return this.version.isLaterThan(otherActivity.version);
-    }
 }
