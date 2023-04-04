@@ -13,13 +13,13 @@ public class ActivityService {
         this.activityIndexer = activityIndexer;
     }
 
-    public void indexActivity(IndexActivityCommand command) {
+    public void indexActivity(IndexActivityCommand indexActivityCommand) {
         Activity activity = new Activity(
-                new ActivityId(command.id()),
-                new Version(command.version()),
-                command.softDeleted(),
-                command.startTime(),
-                command.endTime()
+                new ActivityId(indexActivityCommand.id()),
+                new Version(indexActivityCommand.version()),
+                indexActivityCommand.softDeleted(),
+                indexActivityCommand.startTime(),
+                indexActivityCommand.endTime()
         );
 
         activityIndexer.indexActivity(activity);
