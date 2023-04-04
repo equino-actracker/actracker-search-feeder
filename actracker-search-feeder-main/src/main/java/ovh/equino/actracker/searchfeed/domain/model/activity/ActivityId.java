@@ -1,25 +1,12 @@
 package ovh.equino.actracker.searchfeed.domain.model.activity;
 
-import java.util.Objects;
+import ovh.equino.actracker.searchfeed.domain.model.EntityId;
+
 import java.util.UUID;
 
-public record ActivityId(UUID id) {
+public final class ActivityId extends EntityId {
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ActivityId that = (ActivityId) o;
-        return id.equals(that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return id.toString();
+    public ActivityId(UUID id) {
+        super(id);
     }
 }

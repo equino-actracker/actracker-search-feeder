@@ -1,7 +1,6 @@
 package ovh.equino.actracker.searchfeed.domain.model.activity;
 
-public interface ActivityIndex {
+import ovh.equino.actracker.searchfeed.domain.model.EntityIndex;
 
-    void index(Activity activity);
-    void delete(ActivityId activityId);
+public interface ActivityIndex extends EntityIndex<ActivityId, Activity> {
 }

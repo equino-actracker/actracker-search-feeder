@@ -1,10 +1,6 @@
 package ovh.equino.actracker.searchfeed.domain.model.activity;
 
-import java.util.Optional;
+import ovh.equino.actracker.searchfeed.domain.model.EntityStore;
 
-public interface ActivityStore {
-
-    Optional<Activity> get(ActivityId id);
-
-    void put(ActivityId id, Activity activity);
+public interface ActivityStore extends EntityStore<ActivityId, Activity> {
 }
