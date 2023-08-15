@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS activity (
+    id VARCHAR(36) PRIMARY KEY,
+    version BIGINT NOT NULL,
+    deleted BOOLEAN NOT NULL,
+    entity JSONB NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tag (
+    id VARCHAR(36) PRIMARY KEY,
+    version BIGINT NOT NULL,
+    deleted BOOLEAN NOT NULL,
+    entity JSONB NOT NULL
+);
