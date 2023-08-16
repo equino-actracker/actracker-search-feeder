@@ -105,15 +105,6 @@
             <plugin>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>jooq-codegen</id>-->
-<!--                        <phase>none</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>generate</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
                 <configuration>
                     <skip>false</skip>
                     <jdbc>

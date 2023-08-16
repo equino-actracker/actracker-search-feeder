@@ -48,11 +48,6 @@
 
     <build>
         <plugins>
-            <!--            <plugin>-->
-            <!--                <groupId>org.codehaus.mojo</groupId>-->
-            <!--                <artifactId>versions-maven-plugin</artifactId>-->
-            <!--                <version>2.15.0</version>-->
-            <!--            </plugin>-->
             <plugin>
                 <groupId>org.eclipse.jkube</groupId>
                 <artifactId>kubernetes-maven-plugin</artifactId>
@@ -90,15 +85,6 @@
                 <configuration>
                     <skip>true</skip>
                 </configuration>
-                <!--                <executions>-->
-                <!--                    <execution>-->
-                <!--                        <id>jooq-codegen</id>-->
-                <!--                        <phase>none</phase>-->
-                <!--                        <goals>-->
-                <!--                            <goal>generate</goal>-->
-                <!--                        </goals>-->
-                <!--                    </execution>-->
-                <!--                </executions>-->
             </plugin>
             <plugin>
                 <groupId>org.flywaydb</groupId>
