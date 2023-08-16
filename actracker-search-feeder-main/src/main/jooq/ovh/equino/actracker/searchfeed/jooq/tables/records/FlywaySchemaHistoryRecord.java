@@ -26,9 +26,8 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     /**
      * Setter for <code>public.flyway_schema_history.installed_rank</code>.
      */
-    public FlywaySchemaHistoryRecord setInstalledRank(Integer value) {
+    public void setInstalledRank(Integer value) {
         set(0, value);
-        return this;
     }
 
     /**
@@ -41,9 +40,8 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     /**
      * Setter for <code>public.flyway_schema_history.version</code>.
      */
-    public FlywaySchemaHistoryRecord setVersion(String value) {
+    public void setVersion(String value) {
         set(1, value);
-        return this;
     }
 
     /**
@@ -56,9 +54,8 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     /**
      * Setter for <code>public.flyway_schema_history.description</code>.
      */
-    public FlywaySchemaHistoryRecord setDescription(String value) {
+    public void setDescription(String value) {
         set(2, value);
-        return this;
     }
 
     /**
@@ -71,9 +68,8 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     /**
      * Setter for <code>public.flyway_schema_history.type</code>.
      */
-    public FlywaySchemaHistoryRecord setType(String value) {
+    public void setType(String value) {
         set(3, value);
-        return this;
     }
 
     /**
@@ -86,9 +82,8 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     /**
      * Setter for <code>public.flyway_schema_history.script</code>.
      */
-    public FlywaySchemaHistoryRecord setScript(String value) {
+    public void setScript(String value) {
         set(4, value);
-        return this;
     }
 
     /**
@@ -101,9 +96,8 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     /**
      * Setter for <code>public.flyway_schema_history.checksum</code>.
      */
-    public FlywaySchemaHistoryRecord setChecksum(Integer value) {
+    public void setChecksum(Integer value) {
         set(5, value);
-        return this;
     }
 
     /**
@@ -116,9 +110,8 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     /**
      * Setter for <code>public.flyway_schema_history.installed_by</code>.
      */
-    public FlywaySchemaHistoryRecord setInstalledBy(String value) {
+    public void setInstalledBy(String value) {
         set(6, value);
-        return this;
     }
 
     /**
@@ -131,9 +124,8 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     /**
      * Setter for <code>public.flyway_schema_history.installed_on</code>.
      */
-    public FlywaySchemaHistoryRecord setInstalledOn(LocalDateTime value) {
+    public void setInstalledOn(LocalDateTime value) {
         set(7, value);
-        return this;
     }
 
     /**
@@ -146,9 +138,8 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     /**
      * Setter for <code>public.flyway_schema_history.execution_time</code>.
      */
-    public FlywaySchemaHistoryRecord setExecutionTime(Integer value) {
+    public void setExecutionTime(Integer value) {
         set(8, value);
-        return this;
     }
 
     /**
@@ -161,9 +152,8 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     /**
      * Setter for <code>public.flyway_schema_history.success</code>.
      */
-    public FlywaySchemaHistoryRecord setSuccess(Boolean value) {
+    public void setSuccess(Boolean value) {
         set(9, value);
-        return this;
     }
 
     /**
@@ -448,6 +438,5 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
         setInstalledOn(installedOn);
         setExecutionTime(executionTime);
         setSuccess(success);
-        resetChangedOnNotNull();
     }
 }

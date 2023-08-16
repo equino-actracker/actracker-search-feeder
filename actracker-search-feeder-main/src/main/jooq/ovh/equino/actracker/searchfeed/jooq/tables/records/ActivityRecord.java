@@ -25,9 +25,8 @@ public class ActivityRecord extends UpdatableRecordImpl<ActivityRecord> implemen
     /**
      * Setter for <code>public.activity.id</code>.
      */
-    public ActivityRecord setId(String value) {
+    public void setId(String value) {
         set(0, value);
-        return this;
     }
 
     /**
@@ -40,9 +39,8 @@ public class ActivityRecord extends UpdatableRecordImpl<ActivityRecord> implemen
     /**
      * Setter for <code>public.activity.version</code>.
      */
-    public ActivityRecord setVersion(Long value) {
+    public void setVersion(Long value) {
         set(1, value);
-        return this;
     }
 
     /**
@@ -55,9 +53,8 @@ public class ActivityRecord extends UpdatableRecordImpl<ActivityRecord> implemen
     /**
      * Setter for <code>public.activity.deleted</code>.
      */
-    public ActivityRecord setDeleted(Boolean value) {
+    public void setDeleted(Boolean value) {
         set(2, value);
-        return this;
     }
 
     /**
@@ -70,9 +67,8 @@ public class ActivityRecord extends UpdatableRecordImpl<ActivityRecord> implemen
     /**
      * Setter for <code>public.activity.entity</code>.
      */
-    public ActivityRecord setEntity(JSONB value) {
+    public void setEntity(JSONB value) {
         set(3, value);
-        return this;
     }
 
     /**
@@ -219,6 +215,5 @@ public class ActivityRecord extends UpdatableRecordImpl<ActivityRecord> implemen
         setVersion(version);
         setDeleted(deleted);
         setEntity(entity);
-        resetChangedOnNotNull();
     }
 }

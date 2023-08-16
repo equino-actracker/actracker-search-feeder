@@ -36,6 +36,8 @@ Alternatively, Maven Spring Boot plugin can be used:
 ## Postgres schema migration
 Postgres schema is maintained by Flyway. Whenever the application starts, Flyway migration is running.
 After migration of Postgres schema, JOOQ code needs to be generated (see next bullet).
+Schema migration may also by run with Maven (for locally run database):
+`./mvnw flyway:migrate`
 
 ## JOOQ code generation
 JOOQ code should be generated after migrating to new Postgres schema.

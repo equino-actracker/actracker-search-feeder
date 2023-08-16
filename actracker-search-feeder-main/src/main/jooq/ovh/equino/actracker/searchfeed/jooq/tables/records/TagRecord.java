@@ -25,9 +25,8 @@ public class TagRecord extends UpdatableRecordImpl<TagRecord> implements Record4
     /**
      * Setter for <code>public.tag.id</code>.
      */
-    public TagRecord setId(String value) {
+    public void setId(String value) {
         set(0, value);
-        return this;
     }
 
     /**
@@ -40,9 +39,8 @@ public class TagRecord extends UpdatableRecordImpl<TagRecord> implements Record4
     /**
      * Setter for <code>public.tag.version</code>.
      */
-    public TagRecord setVersion(Long value) {
+    public void setVersion(Long value) {
         set(1, value);
-        return this;
     }
 
     /**
@@ -55,9 +53,8 @@ public class TagRecord extends UpdatableRecordImpl<TagRecord> implements Record4
     /**
      * Setter for <code>public.tag.deleted</code>.
      */
-    public TagRecord setDeleted(Boolean value) {
+    public void setDeleted(Boolean value) {
         set(2, value);
-        return this;
     }
 
     /**
@@ -70,9 +67,8 @@ public class TagRecord extends UpdatableRecordImpl<TagRecord> implements Record4
     /**
      * Setter for <code>public.tag.entity</code>.
      */
-    public TagRecord setEntity(JSONB value) {
+    public void setEntity(JSONB value) {
         set(3, value);
-        return this;
     }
 
     /**
@@ -219,6 +215,5 @@ public class TagRecord extends UpdatableRecordImpl<TagRecord> implements Record4
         setVersion(version);
         setDeleted(deleted);
         setEntity(entity);
-        resetChangedOnNotNull();
     }
 }
