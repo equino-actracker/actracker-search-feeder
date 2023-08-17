@@ -7,8 +7,9 @@ spring:
     password: ${actracker-search-feeder.rabbitmq.password:guest}
   datasource:
     url: ${actracker-search-feeder.postgres.url:jdbc:postgresql://localhost:5433/postgres}
-    username: ${actracker-search-feeder.postgres.app.username:postgres}
-    password: ${actracker-search-feeder.postgres.app.password:postgres}
+    #    TODO separate credentials for app and migration
+    username: ${actracker-search-feeder.postgres.owner.username:postgres}
+    password: ${actracker-search-feeder.postgres.owner.password:postgres}
 server:
   port: 8081
   servlet:
