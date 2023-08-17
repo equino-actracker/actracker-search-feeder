@@ -3,9 +3,13 @@ spec:
     spec:
       containers:
         - envFrom:
-            - secretRef:
-                name: actracker-search-feeder-rabbitmq-secret
             - configMapRef:
                 name: actracker-search-feeder-config
+            - secretRef:
+                name: actracker-search-feeder-rabbitmq-secret
+            - secretRef:
+                name: actracker-search-feeder-postgres-app-secret
+            - secretRef:
+                name: actracker-search-feeder-postgres-owner-secret
       imagePullSecrets:
         - name: equino-registry
