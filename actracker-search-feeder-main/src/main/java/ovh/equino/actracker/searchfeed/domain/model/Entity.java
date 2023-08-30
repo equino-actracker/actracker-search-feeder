@@ -24,6 +24,10 @@ public abstract class Entity<ID extends EntityId> {
         return !isSoftDeleted();
     }
 
+    public Version version() {
+        return version;
+    }
+
     public boolean shouldReplace(Entity<ID> otherEntity) {
         if (otherEntity == null) {
             return true;
