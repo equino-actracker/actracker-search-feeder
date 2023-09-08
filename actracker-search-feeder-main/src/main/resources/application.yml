@@ -6,7 +6,7 @@ spring:
     username: ${actracker-search-feeder.rabbitmq.username:guest}
     password: ${actracker-search-feeder.rabbitmq.password:guest}
   datasource:
-    url: ${actracker-search-feeder.postgres.url:jdbc:postgresql://localhost:5433/postgres}
+    url: ${actracker-search-feeder.postgres.url:jdbc:postgresql://localhost:5433/postgres}?currentSchema=${actracker-search-feeder.postgres.schema:public}
     #    TODO separate credentials for app and migration
     username: ${actracker-search-feeder.postgres.owner.username:postgres}
     password: ${actracker-search-feeder.postgres.owner.password:postgres}
