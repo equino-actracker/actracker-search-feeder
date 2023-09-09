@@ -27,6 +27,7 @@ public class ActivityService {
                 new ActivityId(indexActivityCommand.id()),
                 new Version(indexActivityCommand.version()),
                 indexActivityCommand.softDeleted(),
+                indexActivityCommand.title(),
                 indexActivityCommand.startTime(),
                 indexActivityCommand.endTime(),
                 indexActivityCommand.comment(),

@@ -11,6 +11,7 @@ public record IndexActivityCommand(
         UUID id,
         boolean softDeleted,
         long version,
+        String title,
         Instant startTime,
         Instant endTime,
         String comment,

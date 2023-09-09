@@ -12,6 +12,7 @@ import java.util.Set;
 
 public final class Activity extends Entity<ActivityId> {
 
+    private final String title;
     private final Instant startTime;
     private final Instant endTime;
     private final String comment;
@@ -21,6 +22,7 @@ public final class Activity extends Entity<ActivityId> {
     public Activity(@JsonProperty("id") ActivityId id,
                     @JsonProperty("version") Version version,
                     @JsonProperty("softDeleted") boolean softDeleted,
+                    @JsonProperty("title") String title,
                     @JsonProperty("startTime") Instant startTime,
                     @JsonProperty("endTime") Instant endTime,
                     @JsonProperty("comment") String comment,
@@ -28,6 +30,7 @@ public final class Activity extends Entity<ActivityId> {
                     @JsonProperty("metricValues") List<MetricValue> metricValues) {
 
         super(id, version, softDeleted);
+        this.title = title;
         this.startTime = startTime;
         this.endTime = endTime;
         this.comment = comment;
