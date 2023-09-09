@@ -5,12 +5,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import ovh.equino.actracker.searchfeed.domain.model.EntityStore;
 
-//@Configuration
-//@ComponentScan(value = "ovh.equino.actracker.searchfeed.infrastructure.persistence.memory", includeFilters = {
-//        @ComponentScan.Filter(
-//                type = FilterType.ASSIGNABLE_TYPE,
-//                classes = EntityStore.class
-//        )
-//})
-class InMemoryStores {
+@Configuration
+@ComponentScan(value = "ovh.equino.actracker.searchfeed.infrastructure.persistence.jooq", includeFilters = {
+        @ComponentScan.Filter(
+                type = FilterType.ASSIGNABLE_TYPE,
+                classes = EntityStore.class
+        )
+})
+class JooqStores {
 }
