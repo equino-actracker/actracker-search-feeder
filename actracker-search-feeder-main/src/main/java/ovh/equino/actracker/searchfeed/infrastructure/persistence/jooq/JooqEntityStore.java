@@ -2,6 +2,7 @@ package ovh.equino.actracker.searchfeed.infrastructure.persistence.jooq;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.jooq.JSONB;
 import ovh.equino.actracker.searchfeed.domain.model.Entity;
 import ovh.equino.actracker.searchfeed.domain.model.EntityId;
@@ -19,6 +20,7 @@ class JooqEntityStore<ID extends EntityId, ENTITY extends Entity<ID>> {
         this.objectMapper.setVisibility(FIELD, ANY);
         this.objectMapper.setVisibility(GETTER, NONE);
         this.objectMapper.setVisibility(IS_GETTER, NONE);
+        this.objectMapper.registerModule(new JavaTimeModule());
     }
 
     protected String serialize(ENTITY entity) {
