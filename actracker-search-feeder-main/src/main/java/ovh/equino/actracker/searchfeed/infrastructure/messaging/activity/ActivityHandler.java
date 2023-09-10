@@ -33,6 +33,7 @@ class ActivityHandler implements NotificationHandler<ActivityChangedNotification
                 notification.id(),
                 notification.data().activity().deleted(),
                 notification.version(),
+                notification.data().activity().creatorId(),
                 notification.data().activity().title(),
                 notification.data().activity().startTime(),
                 notification.data().activity().endTime(),
