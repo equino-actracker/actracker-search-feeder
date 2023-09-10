@@ -3,6 +3,7 @@ package ovh.equino.actracker.searchfeed.application.activity;
 import ovh.equino.actracker.searchfeed.domain.model.Version;
 import ovh.equino.actracker.searchfeed.domain.model.activity.Activity;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
+import ovh.equino.actracker.searchfeed.domain.model.creator.CreatorId;
 import ovh.equino.actracker.searchfeed.domain.model.metric.MetricId;
 import ovh.equino.actracker.searchfeed.domain.model.metricValue.MetricValue;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
@@ -27,6 +28,7 @@ public class ActivityService {
                 new ActivityId(indexActivityCommand.id()),
                 new Version(indexActivityCommand.version()),
                 indexActivityCommand.softDeleted(),
+                new CreatorId(indexActivityCommand.creatorId()),
                 indexActivityCommand.title(),
                 indexActivityCommand.startTime(),
                 indexActivityCommand.endTime(),

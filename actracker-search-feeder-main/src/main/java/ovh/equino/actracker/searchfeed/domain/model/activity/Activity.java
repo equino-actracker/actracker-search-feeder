@@ -3,6 +3,7 @@ package ovh.equino.actracker.searchfeed.domain.model.activity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ovh.equino.actracker.searchfeed.domain.model.Entity;
 import ovh.equino.actracker.searchfeed.domain.model.Version;
+import ovh.equino.actracker.searchfeed.domain.model.creator.CreatorId;
 import ovh.equino.actracker.searchfeed.domain.model.metricValue.MetricValue;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
 
@@ -22,6 +23,7 @@ public final class Activity extends Entity<ActivityId> {
     public Activity(@JsonProperty("id") ActivityId id,
                     @JsonProperty("version") Version version,
                     @JsonProperty("softDeleted") boolean softDeleted,
+                    @JsonProperty("creatorId") CreatorId creatorId,
                     @JsonProperty("title") String title,
                     @JsonProperty("startTime") Instant startTime,
                     @JsonProperty("endTime") Instant endTime,
@@ -29,7 +31,7 @@ public final class Activity extends Entity<ActivityId> {
                     @JsonProperty("tags") Set<TagId> tags,
                     @JsonProperty("metricValues") List<MetricValue> metricValues) {
 
-        super(id, version, softDeleted);
+        super(id, version, softDeleted, creatorId);
         this.title = title;
         this.startTime = startTime;
         this.endTime = endTime;
