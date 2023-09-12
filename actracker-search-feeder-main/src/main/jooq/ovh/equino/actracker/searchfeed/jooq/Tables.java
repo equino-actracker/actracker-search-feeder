@@ -5,8 +5,10 @@ package ovh.equino.actracker.searchfeed.jooq;
 
 
 import ovh.equino.actracker.searchfeed.jooq.tables.Activity;
+import ovh.equino.actracker.searchfeed.jooq.tables.Dashboard;
 import ovh.equino.actracker.searchfeed.jooq.tables.FlywaySchemaHistory;
 import ovh.equino.actracker.searchfeed.jooq.tables.Tag;
+import ovh.equino.actracker.searchfeed.jooq.tables.TagSet;
 
 
 /**
@@ -21,6 +23,11 @@ public class Tables {
     public static final Activity ACTIVITY = Activity.ACTIVITY;
 
     /**
+     * The table <code>public.dashboard</code>.
+     */
+    public static final Dashboard DASHBOARD = Dashboard.DASHBOARD;
+
+    /**
      * The table <code>public.flyway_schema_history</code>.
      */
     public static final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
@@ -29,4 +36,9 @@ public class Tables {
      * The table <code>public.tag</code>.
      */
     public static final Tag TAG = Tag.TAG;
+
+    /**
+     * The table <code>public.tag_set</code>.
+     */
+    public static final TagSet TAG_SET = TagSet.TAG_SET;
 }

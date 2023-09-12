@@ -22,10 +22,10 @@ final class JooqTagStore extends JooqEntityStore<TagId, Tag> implements TagStore
 
     @Override
     public Optional<Tag> get(TagId id) {
-        Optional<TagRecord> activityRecord = jooq.selectFrom(TAG)
+        Optional<TagRecord> tagRecord = jooq.selectFrom(TAG)
                 .where(TAG.ID.equal(id.toString()))
                 .fetchOptional();
-        return activityRecord.map(record -> deserialize(
+        return tagRecord.map(record -> deserialize(
                 record.get(TAG.ENTITY), Tag.class)
         );
     }

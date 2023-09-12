@@ -10,11 +10,15 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 
 import ovh.equino.actracker.searchfeed.jooq.tables.Activity;
+import ovh.equino.actracker.searchfeed.jooq.tables.Dashboard;
 import ovh.equino.actracker.searchfeed.jooq.tables.FlywaySchemaHistory;
 import ovh.equino.actracker.searchfeed.jooq.tables.Tag;
+import ovh.equino.actracker.searchfeed.jooq.tables.TagSet;
 import ovh.equino.actracker.searchfeed.jooq.tables.records.ActivityRecord;
+import ovh.equino.actracker.searchfeed.jooq.tables.records.DashboardRecord;
 import ovh.equino.actracker.searchfeed.jooq.tables.records.FlywaySchemaHistoryRecord;
 import ovh.equino.actracker.searchfeed.jooq.tables.records.TagRecord;
+import ovh.equino.actracker.searchfeed.jooq.tables.records.TagSetRecord;
 
 
 /**
@@ -29,6 +33,8 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<ActivityRecord> ACTIVITY_PKEY = Internal.createUniqueKey(Activity.ACTIVITY, DSL.name("activity_pkey"), new TableField[] { Activity.ACTIVITY.ID }, true);
+    public static final UniqueKey<DashboardRecord> DASHBOARD_PKEY = Internal.createUniqueKey(Dashboard.DASHBOARD, DSL.name("dashboard_pkey"), new TableField[] { Dashboard.DASHBOARD.ID }, true);
     public static final UniqueKey<FlywaySchemaHistoryRecord> FLYWAY_SCHEMA_HISTORY_PK = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, DSL.name("flyway_schema_history_pk"), new TableField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);
     public static final UniqueKey<TagRecord> TAG_PKEY = Internal.createUniqueKey(Tag.TAG, DSL.name("tag_pkey"), new TableField[] { Tag.TAG.ID }, true);
+    public static final UniqueKey<TagSetRecord> TAG_SET_PKEY = Internal.createUniqueKey(TagSet.TAG_SET, DSL.name("tag_set_pkey"), new TableField[] { TagSet.TAG_SET.ID }, true);
 }

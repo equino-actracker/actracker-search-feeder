@@ -12,8 +12,10 @@ import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
 
 import ovh.equino.actracker.searchfeed.jooq.tables.Activity;
+import ovh.equino.actracker.searchfeed.jooq.tables.Dashboard;
 import ovh.equino.actracker.searchfeed.jooq.tables.FlywaySchemaHistory;
 import ovh.equino.actracker.searchfeed.jooq.tables.Tag;
+import ovh.equino.actracker.searchfeed.jooq.tables.TagSet;
 
 
 /**
@@ -35,6 +37,11 @@ public class Public extends SchemaImpl {
     public final Activity ACTIVITY = Activity.ACTIVITY;
 
     /**
+     * The table <code>public.dashboard</code>.
+     */
+    public final Dashboard DASHBOARD = Dashboard.DASHBOARD;
+
+    /**
      * The table <code>public.flyway_schema_history</code>.
      */
     public final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
@@ -43,6 +50,11 @@ public class Public extends SchemaImpl {
      * The table <code>public.tag</code>.
      */
     public final Tag TAG = Tag.TAG;
+
+    /**
+     * The table <code>public.tag_set</code>.
+     */
+    public final TagSet TAG_SET = TagSet.TAG_SET;
 
     /**
      * No further instances allowed
@@ -61,8 +73,10 @@ public class Public extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.asList(
             Activity.ACTIVITY,
+            Dashboard.DASHBOARD,
             FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
-            Tag.TAG
+            Tag.TAG,
+            TagSet.TAG_SET
         );
     }
 }
