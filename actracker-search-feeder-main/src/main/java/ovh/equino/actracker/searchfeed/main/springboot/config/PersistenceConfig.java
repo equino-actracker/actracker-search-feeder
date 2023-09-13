@@ -1,4 +1,4 @@
-package ovh.equino.actracker.searchfeed.main.springboot.config.persistence;
+package ovh.equino.actracker.searchfeed.main.springboot.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -12,5 +12,5 @@ import ovh.equino.actracker.searchfeed.domain.model.EntityStore;
                 classes = EntityStore.class
         )
 })
-class JooqStores {
+class PersistenceConfig {
 }
