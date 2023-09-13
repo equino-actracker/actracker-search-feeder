@@ -10,6 +10,7 @@ import ovh.equino.actracker.searchfeed.domain.model.EntityId;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.PropertyAccessor.*;
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 
 class JooqEntityStore<ID extends EntityId, ENTITY extends Entity<ID>> {
 
@@ -21,6 +22,7 @@ class JooqEntityStore<ID extends EntityId, ENTITY extends Entity<ID>> {
         this.objectMapper.setVisibility(GETTER, NONE);
         this.objectMapper.setVisibility(IS_GETTER, NONE);
         this.objectMapper.registerModule(new JavaTimeModule());
+        this.objectMapper.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     protected String serialize(ENTITY entity) {
