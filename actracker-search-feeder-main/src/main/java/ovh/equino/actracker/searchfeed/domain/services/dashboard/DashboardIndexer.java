@@ -1,12 +1,9 @@
 package ovh.equino.actracker.searchfeed.domain.services.dashboard;
 
-import ovh.equino.actracker.searchfeed.domain.model.dashboard.Dashboard;
-import ovh.equino.actracker.searchfeed.domain.model.dashboard.DashboardId;
-import ovh.equino.actracker.searchfeed.domain.model.dashboard.DashboardIndex;
-import ovh.equino.actracker.searchfeed.domain.model.dashboard.DashboardStore;
+import ovh.equino.actracker.searchfeed.domain.model.dashboard.*;
 import ovh.equino.actracker.searchfeed.domain.services.EntityIndexer;
 
-public final class DashboardIndexer extends EntityIndexer<DashboardId, Dashboard> {
+public final class DashboardIndexer extends EntityIndexer<DashboardId, Dashboard, DashboardGraph> {
 
 
     DashboardIndexer(DashboardStore dashboardStore, DashboardIndex dashboardIndex) {
@@ -17,4 +14,8 @@ public final class DashboardIndexer extends EntityIndexer<DashboardId, Dashboard
         super.index(dashboardToIndex);
     }
 
+    @Override
+    protected DashboardGraph buildEntityGraph(Dashboard entity) {
+        return new DashboardGraph();
+    }
 }

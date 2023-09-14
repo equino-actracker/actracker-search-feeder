@@ -1,10 +1,12 @@
 package ovh.equino.actracker.searchfeed.infrastructure.index.console;
 
 import ovh.equino.actracker.searchfeed.domain.model.Entity;
+import ovh.equino.actracker.searchfeed.domain.model.EntityGraph;
 import ovh.equino.actracker.searchfeed.domain.model.EntityId;
 import ovh.equino.actracker.searchfeed.domain.model.EntityIndex;
 
-abstract class ConsoleEntityIndex<ID extends EntityId, ENTITY extends Entity<ID>> implements EntityIndex<ID, ENTITY> {
+abstract class ConsoleEntityIndex<ID extends EntityId, ENTITY extends Entity<ID>, GRAPH extends EntityGraph<ID>>
+        implements EntityIndex<ID, ENTITY, GRAPH> {
 
     @Override
     public void index(ENTITY entity) {

@@ -7,9 +7,12 @@ import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagStore;
 import ovh.equino.actracker.searchfeed.jooq.tables.records.TagRecord;
 
-import java.util.Optional;
+import java.util.*;
 
+import static java.util.Objects.requireNonNullElse;
+import static java.util.stream.Collectors.toUnmodifiableSet;
 import static org.jooq.JSONB.jsonb;
+import static org.jooq.impl.DSL.inline;
 import static ovh.equino.actracker.searchfeed.jooq.Tables.TAG;
 
 final class JooqTagStore extends JooqEntityStore<TagId, Tag> implements TagStore {
@@ -42,5 +45,23 @@ final class JooqTagStore extends JooqEntityStore<TagId, Tag> implements TagStore
                 .set(TAG.DELETED, entity.isSoftDeleted())
                 .set(TAG.ENTITY, serializedEntity)
                 .execute();
+    }
+
+    @Override
+    public Set<TagId> nonDeletedTags(Collection<TagId> tagIds) {
+        Set<String> tagIdStrings = requireNonNullElse(tagIds, new ArrayList<>())
+                .stream()
+                .map(Object::toString)
+                .collect(toUnmodifiableSet());
+
+        Set<String> nonDeletedTagIds = jooq.selectFrom(TAG)
+                .where(TAG.ID.in(tagIdStrings))
+                .and(TAG.DELETED.eq(inline(true)))
+                .fetchSet(TAG.ID);
+
+        return nonDeletedTagIds.stream()
+                .map(UUID::fromString)
+                .map(TagId::new)
+                .collect(toUnmodifiableSet());
     }
 }

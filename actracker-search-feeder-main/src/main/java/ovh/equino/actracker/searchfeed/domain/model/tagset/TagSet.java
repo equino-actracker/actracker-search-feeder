@@ -24,4 +24,8 @@ public final class TagSet extends Entity<TagSetId> {
         this.name = name;
         this.tags = tags;
     }
+
+    public Set<TagId> tags() {
+        return tags;
+    }
 }

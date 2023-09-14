@@ -17,10 +17,10 @@ import static java.util.Objects.requireNonNullElse;
 
 public class TagSetService {
 
-    private final TagSetIndexer tagSetIndexerIndexer;
+    private final TagSetIndexer tagSetIndexer;
 
     TagSetService(TagSetIndexer tagSetIndexer) {
-        this.tagSetIndexerIndexer = tagSetIndexer;
+        this.tagSetIndexer = tagSetIndexer;
     }
 
     public void indexTagSet(IndexTagSetCommand indexTagSetCommand) {
@@ -33,7 +33,7 @@ public class TagSetService {
                 toTagIds(indexTagSetCommand.tags())
         );
 
-        tagSetIndexerIndexer.indexTagSet(tagSet);
+        tagSetIndexer.indexTagSet(tagSet);
     }
 
     private Set<TagId> toTagIds(Collection<UUID> tagUuids) {
