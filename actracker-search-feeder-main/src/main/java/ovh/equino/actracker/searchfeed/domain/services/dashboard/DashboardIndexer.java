@@ -15,7 +15,7 @@ public final class DashboardIndexer extends EntityIndexer<DashboardId, Dashboard
     }
 
     @Override
-    protected DashboardGraph buildEntityGraph(Dashboard entity) {
-        return new DashboardGraph();
+    protected DashboardGraph buildEntityGraph(Dashboard dashboard) {
+        return new DashboardGraph(dashboard);
     }
 }

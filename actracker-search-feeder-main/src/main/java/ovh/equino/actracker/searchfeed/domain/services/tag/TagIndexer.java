@@ -15,7 +15,7 @@ public final class TagIndexer extends EntityIndexer<TagId, Tag, TagGraph> {
     }
 
     @Override
-    protected TagGraph buildEntityGraph(Tag entity) {
-        return new TagGraph();
+    protected TagGraph buildEntityGraph(Tag tag) {
+        return new TagGraph(tag);
     }
 }

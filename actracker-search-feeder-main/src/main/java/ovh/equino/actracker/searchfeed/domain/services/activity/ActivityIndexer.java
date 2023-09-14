@@ -15,7 +15,7 @@ public final class ActivityIndexer extends EntityIndexer<ActivityId, Activity, A
     }
 
     @Override
-    protected ActivityGraph buildEntityGraph(Activity entity) {
-        return new ActivityGraph();
+    protected ActivityGraph buildEntityGraph(Activity activity) {
+        return new ActivityGraph(activity);
     }
 }

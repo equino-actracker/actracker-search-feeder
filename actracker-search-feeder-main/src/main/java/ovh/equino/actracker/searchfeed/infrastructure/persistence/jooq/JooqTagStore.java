@@ -56,7 +56,7 @@ final class JooqTagStore extends JooqEntityStore<TagId, Tag> implements TagStore
 
         Set<String> nonDeletedTagIds = jooq.selectFrom(TAG)
                 .where(TAG.ID.in(tagIdStrings))
-                .and(TAG.DELETED.eq(inline(true)))
+                .and(TAG.DELETED.eq(inline(false)))
                 .fetchSet(TAG.ID);
 
         return nonDeletedTagIds.stream()

@@ -7,10 +7,10 @@ import java.util.Optional;
 public abstract class EntityIndexer<ID extends EntityId, ENTITY extends Entity<ID>, GRAPH extends EntityGraph<ID>> {
 
     private final EntityStore<ID, ENTITY> entityStore;
-    private final EntityIndex<ID, ENTITY, GRAPH> entityIndex;
+    private final EntityIndex<ID, GRAPH> entityIndex;
 
 
-    protected EntityIndexer(EntityStore<ID, ENTITY> entityStore, EntityIndex<ID, ENTITY, GRAPH> entityIndex) {
+    protected EntityIndexer(EntityStore<ID, ENTITY> entityStore, EntityIndex<ID, GRAPH> entityIndex) {
         this.entityStore = entityStore;
         this.entityIndex = entityIndex;
     }
@@ -28,7 +28,8 @@ public abstract class EntityIndexer<ID extends EntityId, ENTITY extends Entity<I
     private void indexIfNotDeleted(ENTITY entity) {
         entityStore.put(entity.id(), entity);
         if (entity.isNotDeleted()) {
-            entityIndex.index(entity);
+            GRAPH entityGraph = buildEntityGraph(entity);
+            entityIndex.index(entityGraph);
         }
     }
 
@@ -43,7 +44,7 @@ public abstract class EntityIndexer<ID extends EntityId, ENTITY extends Entity<I
         entityStore.put(entityId, entity);
         if (entity.isNotDeleted()) {
             GRAPH entityGraph = buildEntityGraph(entity);
-            entityIndex.index(entity);
+            entityIndex.index(entityGraph);
         } else {
             entityIndex.delete(entityId);
         }
