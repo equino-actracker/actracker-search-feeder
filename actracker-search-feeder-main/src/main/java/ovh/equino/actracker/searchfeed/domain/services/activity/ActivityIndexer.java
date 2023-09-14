@@ -1,20 +1,28 @@
 package ovh.equino.actracker.searchfeed.domain.services.activity;
 
-import ovh.equino.actracker.searchfeed.domain.model.activity.Activity;
-import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
-import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityIndex;
-import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityStore;
+import ovh.equino.actracker.searchfeed.domain.model.activity.*;
+import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
+import ovh.equino.actracker.searchfeed.domain.model.tag.TagStore;
 import ovh.equino.actracker.searchfeed.domain.services.EntityIndexer;
 
-public final class ActivityIndexer extends EntityIndexer<ActivityId, Activity> {
+import java.util.Set;
 
+public final class ActivityIndexer extends EntityIndexer<ActivityId, Activity, ActivityGraph> {
 
-    ActivityIndexer(ActivityStore activityStore, ActivityIndex activityIndex) {
+    private final TagStore tagStore;
+
+    ActivityIndexer(ActivityStore activityStore, ActivityIndex activityIndex, TagStore tagStore) {
         super(activityStore, activityIndex);
+        this.tagStore = tagStore;
     }
 
     public void indexActivity(Activity activityToIndex) {
         super.index(activityToIndex);
     }
 
+    @Override
+    protected ActivityGraph buildEntityGraph(Activity activity) {
+        Set<TagId> tags = tagStore.nonDeletedTags(activity.tags());
+        return new ActivityGraph(activity, tags);
+    }
 }

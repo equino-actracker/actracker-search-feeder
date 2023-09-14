@@ -1,19 +1,16 @@
 package ovh.equino.actracker.searchfeed.domain.services;
 
-import ovh.equino.actracker.searchfeed.domain.model.Entity;
-import ovh.equino.actracker.searchfeed.domain.model.EntityId;
-import ovh.equino.actracker.searchfeed.domain.model.EntityIndex;
-import ovh.equino.actracker.searchfeed.domain.model.EntityStore;
+import ovh.equino.actracker.searchfeed.domain.model.*;
 
 import java.util.Optional;
 
-public abstract class EntityIndexer<ID extends EntityId, ENTITY extends Entity<ID>> {
+public abstract class EntityIndexer<ID extends EntityId, ENTITY extends Entity<ID>, GRAPH extends EntityGraph<ID>> {
 
     private final EntityStore<ID, ENTITY> entityStore;
-    private final EntityIndex<ID, ENTITY> entityIndex;
+    private final EntityIndex<ID, GRAPH> entityIndex;
 
 
-    protected EntityIndexer(EntityStore<ID, ENTITY> entityStore, EntityIndex<ID, ENTITY> entityIndex) {
+    protected EntityIndexer(EntityStore<ID, ENTITY> entityStore, EntityIndex<ID, GRAPH> entityIndex) {
         this.entityStore = entityStore;
         this.entityIndex = entityIndex;
     }
@@ -31,7 +28,8 @@ public abstract class EntityIndexer<ID extends EntityId, ENTITY extends Entity<I
     private void indexIfNotDeleted(ENTITY entity) {
         entityStore.put(entity.id(), entity);
         if (entity.isNotDeleted()) {
-            entityIndex.index(entity);
+            GRAPH entityGraph = buildEntityGraph(entity);
+            entityIndex.index(entityGraph);
         }
     }
 
@@ -45,9 +43,12 @@ public abstract class EntityIndexer<ID extends EntityId, ENTITY extends Entity<I
         ID entityId = entity.id();
         entityStore.put(entityId, entity);
         if (entity.isNotDeleted()) {
-            entityIndex.index(entity);
+            GRAPH entityGraph = buildEntityGraph(entity);
+            entityIndex.index(entityGraph);
         } else {
             entityIndex.delete(entityId);
         }
     }
+
+    protected abstract GRAPH buildEntityGraph(ENTITY entity);
 }

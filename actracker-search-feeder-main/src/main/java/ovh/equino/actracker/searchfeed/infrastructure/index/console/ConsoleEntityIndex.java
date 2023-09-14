@@ -1,20 +1,21 @@
 package ovh.equino.actracker.searchfeed.infrastructure.index.console;
 
-import ovh.equino.actracker.searchfeed.domain.model.Entity;
+import ovh.equino.actracker.searchfeed.domain.model.EntityGraph;
 import ovh.equino.actracker.searchfeed.domain.model.EntityId;
 import ovh.equino.actracker.searchfeed.domain.model.EntityIndex;
 
-abstract class ConsoleEntityIndex<ID extends EntityId, ENTITY extends Entity<ID>> implements EntityIndex<ID, ENTITY> {
+abstract class ConsoleEntityIndex<ID extends EntityId, GRAPH extends EntityGraph<ID>>
+        implements EntityIndex<ID, GRAPH> {
 
     @Override
-    public void index(ENTITY entity) {
-        String entityType = entity.getClass().getSimpleName();
-        System.out.printf("Indexed %s with ID %s%n", entityType, entity.id());
+    public void index(GRAPH entityGraph) {
+        String entityType = entityGraph.getClass().getSimpleName();
+        System.out.printf("Indexed %s with ID %s%n", entityType, entityGraph.entityId());
     }
 
     @Override
     public void delete(ID id) {
         String entityIdType = id.getClass().getSimpleName();
-        System.out.printf("Deleted entity with ID %s of type %s%n", id.id(), entityIdType);
+        System.out.printf("Deleted entity graph with ID %s of type %s%n", id.id(), entityIdType);
     }
 }

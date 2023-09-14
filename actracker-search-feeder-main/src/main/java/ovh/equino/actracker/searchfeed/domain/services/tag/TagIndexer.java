@@ -1,12 +1,9 @@
 package ovh.equino.actracker.searchfeed.domain.services.tag;
 
-import ovh.equino.actracker.searchfeed.domain.model.tag.Tag;
-import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
-import ovh.equino.actracker.searchfeed.domain.model.tag.TagIndex;
-import ovh.equino.actracker.searchfeed.domain.model.tag.TagStore;
+import ovh.equino.actracker.searchfeed.domain.model.tag.*;
 import ovh.equino.actracker.searchfeed.domain.services.EntityIndexer;
 
-public final class TagIndexer extends EntityIndexer<TagId, Tag> {
+public final class TagIndexer extends EntityIndexer<TagId, Tag, TagGraph> {
 
 
     TagIndexer(TagStore tagStore, TagIndex tagIndex) {
@@ -17,4 +14,8 @@ public final class TagIndexer extends EntityIndexer<TagId, Tag> {
         super.index(tagToIndex);
     }
 
+    @Override
+    protected TagGraph buildEntityGraph(Tag tag) {
+        return new TagGraph(tag);
+    }
 }

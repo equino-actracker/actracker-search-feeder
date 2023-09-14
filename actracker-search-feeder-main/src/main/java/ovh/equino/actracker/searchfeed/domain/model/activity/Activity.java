@@ -34,4 +34,24 @@ public final class Activity extends Entity<ActivityId> {
         this.comment = comment;
         this.tags = tags;
     }
+
+    public String title() {
+        return title;
+    }
+
+    public Instant startTime() {
+        return startTime;
+    }
+
+    public Instant endTime() {
+        return endTime;
+    }
+
+    public String comment() {
+        return comment;
+    }
+
+    public Set<TagId> tags() {
+        return tags;
+    }
 }

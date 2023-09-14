@@ -1,18 +1,28 @@
 package ovh.equino.actracker.searchfeed.domain.services.tagset;
 
-import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSet;
-import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetId;
-import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetIndex;
-import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetStore;
+import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
+import ovh.equino.actracker.searchfeed.domain.model.tag.TagStore;
+import ovh.equino.actracker.searchfeed.domain.model.tagset.*;
 import ovh.equino.actracker.searchfeed.domain.services.EntityIndexer;
 
-public final class TagSetIndexer extends EntityIndexer<TagSetId, TagSet> {
+import java.util.Set;
 
-    TagSetIndexer(TagSetStore tagSetStore, TagSetIndex tagSetIndex) {
+public final class TagSetIndexer extends EntityIndexer<TagSetId, TagSet, TagSetGraph> {
+
+    private final TagStore tagStore;
+
+    TagSetIndexer(TagSetStore tagSetStore, TagSetIndex tagSetIndex, TagStore tagStore) {
         super(tagSetStore, tagSetIndex);
+        this.tagStore = tagStore;
     }
 
     public void indexTagSet(TagSet tagSetToIndex) {
         super.index(tagSetToIndex);
+    }
+
+    @Override
+    protected TagSetGraph buildEntityGraph(TagSet tagSet) {
+        Set<TagId> tags = tagStore.nonDeletedTags(tagSet.tags());
+        return new TagSetGraph(tagSet, tags);
     }
 }
