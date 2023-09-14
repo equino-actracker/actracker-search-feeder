@@ -22,7 +22,7 @@ public final class TagSetIndexer extends EntityIndexer<TagSetId, TagSet, TagSetG
 
     @Override
     protected TagSetGraph buildEntityGraph(TagSet tagSet) {
-        Set<TagId> tagIds = tagStore.nonDeletedTags(tagSet.tags());
-        return new TagSetGraph(tagSet, tagIds);
+        Set<TagId> tags = tagStore.nonDeletedTags(tagSet.tags());
+        return new TagSetGraph(tagSet, tags);
     }
 }
