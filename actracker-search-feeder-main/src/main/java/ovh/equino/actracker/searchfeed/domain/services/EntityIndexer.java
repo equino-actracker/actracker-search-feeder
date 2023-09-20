@@ -14,7 +14,13 @@ public abstract class EntityIndexer<ID extends EntityId, ENTITY extends Entity<I
 
     protected void index(ID entityId) {
         ENTITY entity = entityStore.get(entityId)
-                .orElseThrow(() -> new RuntimeException("%s with ID=%s not found in entity store"));
+                .orElseThrow(() -> {
+                    String errorMessage = "Entity with ID=%s of type %s not found in entity store".formatted(
+                            entityId.toString(),
+                            entityId.getClass().getSimpleName()
+                    );
+                    return new RuntimeException(errorMessage);
+                });
 
         if (entity.isNotDeleted()) {
             GRAPH entityGraph = buildEntityGraph(entity);
