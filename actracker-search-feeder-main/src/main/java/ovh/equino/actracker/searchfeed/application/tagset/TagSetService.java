@@ -5,7 +5,7 @@ import ovh.equino.actracker.searchfeed.domain.model.creator.CreatorId;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSet;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetId;
-import ovh.equino.actracker.searchfeed.domain.services.tagset.TagSetIndexer;
+import ovh.equino.actracker.searchfeed.domain.services.tagset.TagSetProcessor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,10 +17,10 @@ import static java.util.Objects.requireNonNullElse;
 
 public class TagSetService {
 
-    private final TagSetIndexer tagSetIndexer;
+    private final TagSetProcessor tagSetProcessor;
 
-    TagSetService(TagSetIndexer tagSetIndexer) {
-        this.tagSetIndexer = tagSetIndexer;
+    TagSetService(TagSetProcessor tagSetProcessor) {
+        this.tagSetProcessor = tagSetProcessor;
     }
 
     public void indexTagSet(IndexTagSetCommand indexTagSetCommand) {
@@ -33,7 +33,7 @@ public class TagSetService {
                 toTagIds(indexTagSetCommand.tags())
         );
 
-        tagSetIndexer.indexTagSet(tagSet);
+        tagSetProcessor.processTagSet(tagSet);
     }
 
     private Set<TagId> toTagIds(Collection<UUID> tagUuids) {

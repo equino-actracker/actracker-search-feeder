@@ -16,8 +16,8 @@ public final class ActivityIndexer extends EntityIndexer<ActivityId, Activity, A
         this.tagStore = tagStore;
     }
 
-    public void indexActivity(Activity activityToIndex) {
-        super.index(activityToIndex);
+    public void indexActivity(ActivityId activityId) {
+        super.index(activityId);
     }
 
     @Override

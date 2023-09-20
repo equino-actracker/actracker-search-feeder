@@ -6,17 +6,16 @@ import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetRefreshedNotifi
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetStore;
 import ovh.equino.actracker.searchfeed.domain.services.EntityProcessor;
 
-class TagSetProcessor extends EntityProcessor<TagSetId, TagSet, TagSetRefreshedNotifier> {
+public final class TagSetProcessor extends EntityProcessor<TagSetId, TagSet, TagSetRefreshedNotifier> {
 
     private final TagSetRefreshedNotifier tagSetRefreshedNotifier;
 
-    protected TagSetProcessor(TagSetStore tagSetStore, TagSetRefreshedNotifier tagSetRefreshedNotifier) {
+    TagSetProcessor(TagSetStore tagSetStore, TagSetRefreshedNotifier tagSetRefreshedNotifier) {
         super(tagSetStore);
         this.tagSetRefreshedNotifier = tagSetRefreshedNotifier;
     }
 
-    @Override
-    protected void processAndNotify(TagSet tagSet) {
+    public void processTagSet(TagSet tagSet) {
         super.processAndNotify(tagSet);
     }
 

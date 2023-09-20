@@ -6,17 +6,16 @@ import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityRefreshedNo
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityStore;
 import ovh.equino.actracker.searchfeed.domain.services.EntityProcessor;
 
-class ActivityProcessor extends EntityProcessor<ActivityId, Activity, ActivityRefreshedNotifier> {
+public final class ActivityProcessor extends EntityProcessor<ActivityId, Activity, ActivityRefreshedNotifier> {
 
     private final ActivityRefreshedNotifier activityRefreshedNotifier;
 
-    protected ActivityProcessor(ActivityStore activityStore, ActivityRefreshedNotifier activityRefreshedNotifier) {
+    ActivityProcessor(ActivityStore activityStore, ActivityRefreshedNotifier activityRefreshedNotifier) {
         super(activityStore);
         this.activityRefreshedNotifier = activityRefreshedNotifier;
     }
 
-    @Override
-    protected void processAndNotify(Activity activity) {
+    public void processActivity(Activity activity) {
         super.processAndNotify(activity);
     }
 

@@ -6,17 +6,16 @@ import ovh.equino.actracker.searchfeed.domain.model.dashboard.DashboardRefreshed
 import ovh.equino.actracker.searchfeed.domain.model.dashboard.DashboardStore;
 import ovh.equino.actracker.searchfeed.domain.services.EntityProcessor;
 
-class DashboardProcessor extends EntityProcessor<DashboardId, Dashboard, DashboardRefreshedNotifier> {
+public final class DashboardProcessor extends EntityProcessor<DashboardId, Dashboard, DashboardRefreshedNotifier> {
 
     private final DashboardRefreshedNotifier dashboardRefreshedNotifier;
 
-    protected DashboardProcessor(DashboardStore dashboardStore, DashboardRefreshedNotifier dashboardRefreshedNotifier) {
+    DashboardProcessor(DashboardStore dashboardStore, DashboardRefreshedNotifier dashboardRefreshedNotifier) {
         super(dashboardStore);
         this.dashboardRefreshedNotifier = dashboardRefreshedNotifier;
     }
 
-    @Override
-    protected void processAndNotify(Dashboard dashboard) {
+    public void processDashboard(Dashboard dashboard) {
         super.processAndNotify(dashboard);
     }
 
