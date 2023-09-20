@@ -10,8 +10,8 @@ public final class DashboardIndexer extends EntityIndexer<DashboardId, Dashboard
         super(dashboardStore, dashboardIndex);
     }
 
-    public void indexDashboard(Dashboard dashboardToIndex) {
-        super.index(dashboardToIndex);
+    public void indexDashboard(DashboardId dashboardId) {
+        super.index(dashboardId);
     }
 
     @Override

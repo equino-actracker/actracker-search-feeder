@@ -5,7 +5,7 @@ import ovh.equino.actracker.searchfeed.domain.model.activity.Activity;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
 import ovh.equino.actracker.searchfeed.domain.model.creator.CreatorId;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
-import ovh.equino.actracker.searchfeed.domain.services.activity.ActivityIndexer;
+import ovh.equino.actracker.searchfeed.domain.services.activity.ActivityProcessor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,10 +17,10 @@ import static java.util.Objects.requireNonNullElse;
 
 public class ActivityService {
 
-    private final ActivityIndexer activityIndexer;
+    private final ActivityProcessor activityProcessor;
 
-    ActivityService(ActivityIndexer activityIndexer) {
-        this.activityIndexer = activityIndexer;
+    ActivityService(ActivityProcessor activityProcessor) {
+        this.activityProcessor = activityProcessor;
     }
 
     public void indexActivity(IndexActivityCommand indexActivityCommand) {
@@ -36,7 +36,7 @@ public class ActivityService {
                 toTagIds(indexActivityCommand.tags())
         );
 
-        activityIndexer.indexActivity(activity);
+        activityProcessor.processActivity(activity);
     }
 
     private Set<TagId> toTagIds(Collection<UUID> tagUuids) {

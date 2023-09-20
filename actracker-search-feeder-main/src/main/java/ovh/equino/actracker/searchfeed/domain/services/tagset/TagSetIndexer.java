@@ -16,8 +16,8 @@ public final class TagSetIndexer extends EntityIndexer<TagSetId, TagSet, TagSetG
         this.tagStore = tagStore;
     }
 
-    public void indexTagSet(TagSet tagSetToIndex) {
-        super.index(tagSetToIndex);
+    public void indexTagSet(TagSetId tagSetId) {
+        super.index(tagSetId);
     }
 
     @Override

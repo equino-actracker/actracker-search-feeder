@@ -5,7 +5,7 @@ import ovh.equino.actracker.searchfeed.domain.model.creator.CreatorId;
 import ovh.equino.actracker.searchfeed.domain.model.share.GranteeId;
 import ovh.equino.actracker.searchfeed.domain.model.tag.Tag;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
-import ovh.equino.actracker.searchfeed.domain.services.tag.TagIndexer;
+import ovh.equino.actracker.searchfeed.domain.services.tag.TagProcessor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,10 +16,10 @@ import static java.util.stream.Collectors.toUnmodifiableSet;
 
 public class TagService {
 
-    private final TagIndexer tagIndexer;
+    private final TagProcessor tagProcessor;
 
-    TagService(TagIndexer tagIndexer) {
-        this.tagIndexer = tagIndexer;
+    TagService(TagProcessor tagProcessor) {
+        this.tagProcessor = tagProcessor;
     }
 
     public void indexTag(IndexTagCommand indexTagCommand) {
@@ -32,7 +32,7 @@ public class TagService {
                 toGrantees(indexTagCommand.grantees())
         );
 
-        tagIndexer.indexTag(tag);
+        tagProcessor.processTag(tag);
     }
 
     private Set<GranteeId> toGrantees(Set<UUID> grantees) {
