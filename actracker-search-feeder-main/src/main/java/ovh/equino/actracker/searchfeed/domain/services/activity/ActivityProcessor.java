@@ -5,7 +5,7 @@ import ovh.equino.actracker.searchfeed.domain.model.activity.Activity;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityRefreshedNotifier;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityStore;
-import ovh.equino.actracker.searchfeed.domain.model.ChildrenNotifierOfParentRefresh;
+import ovh.equino.actracker.searchfeed.domain.services.ChildrenNotifierOfParentRefresh;
 import ovh.equino.actracker.searchfeed.domain.services.EntityProcessor;
 
 import java.util.Collection;
