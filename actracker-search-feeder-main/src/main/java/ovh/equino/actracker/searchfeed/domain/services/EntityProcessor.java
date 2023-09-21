@@ -1,10 +1,8 @@
 package ovh.equino.actracker.searchfeed.domain.services;
 
-import ovh.equino.actracker.searchfeed.domain.model.Entity;
-import ovh.equino.actracker.searchfeed.domain.model.EntityId;
-import ovh.equino.actracker.searchfeed.domain.model.EntityRefreshedNotifier;
-import ovh.equino.actracker.searchfeed.domain.model.EntityStore;
+import ovh.equino.actracker.searchfeed.domain.model.*;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public abstract class EntityProcessor<ID extends EntityId, ENTITY extends Entity<ID>, NOTIFIER extends EntityRefreshedNotifier<ID>> {
@@ -28,16 +26,23 @@ public abstract class EntityProcessor<ID extends EntityId, ENTITY extends Entity
     private void processIfNotDeleted(ENTITY entity) {
         entityStore.put(entity.id(), entity);
         if (entity.isNotDeleted()) {
-            entityRefreshedNotifier().notifyRefreshed(entity.id());
+            notifyRefreshed(entity.id());
         }
     }
 
     private void processIfOverrides(ENTITY storedEntity, ENTITY newEntity) {
         if (newEntity.shouldReplace(storedEntity)) {
             entityStore.put(newEntity.id(), newEntity);
-            entityRefreshedNotifier().notifyRefreshed(newEntity.id());
+            notifyRefreshed(newEntity.id());
         }
     }
 
+    private void notifyRefreshed(ID entityId) {
+        entityRefreshedNotifier().notifyRefreshed(entityId);
+        childrenNotifiers().forEach(childrenNotifier -> childrenNotifier.notifyParentChanged(entityId));
+    }
+
     protected abstract NOTIFIER entityRefreshedNotifier();
+
+    protected abstract Collection<ChildrenNotifierOfParentRefresh<ID, ? extends EntityId>> childrenNotifiers();
 }
