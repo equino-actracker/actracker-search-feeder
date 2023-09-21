@@ -1,6 +1,6 @@
 package ovh.equino.actracker.searchfeed.domain.services.activity;
 
-import ovh.equino.actracker.searchfeed.domain.model.ChildrenNotifierOfParentRefresh;
+import ovh.equino.actracker.searchfeed.domain.services.ChildrenNotifierOfParentRefresh;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityRefreshedNotifier;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityStore;

@@ -1,6 +1,6 @@
 package ovh.equino.actracker.searchfeed.domain.services.tag;
 
-import ovh.equino.actracker.searchfeed.domain.model.ChildrenNotifierOfParentRefresh;
+import ovh.equino.actracker.searchfeed.domain.services.ChildrenNotifierOfParentRefresh;
 import ovh.equino.actracker.searchfeed.domain.model.EntityId;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
 import ovh.equino.actracker.searchfeed.domain.model.tag.Tag;
