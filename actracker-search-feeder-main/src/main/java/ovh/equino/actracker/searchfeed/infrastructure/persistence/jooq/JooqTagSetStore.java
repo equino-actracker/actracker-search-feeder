@@ -55,7 +55,7 @@ final class JooqTagSetStore extends JooqEntityStore<TagSetId, TagSet> implements
                 .execute();
 
         List<Row2<String, String>> tagsetTagIds = entity.tags().stream()
-                .map(tag -> row(id.toString(), tag.toString()))
+                .map(tagId -> row(id.toString(), tagId.toString()))
                 .toList();
         jooq.insertInto(TAGSET_TAG)
                 .columns(TAGSET_TAG.TAGSET_ID, TAGSET_TAG.TAG_ID)

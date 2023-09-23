@@ -55,7 +55,7 @@ final class JooqActivityStore extends JooqEntityStore<ActivityId, Activity> impl
                 .execute();
 
         List<Row2<String, String>> activityTagIds = entity.tags().stream()
-                .map(tag -> row(id.toString(), tag.toString()))
+                .map(tagId -> row(id.toString(), tagId.toString()))
                 .toList();
         jooq.insertInto(ACTIVITY_TAG)
                 .columns(ACTIVITY_TAG.ACTIVITY_ID, ACTIVITY_TAG.TAG_ID)
