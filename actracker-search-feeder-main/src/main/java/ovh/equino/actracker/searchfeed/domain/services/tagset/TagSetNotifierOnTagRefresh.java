@@ -1,10 +1,10 @@
 package ovh.equino.actracker.searchfeed.domain.services.tagset;
 
-import ovh.equino.actracker.searchfeed.domain.services.ChildrenNotifierOfParentRefresh;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetId;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetRefreshedNotifier;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetStore;
+import ovh.equino.actracker.searchfeed.domain.services.ChildrenNotifierOfParentRefresh;
 
 class TagSetNotifierOnTagRefresh implements ChildrenNotifierOfParentRefresh<TagId, TagSetId> {
 
@@ -18,6 +18,7 @@ class TagSetNotifierOnTagRefresh implements ChildrenNotifierOfParentRefresh<TagI
 
     @Override
     public void notifyParentChanged(TagId tagId) {
-        System.out.printf("Updating tag sets containing tag with ID=%s%n", tagId.toString());
+        tagSetStore.findByTag(tagId)
+                .forEach(tagSetRefreshedNotifier::notifyRefreshed);
     }
 }

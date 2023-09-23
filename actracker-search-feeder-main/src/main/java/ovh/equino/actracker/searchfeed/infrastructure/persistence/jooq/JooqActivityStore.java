@@ -6,10 +6,13 @@ import org.jooq.Row2;
 import ovh.equino.actracker.searchfeed.domain.model.activity.Activity;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityStore;
+import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
 import ovh.equino.actracker.searchfeed.jooq.tables.records.ActivityRecord;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.jooq.JSONB.jsonb;
 import static org.jooq.impl.DSL.row;
@@ -58,5 +61,18 @@ final class JooqActivityStore extends JooqEntityStore<ActivityId, Activity> impl
                 .columns(ACTIVITY_TAG.ACTIVITY_ID, ACTIVITY_TAG.TAG_ID)
                 .valuesOfRows(activityTagIds)
                 .execute();
+    }
+
+    @Override
+    public Collection<ActivityId> findByTag(TagId tagId) {
+        List<String> activityIds = jooq.selectFrom(ACTIVITY_TAG)
+                .where(ACTIVITY_TAG.TAG_ID.equal(tagId.toString()))
+                .fetch(ACTIVITY_TAG.ACTIVITY_ID);
+
+        return activityIds
+                .stream()
+                .map(UUID::fromString)
+                .map(ActivityId::new)
+                .toList();
     }
 }

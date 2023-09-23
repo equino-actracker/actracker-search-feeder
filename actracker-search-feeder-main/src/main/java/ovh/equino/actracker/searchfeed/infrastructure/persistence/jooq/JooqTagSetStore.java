@@ -3,13 +3,16 @@ package ovh.equino.actracker.searchfeed.infrastructure.persistence.jooq;
 import org.jooq.DSLContext;
 import org.jooq.JSONB;
 import org.jooq.Row2;
+import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSet;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetId;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetStore;
 import ovh.equino.actracker.searchfeed.jooq.tables.records.TagSetRecord;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.jooq.JSONB.jsonb;
 import static org.jooq.impl.DSL.row;
@@ -58,5 +61,18 @@ final class JooqTagSetStore extends JooqEntityStore<TagSetId, TagSet> implements
                 .columns(TAGSET_TAG.TAGSET_ID, TAGSET_TAG.TAG_ID)
                 .valuesOfRows(tagsetTagIds)
                 .execute();
+    }
+
+    @Override
+    public Collection<TagSetId> findByTag(TagId tagId) {
+        List<String> tagSetIds = jooq.selectFrom(TAGSET_TAG)
+                .where(TAGSET_TAG.TAG_ID.equal(tagId.toString()))
+                .fetch(TAGSET_TAG.TAGSET_ID);
+
+        return tagSetIds
+                .stream()
+                .map(UUID::fromString)
+                .map(TagSetId::new)
+                .toList();
     }
 }

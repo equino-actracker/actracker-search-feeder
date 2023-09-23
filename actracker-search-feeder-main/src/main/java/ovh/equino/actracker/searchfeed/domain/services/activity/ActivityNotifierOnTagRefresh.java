@@ -1,10 +1,10 @@
 package ovh.equino.actracker.searchfeed.domain.services.activity;
 
-import ovh.equino.actracker.searchfeed.domain.services.ChildrenNotifierOfParentRefresh;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityRefreshedNotifier;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityStore;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
+import ovh.equino.actracker.searchfeed.domain.services.ChildrenNotifierOfParentRefresh;
 
 class ActivityNotifierOnTagRefresh implements ChildrenNotifierOfParentRefresh<TagId, ActivityId> {
 
@@ -18,6 +18,7 @@ class ActivityNotifierOnTagRefresh implements ChildrenNotifierOfParentRefresh<Ta
 
     @Override
     public void notifyParentChanged(TagId tagId) {
-        System.out.printf("Updating activities containing tag with ID=%s%n", tagId.toString());
+        activityStore.findByTag(tagId)
+                .forEach(activityRefreshedNotifier::notifyRefreshed);
     }
 }
