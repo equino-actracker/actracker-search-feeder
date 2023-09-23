@@ -4,21 +4,26 @@
 package ovh.equino.actracker.searchfeed.jooq;
 
 
+import org.jooq.ForeignKey;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 
 import ovh.equino.actracker.searchfeed.jooq.tables.Activity;
+import ovh.equino.actracker.searchfeed.jooq.tables.ActivityTag;
 import ovh.equino.actracker.searchfeed.jooq.tables.Dashboard;
 import ovh.equino.actracker.searchfeed.jooq.tables.FlywaySchemaHistory;
 import ovh.equino.actracker.searchfeed.jooq.tables.Tag;
 import ovh.equino.actracker.searchfeed.jooq.tables.TagSet;
+import ovh.equino.actracker.searchfeed.jooq.tables.TagsetTag;
 import ovh.equino.actracker.searchfeed.jooq.tables.records.ActivityRecord;
+import ovh.equino.actracker.searchfeed.jooq.tables.records.ActivityTagRecord;
 import ovh.equino.actracker.searchfeed.jooq.tables.records.DashboardRecord;
 import ovh.equino.actracker.searchfeed.jooq.tables.records.FlywaySchemaHistoryRecord;
 import ovh.equino.actracker.searchfeed.jooq.tables.records.TagRecord;
 import ovh.equino.actracker.searchfeed.jooq.tables.records.TagSetRecord;
+import ovh.equino.actracker.searchfeed.jooq.tables.records.TagsetTagRecord;
 
 
 /**
@@ -33,8 +38,19 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<ActivityRecord> ACTIVITY_PKEY = Internal.createUniqueKey(Activity.ACTIVITY, DSL.name("activity_pkey"), new TableField[] { Activity.ACTIVITY.ID }, true);
+    public static final UniqueKey<ActivityTagRecord> ACTIVITY_TAG_PKEY = Internal.createUniqueKey(ActivityTag.ACTIVITY_TAG, DSL.name("activity_tag_pkey"), new TableField[] { ActivityTag.ACTIVITY_TAG.ACTIVITY_ID, ActivityTag.ACTIVITY_TAG.TAG_ID }, true);
     public static final UniqueKey<DashboardRecord> DASHBOARD_PKEY = Internal.createUniqueKey(Dashboard.DASHBOARD, DSL.name("dashboard_pkey"), new TableField[] { Dashboard.DASHBOARD.ID }, true);
     public static final UniqueKey<FlywaySchemaHistoryRecord> FLYWAY_SCHEMA_HISTORY_PK = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, DSL.name("flyway_schema_history_pk"), new TableField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);
     public static final UniqueKey<TagRecord> TAG_PKEY = Internal.createUniqueKey(Tag.TAG, DSL.name("tag_pkey"), new TableField[] { Tag.TAG.ID }, true);
     public static final UniqueKey<TagSetRecord> TAG_SET_PKEY = Internal.createUniqueKey(TagSet.TAG_SET, DSL.name("tag_set_pkey"), new TableField[] { TagSet.TAG_SET.ID }, true);
+    public static final UniqueKey<TagsetTagRecord> TAGSET_TAG_PKEY = Internal.createUniqueKey(TagsetTag.TAGSET_TAG, DSL.name("tagset_tag_pkey"), new TableField[] { TagsetTag.TAGSET_TAG.TAGSET_ID, TagsetTag.TAGSET_TAG.TAG_ID }, true);
+
+    // -------------------------------------------------------------------------
+    // FOREIGN KEY definitions
+    // -------------------------------------------------------------------------
+
+    public static final ForeignKey<ActivityTagRecord, ActivityRecord> ACTIVITY_TAG__ACTIVITY_FK = Internal.createForeignKey(ActivityTag.ACTIVITY_TAG, DSL.name("activity_fk"), new TableField[] { ActivityTag.ACTIVITY_TAG.ACTIVITY_ID }, Keys.ACTIVITY_PKEY, new TableField[] { Activity.ACTIVITY.ID }, true);
+    public static final ForeignKey<ActivityTagRecord, TagRecord> ACTIVITY_TAG__TAG_FK = Internal.createForeignKey(ActivityTag.ACTIVITY_TAG, DSL.name("tag_fk"), new TableField[] { ActivityTag.ACTIVITY_TAG.TAG_ID }, Keys.TAG_PKEY, new TableField[] { Tag.TAG.ID }, true);
+    public static final ForeignKey<TagsetTagRecord, TagRecord> TAGSET_TAG__TAG_FK = Internal.createForeignKey(TagsetTag.TAGSET_TAG, DSL.name("tag_fk"), new TableField[] { TagsetTag.TAGSET_TAG.TAG_ID }, Keys.TAG_PKEY, new TableField[] { Tag.TAG.ID }, true);
+    public static final ForeignKey<TagsetTagRecord, TagSetRecord> TAGSET_TAG__TAGSET_FK = Internal.createForeignKey(TagsetTag.TAGSET_TAG, DSL.name("tagset_fk"), new TableField[] { TagsetTag.TAGSET_TAG.TAGSET_ID }, Keys.TAG_SET_PKEY, new TableField[] { TagSet.TAG_SET.ID }, true);
 }
