@@ -1,4 +1,4 @@
-package ovh.equino.actracker.searchfeed.infrastructure.messaging;
+package ovh.equino.actracker.searchfeed.infrastructure.notifications;
 
 import ovh.equino.actracker.domain.Notification;
 

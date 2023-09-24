@@ -1,4 +1,4 @@
-package ovh.equino.actracker.searchfeed.infrastructure.messaging;
+package ovh.equino.actracker.searchfeed.infrastructure.notifications;
 
 import ovh.equino.actracker.domain.Notification;
 import ovh.equino.actracker.domain.exception.ParseException;
@@ -8,11 +8,11 @@ import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
 
-public class MessageDispatcher {
+public class NotificationsDispatcher {
 
     private final List<NotificationHandler<?>> notificationHandlers;
 
-    MessageDispatcher(List<NotificationHandler<?>> notificationHandlers) {
+    NotificationsDispatcher(List<NotificationHandler<?>> notificationHandlers) {
         this.notificationHandlers = notificationHandlers;
     }
 
@@ -22,7 +22,7 @@ public class MessageDispatcher {
                 .collect(toSet());
     }
 
-    public void dispatchMessage(String rawMessage) {
+    public void dispatchNotification(String rawMessage) {
         try {
             Notification<?> notification = Notification.fromJson(rawMessage);
             Class<?> notificationType = notification.notificationType();

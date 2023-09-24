@@ -5,37 +5,37 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ovh.equino.actracker.searchfeed.infrastructure.messaging.MessageDispatcher;
+import ovh.equino.actracker.searchfeed.infrastructure.notifications.NotificationsDispatcher;
 
 import java.util.List;
 
 @Configuration
 class AmqpConfig {
 
-    private static final String EXCHANGE_NAME = "notification.X.topic";
-    private static final String QUEUE_NAME = "notification.Q";
+    private static final String NOTIFICATION_EXCHANGE_NAME = "notification.X.topic";
+    private static final String NOTIFICATION_QUEUE_NAME = "notification.Q";
 
     @Autowired
-    private MessageDispatcher messageDispatcher;
+    private NotificationsDispatcher notificationsDispatcher;
 
-    @Bean
-    TopicExchange topic() {
-        return new TopicExchange(EXCHANGE_NAME);
+    @Bean(name = "notificationTopic")
+    TopicExchange notificationTopic() {
+        return new TopicExchange(NOTIFICATION_EXCHANGE_NAME);
     }
 
-    @Bean
+    @Bean(name = "notificationQueue")
     Queue notificationQueue() {
-        return new Queue(QUEUE_NAME);
+        return new Queue(NOTIFICATION_QUEUE_NAME);
     }
 
     @Bean
-    Declarables notificationBinding(TopicExchange exchange, Queue queue) {
+    Declarables notificationBinding(TopicExchange notificationExchange, Queue notificationQueue) {
 
-        List<Binding> bindings = messageDispatcher.supportedNotificationTypes().stream()
+        List<Binding> bindings = notificationsDispatcher.supportedNotificationTypes().stream()
                 .map(notificationType ->
                         BindingBuilder
-                                .bind(queue)
-                                .to(exchange)
+                                .bind(notificationQueue)
+                                .to(notificationExchange)
                                 .with(notificationType.getCanonicalName())
                 )
                 .toList();
@@ -43,8 +43,8 @@ class AmqpConfig {
         return new Declarables(bindings);
     }
 
-    @RabbitListener(queues = QUEUE_NAME)
-    void receiveMessage(String message) {
-        messageDispatcher.dispatchMessage(message);
+    @RabbitListener(queues = NOTIFICATION_QUEUE_NAME)
+    void receiveNotification(String message) {
+        notificationsDispatcher.dispatchNotification(message);
     }
 }

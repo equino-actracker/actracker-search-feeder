@@ -2,18 +2,17 @@ package ovh.equino.actracker.searchfeed.infrastructure.refresh.direct;
 
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetId;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetRefreshedNotifier;
-import ovh.equino.actracker.searchfeed.domain.services.tagset.TagSetIndexer;
 
 class DirectTagSetRefreshedNotifier implements TagSetRefreshedNotifier {
 
-    private final TagSetIndexer tagSetIndexer;
+    private final DirectTagSetRefreshedNotificationHandler notificationHandler;
 
-    DirectTagSetRefreshedNotifier(TagSetIndexer tagSetIndexer) {
-        this.tagSetIndexer = tagSetIndexer;
+    DirectTagSetRefreshedNotifier(DirectTagSetRefreshedNotificationHandler notificationHandler) {
+        this.notificationHandler = notificationHandler;
     }
 
     @Override
     public void notifyRefreshed(TagSetId tagSetId) {
-        tagSetIndexer.indexTagSet(tagSetId);
+        notificationHandler.refreshedNotificationReceived(tagSetId);
     }
 }

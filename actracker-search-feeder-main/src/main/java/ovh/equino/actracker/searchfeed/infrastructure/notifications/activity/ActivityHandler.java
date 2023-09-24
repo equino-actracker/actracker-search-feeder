@@ -1,10 +1,10 @@
-package ovh.equino.actracker.searchfeed.infrastructure.messaging.activity;
+package ovh.equino.actracker.searchfeed.infrastructure.notifications.activity;
 
 import ovh.equino.actracker.domain.Notification;
 import ovh.equino.actracker.domain.activity.ActivityChangedNotification;
 import ovh.equino.actracker.searchfeed.application.activity.ActivityService;
 import ovh.equino.actracker.searchfeed.application.activity.IndexActivityCommand;
-import ovh.equino.actracker.searchfeed.infrastructure.messaging.NotificationHandler;
+import ovh.equino.actracker.searchfeed.infrastructure.notifications.NotificationHandler;
 
 class ActivityHandler implements NotificationHandler<ActivityChangedNotification> {
 

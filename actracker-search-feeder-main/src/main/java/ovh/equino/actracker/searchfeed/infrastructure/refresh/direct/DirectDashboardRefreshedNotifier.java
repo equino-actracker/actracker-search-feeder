@@ -2,18 +2,17 @@ package ovh.equino.actracker.searchfeed.infrastructure.refresh.direct;
 
 import ovh.equino.actracker.searchfeed.domain.model.dashboard.DashboardId;
 import ovh.equino.actracker.searchfeed.domain.model.dashboard.DashboardRefreshedNotifier;
-import ovh.equino.actracker.searchfeed.domain.services.dashboard.DashboardIndexer;
 
 class DirectDashboardRefreshedNotifier implements DashboardRefreshedNotifier {
 
-    private final DashboardIndexer dashboardIndexer;
+    private final DirectDashboardRefreshedNotificationHandler notificationHandler;
 
-    DirectDashboardRefreshedNotifier(DashboardIndexer dashboardIndexer) {
-        this.dashboardIndexer = dashboardIndexer;
+    DirectDashboardRefreshedNotifier(DirectDashboardRefreshedNotificationHandler notificationHandler) {
+        this.notificationHandler = notificationHandler;
     }
 
     @Override
     public void notifyRefreshed(DashboardId dashboardId) {
-        dashboardIndexer.indexDashboard(dashboardId);
+        notificationHandler.refreshedNotificationReceived(dashboardId);
     }
 }
