@@ -2,10 +2,10 @@ package ovh.equino.actracker.searchfeed.domain.model.activity;
 
 import ovh.equino.actracker.searchfeed.domain.model.EntityRefreshedNotifier;
 
-public interface ActivityRefreshedNotifier extends EntityRefreshedNotifier<ActivityId> {
+public interface ActivityRefreshedNotifier extends EntityRefreshedNotifier<ActivityId, Activity> {
 
     @Override
-    default Class<ActivityId> supportedIdType() {
-        return ActivityId.class;
+    default Class<Activity> supportedEntityType() {
+        return Activity.class;
     }
 }

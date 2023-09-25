@@ -1,5 +1,7 @@
 package ovh.equino.actracker.searchfeed.domain.services.activity;
 
+import ovh.equino.actracker.searchfeed.domain.model.EntityRefreshedNotification;
+import ovh.equino.actracker.searchfeed.domain.model.activity.Activity;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityRefreshedNotifier;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityStore;
@@ -17,8 +19,10 @@ class ActivityNotifierOnTagRefresh implements ChildrenNotifierOfParentRefresh<Ta
     }
 
     @Override
-    public void notifyParentChanged(TagId tagId) {
-        activityStore.findByTag(tagId)
+    public void notifyParentChanged(TagId activityId) {
+        activityStore.findByTag(activityId)
+                .stream()
+                .map(id -> new EntityRefreshedNotification<>(id, Activity.class))
                 .forEach(activityRefreshedNotifier::notifyRefreshed);
     }
 }

@@ -5,7 +5,7 @@ import ovh.equino.actracker.searchfeed.domain.model.*;
 import java.util.Collection;
 import java.util.Optional;
 
-public abstract class EntityProcessor<ID extends EntityId, ENTITY extends Entity<ID>, NOTIFIER extends EntityRefreshedNotifier<ID>> {
+public abstract class EntityProcessor<ID extends EntityId, ENTITY extends Entity<ID>, NOTIFIER extends EntityRefreshedNotifier<ID, ENTITY>> {
 
     private final EntityStore<ID, ENTITY> entityStore;
 
@@ -38,7 +38,8 @@ public abstract class EntityProcessor<ID extends EntityId, ENTITY extends Entity
     }
 
     private void notifyRefreshed(ID entityId) {
-        entityRefreshedNotifier().notifyRefreshed(entityId);
+        Class<ENTITY> refreshedEntityType = entityRefreshedNotifier().supportedEntityType();
+        entityRefreshedNotifier().notifyRefreshed(new EntityRefreshedNotification<>(entityId, refreshedEntityType));
         childrenNotifiers().forEach(childrenNotifier -> childrenNotifier.notifyParentChanged(entityId));
     }
 

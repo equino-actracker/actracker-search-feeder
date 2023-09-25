@@ -1,8 +1,8 @@
 package ovh.equino.actracker.searchfeed.domain.model;
 
-public interface EntityRefreshedNotifier<ENTITY_ID extends EntityId> {
+public interface EntityRefreshedNotifier<ID extends EntityId, ENTITY extends Entity<ID>> {
 
-    void notifyRefreshed(ENTITY_ID entityId);
+    void notifyRefreshed(EntityRefreshedNotification<ID, ENTITY> entityRefreshedNotification);
 
-    Class<ENTITY_ID> supportedIdType();
+    Class<ENTITY> supportedEntityType();
 }
