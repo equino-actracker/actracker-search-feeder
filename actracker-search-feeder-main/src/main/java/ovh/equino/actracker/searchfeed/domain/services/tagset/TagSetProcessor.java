@@ -1,6 +1,6 @@
 package ovh.equino.actracker.searchfeed.domain.services.tagset;
 
-import ovh.equino.actracker.searchfeed.domain.services.ChildrenNotifierOfParentRefresh;
+import ovh.equino.actracker.searchfeed.domain.services.ChildrenNotifierOfParentProcessed;
 import ovh.equino.actracker.searchfeed.domain.model.EntityId;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.*;
 import ovh.equino.actracker.searchfeed.domain.services.EntityProcessor;
@@ -9,13 +9,13 @@ import java.util.Collection;
 
 import static java.util.Collections.emptyList;
 
-public final class TagSetProcessor extends EntityProcessor<TagSetId, TagSet, TagSetRefreshedNotifier> {
+public final class TagSetProcessor extends EntityProcessor<TagSetId, TagSet, TagSetProcessedNotifier> {
 
-    private final TagSetRefreshedNotifier tagSetRefreshedNotifier;
+    private final TagSetProcessedNotifier tagSetProcessedNotifier;
 
-    TagSetProcessor(TagSetStore tagSetStore, TagSetRefreshedNotifier tagSetRefreshedNotifier) {
+    TagSetProcessor(TagSetStore tagSetStore, TagSetProcessedNotifier tagSetProcessedNotifier) {
         super(tagSetStore);
-        this.tagSetRefreshedNotifier = tagSetRefreshedNotifier;
+        this.tagSetProcessedNotifier = tagSetProcessedNotifier;
     }
 
     public void processTagSet(TagSet tagSet) {
@@ -23,12 +23,12 @@ public final class TagSetProcessor extends EntityProcessor<TagSetId, TagSet, Tag
     }
 
     @Override
-    protected TagSetRefreshedNotifier entityRefreshedNotifier() {
-        return tagSetRefreshedNotifier;
+    protected TagSetProcessedNotifier entityProcessedNotifier() {
+        return tagSetProcessedNotifier;
     }
 
     @Override
-    protected Collection<ChildrenNotifierOfParentRefresh<TagSetId, ? extends EntityId>> childrenNotifiers() {
+    protected Collection<ChildrenNotifierOfParentProcessed<TagSetId, ? extends EntityId>> childrenNotifiers() {
         return emptyList();
     }
 }

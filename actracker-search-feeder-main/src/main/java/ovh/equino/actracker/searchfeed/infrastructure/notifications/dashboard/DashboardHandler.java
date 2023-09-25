@@ -1,4 +1,4 @@
-package ovh.equino.actracker.searchfeed.infrastructure.messaging.dashboard;
+package ovh.equino.actracker.searchfeed.infrastructure.notifications.dashboard;
 
 import ovh.equino.actracker.domain.Notification;
 import ovh.equino.actracker.domain.dashboard.DashboardChangedNotification;
@@ -6,7 +6,7 @@ import ovh.equino.actracker.domain.share.Share;
 import ovh.equino.actracker.domain.user.User;
 import ovh.equino.actracker.searchfeed.application.dashboard.DashboardService;
 import ovh.equino.actracker.searchfeed.application.dashboard.IndexDashboardCommand;
-import ovh.equino.actracker.searchfeed.infrastructure.messaging.NotificationHandler;
+import ovh.equino.actracker.searchfeed.infrastructure.notifications.NotificationHandler;
 
 import java.util.*;
 

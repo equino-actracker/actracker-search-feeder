@@ -1,10 +1,10 @@
-package ovh.equino.actracker.searchfeed.infrastructure.messaging.tagset;
+package ovh.equino.actracker.searchfeed.infrastructure.notifications.tagset;
 
 import ovh.equino.actracker.domain.Notification;
 import ovh.equino.actracker.domain.tagset.TagSetChangedNotification;
 import ovh.equino.actracker.searchfeed.application.tagset.IndexTagSetCommand;
 import ovh.equino.actracker.searchfeed.application.tagset.TagSetService;
-import ovh.equino.actracker.searchfeed.infrastructure.messaging.NotificationHandler;
+import ovh.equino.actracker.searchfeed.infrastructure.notifications.NotificationHandler;
 
 class TagSetHandler implements NotificationHandler<TagSetChangedNotification> {
 
