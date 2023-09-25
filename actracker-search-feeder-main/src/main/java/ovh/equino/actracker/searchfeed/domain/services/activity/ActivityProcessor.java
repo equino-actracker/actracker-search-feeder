@@ -3,22 +3,22 @@ package ovh.equino.actracker.searchfeed.domain.services.activity;
 import ovh.equino.actracker.searchfeed.domain.model.EntityId;
 import ovh.equino.actracker.searchfeed.domain.model.activity.Activity;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
-import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityRefreshedNotifier;
+import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityProcessedNotifier;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityStore;
-import ovh.equino.actracker.searchfeed.domain.services.ChildrenNotifierOfParentRefresh;
+import ovh.equino.actracker.searchfeed.domain.services.ChildrenNotifierOfParentProcessed;
 import ovh.equino.actracker.searchfeed.domain.services.EntityProcessor;
 
 import java.util.Collection;
 
 import static java.util.Collections.emptyList;
 
-public final class ActivityProcessor extends EntityProcessor<ActivityId, Activity, ActivityRefreshedNotifier> {
+public final class ActivityProcessor extends EntityProcessor<ActivityId, Activity, ActivityProcessedNotifier> {
 
-    private final ActivityRefreshedNotifier activityRefreshedNotifier;
+    private final ActivityProcessedNotifier activityProcessedNotifier;
 
-    ActivityProcessor(ActivityStore activityStore, ActivityRefreshedNotifier activityRefreshedNotifier) {
+    ActivityProcessor(ActivityStore activityStore, ActivityProcessedNotifier activityProcessedNotifier) {
         super(activityStore);
-        this.activityRefreshedNotifier = activityRefreshedNotifier;
+        this.activityProcessedNotifier = activityProcessedNotifier;
     }
 
     public void processActivity(Activity activity) {
@@ -26,12 +26,12 @@ public final class ActivityProcessor extends EntityProcessor<ActivityId, Activit
     }
 
     @Override
-    protected ActivityRefreshedNotifier entityRefreshedNotifier() {
-        return activityRefreshedNotifier;
+    protected ActivityProcessedNotifier entityProcessedNotifier() {
+        return activityProcessedNotifier;
     }
 
     @Override
-    protected Collection<ChildrenNotifierOfParentRefresh<ActivityId, ? extends EntityId>> childrenNotifiers() {
+    protected Collection<ChildrenNotifierOfParentProcessed<ActivityId, ? extends EntityId>> childrenNotifiers() {
         return emptyList();
     }
 }
