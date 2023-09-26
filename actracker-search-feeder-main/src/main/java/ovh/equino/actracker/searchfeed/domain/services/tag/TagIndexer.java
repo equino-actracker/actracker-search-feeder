@@ -10,12 +10,13 @@ public final class TagIndexer extends EntityIndexer<TagId, Tag, TagGraph> {
         super(tagStore, tagIndex);
     }
 
-    public void indexTag(TagId tagId) {
-        super.index(tagId);
-    }
-
     @Override
     protected TagGraph buildEntityGraph(Tag tag) {
         return new TagGraph(tag);
+    }
+
+    @Override
+    public Class<Tag> supportedEntityType() {
+        return Tag.class;
     }
 }

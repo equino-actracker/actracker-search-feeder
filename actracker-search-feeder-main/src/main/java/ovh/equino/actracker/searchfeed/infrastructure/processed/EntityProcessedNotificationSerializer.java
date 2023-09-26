@@ -14,7 +14,7 @@ public class EntityProcessedNotificationSerializer {
 
     private final ObjectMapper objectMapper;
 
-    public EntityProcessedNotificationSerializer() {
+    EntityProcessedNotificationSerializer() {
         this.objectMapper = new ObjectMapper();
         this.objectMapper.setVisibility(FIELD, ANY);
         this.objectMapper.setVisibility(GETTER, NONE);
