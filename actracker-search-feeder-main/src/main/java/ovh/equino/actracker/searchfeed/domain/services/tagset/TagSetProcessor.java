@@ -1,8 +1,10 @@
 package ovh.equino.actracker.searchfeed.domain.services.tagset;
 
+import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSet;
+import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetId;
+import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetProcessedNotifier;
+import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetStore;
 import ovh.equino.actracker.searchfeed.domain.services.ChildrenNotifierOfParentProcessed;
-import ovh.equino.actracker.searchfeed.domain.model.EntityId;
-import ovh.equino.actracker.searchfeed.domain.model.tagset.*;
 import ovh.equino.actracker.searchfeed.domain.services.EntityProcessor;
 
 import java.util.Collection;
@@ -28,7 +30,7 @@ public final class TagSetProcessor extends EntityProcessor<TagSetId, TagSet, Tag
     }
 
     @Override
-    protected Collection<ChildrenNotifierOfParentProcessed<TagSetId, ? extends EntityId>> childrenNotifiers() {
+    protected Collection<ChildrenNotifierOfParentProcessed<TagSetId>> childrenNotifiers() {
         return emptyList();
     }
 }

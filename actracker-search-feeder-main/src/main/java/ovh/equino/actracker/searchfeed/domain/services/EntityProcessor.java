@@ -45,5 +45,5 @@ public abstract class EntityProcessor<ID extends EntityId, ENTITY extends Entity
 
     protected abstract NOTIFIER entityProcessedNotifier();
 
-    protected abstract Collection<ChildrenNotifierOfParentProcessed<ID, ? extends EntityId>> childrenNotifiers();
+    protected abstract Collection<ChildrenNotifierOfParentProcessed<ID>> childrenNotifiers();
 }
