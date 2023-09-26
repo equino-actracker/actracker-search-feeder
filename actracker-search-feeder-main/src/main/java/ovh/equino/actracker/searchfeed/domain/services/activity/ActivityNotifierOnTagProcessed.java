@@ -8,7 +8,7 @@ import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityStore;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
 import ovh.equino.actracker.searchfeed.domain.services.ChildrenNotifierOfParentProcessed;
 
-class ActivityNotifierOnTagProcessed implements ChildrenNotifierOfParentProcessed<TagId, ActivityId> {
+class ActivityNotifierOnTagProcessed implements ChildrenNotifierOfParentProcessed<TagId> {
 
     private final ActivityStore activityStore;
     private final ActivityProcessedNotifier activityProcessedNotifier;

@@ -1,6 +1,5 @@
 package ovh.equino.actracker.searchfeed.domain.services.activity;
 
-import ovh.equino.actracker.searchfeed.domain.model.EntityId;
 import ovh.equino.actracker.searchfeed.domain.model.activity.Activity;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityProcessedNotifier;
@@ -31,7 +30,7 @@ public final class ActivityProcessor extends EntityProcessor<ActivityId, Activit
     }
 
     @Override
-    protected Collection<ChildrenNotifierOfParentProcessed<ActivityId, ? extends EntityId>> childrenNotifiers() {
+    protected Collection<ChildrenNotifierOfParentProcessed<ActivityId>> childrenNotifiers() {
         return emptyList();
     }
 }

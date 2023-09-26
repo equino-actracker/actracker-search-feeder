@@ -12,7 +12,7 @@ public abstract class EntityIndexer<ID extends EntityId, ENTITY extends Entity<I
         this.entityIndex = entityIndex;
     }
 
-    protected void index(ID entityId) {
+    public void index(ID entityId) {
         ENTITY entity = entityStore.get(entityId)
                 .orElseThrow(() -> {
                     String errorMessage = "Entity with ID=%s of type %s not found in entity store".formatted(
@@ -29,6 +29,8 @@ public abstract class EntityIndexer<ID extends EntityId, ENTITY extends Entity<I
             entityIndex.delete(entityId);
         }
     }
+
+    public abstract Class<ENTITY> supportedEntityType();
 
     protected abstract GRAPH buildEntityGraph(ENTITY entity);
 }

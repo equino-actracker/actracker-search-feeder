@@ -1,11 +1,12 @@
 package ovh.equino.actracker.searchfeed.main.springboot.config.processed.amqp;
 
+import org.springframework.stereotype.Component;
 import ovh.equino.actracker.searchfeed.domain.model.EntityProcessedNotification;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSet;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetId;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetProcessedNotifier;
 
-//@Component
+@Component
 class AmqpTagSetProcessedNotifier extends AmqpEntityProcessedNotifier implements TagSetProcessedNotifier {
 
     @Override

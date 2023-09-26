@@ -10,12 +10,13 @@ public final class DashboardIndexer extends EntityIndexer<DashboardId, Dashboard
         super(dashboardStore, dashboardIndex);
     }
 
-    public void indexDashboard(DashboardId dashboardId) {
-        super.index(dashboardId);
-    }
-
     @Override
     protected DashboardGraph buildEntityGraph(Dashboard dashboard) {
         return new DashboardGraph(dashboard);
+    }
+
+    @Override
+    public Class<Dashboard> supportedEntityType() {
+        return Dashboard.class;
     }
 }

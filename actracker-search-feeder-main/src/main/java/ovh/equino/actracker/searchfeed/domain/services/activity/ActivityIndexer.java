@@ -16,13 +16,14 @@ public final class ActivityIndexer extends EntityIndexer<ActivityId, Activity, A
         this.tagStore = tagStore;
     }
 
-    public void indexActivity(ActivityId activityId) {
-        super.index(activityId);
-    }
-
     @Override
     protected ActivityGraph buildEntityGraph(Activity activity) {
         Set<TagId> tags = tagStore.nonDeletedTags(activity.tags());
         return new ActivityGraph(activity, tags);
+    }
+
+    @Override
+    public Class<Activity> supportedEntityType() {
+        return Activity.class;
     }
 }
