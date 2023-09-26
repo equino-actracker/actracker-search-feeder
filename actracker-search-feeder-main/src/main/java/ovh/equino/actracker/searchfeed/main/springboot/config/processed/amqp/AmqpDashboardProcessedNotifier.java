@@ -1,11 +1,12 @@
 package ovh.equino.actracker.searchfeed.main.springboot.config.processed.amqp;
 
+import org.springframework.stereotype.Component;
 import ovh.equino.actracker.searchfeed.domain.model.EntityProcessedNotification;
 import ovh.equino.actracker.searchfeed.domain.model.dashboard.Dashboard;
 import ovh.equino.actracker.searchfeed.domain.model.dashboard.DashboardId;
 import ovh.equino.actracker.searchfeed.domain.model.dashboard.DashboardProcessedNotifier;
 
-//@Component
+@Component
 class AmqpDashboardProcessedNotifier extends AmqpEntityProcessedNotifier implements DashboardProcessedNotifier {
 
     @Override
