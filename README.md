@@ -15,6 +15,7 @@ to run search and analytics query on them.
 # Architecture
 The application runs as a Spring Boot container. 
 The Actracker domain events are consumed from Equino RabbitMQ cluster.
+After the latest version of domain entity is saved in a database (PostgresSQL), an internal notification is sent back to RabbitMQ and the entity is indexed in Elasticsearch index. 
 
 # Running locally
 
