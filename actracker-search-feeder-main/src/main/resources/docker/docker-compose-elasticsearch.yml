@@ -2,13 +2,13 @@ version: '3'
 services:
 
   elasticsearch-actracker-search-feeder:
-    image: 'elasticsearch:8.6.2'
+    image: 'elasticsearch:8.10.2'
     ports:
       - 9200:9200
       - 9300:9300
     environment:
       discovery.type: single-node
-      ELASTIC_PASSWORD: elastic
+      ELASTIC_PASSWORD: elastic # default username is elastic
       xpack.security.http.ssl.enabled: false
       xpack.security.transport.ssl.enabled: false
 

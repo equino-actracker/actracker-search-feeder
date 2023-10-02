@@ -8,6 +8,8 @@ spec:
             - secretRef:
                 name: actracker-search-feeder-rabbitmq-secret
             - secretRef:
+                name: actracker-search-feeder-elasticsearch-secret
+            - secretRef:
                 name: actracker-search-feeder-postgres-app-secret
             - secretRef:
                 name: actracker-search-feeder-postgres-owner-secret
