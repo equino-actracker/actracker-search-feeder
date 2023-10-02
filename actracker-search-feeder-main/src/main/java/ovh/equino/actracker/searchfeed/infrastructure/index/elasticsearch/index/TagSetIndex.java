@@ -30,13 +30,15 @@ public class TagSetIndex {
                 client.indices().create(createIndexRequest);
             }
         } catch (IOException e) {
-            String message = "Unable to create index 'tagset'";
+            String message = "Unable to create index '%s'".formatted(indexName);
             throw new RuntimeException(message, e);
         }
     }
 
     private boolean indexExists() throws IOException {
-        ExistsRequest indexExistsRequest = new ExistsRequest.Builder().index(indexName).build();
+        ExistsRequest indexExistsRequest = new ExistsRequest.Builder()
+                .index(indexName)
+                .build();
         BooleanResponse exists = client.indices().exists(indexExistsRequest);
         return exists.value();
     }
