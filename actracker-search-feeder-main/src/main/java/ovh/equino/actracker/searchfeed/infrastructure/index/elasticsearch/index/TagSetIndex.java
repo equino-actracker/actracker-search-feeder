@@ -91,9 +91,9 @@ public class TagSetIndex {
                 // Get all contents of a resource (skip resource itself), if entry is a directory remove trailing /
                 List<String> resourcesNames =
                         Files.walk(filesystemRoot)
-                                .map(Path::getFileName)
-                                .filter(Objects::nonNull)
                                 .map(Path::toString)
+//                                .filter(path -> path.contains(MAPPINGS_DIR_PATH))
+//                                .filter(path -> path.endsWith(".json"))
                                 .sorted()
                                 .collect(Collectors.toList());
                 LOG.error("Subfiles names from Jar: {}", resourcesNames);
