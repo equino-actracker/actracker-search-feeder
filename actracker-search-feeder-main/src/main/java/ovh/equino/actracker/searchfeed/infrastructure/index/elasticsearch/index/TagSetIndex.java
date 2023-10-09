@@ -70,6 +70,8 @@ public class TagSetIndex {
     private void getAllFilesInDir() throws IOException {
         final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
         LOG.error("Source code path is {} and isjar={}", jarFile.getPath(), jarFile.isFile());
+        URL resource = getClass().getResource(MAPPINGS_DIR_PATH);
+        LOG.error("Resource path: {}", resource.getPath());
 
 //        if (jarFile.isFile()) {  // Run with JAR file
 //            final JarFile jar = new JarFile(jarFile);
