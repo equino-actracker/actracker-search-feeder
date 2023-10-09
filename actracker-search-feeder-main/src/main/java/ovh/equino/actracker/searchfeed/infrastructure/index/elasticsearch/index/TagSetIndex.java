@@ -10,7 +10,11 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 public class TagSetIndex {
 
@@ -27,13 +31,25 @@ public class TagSetIndex {
     }
 
     public void create() {
-        URL directory = getClass().getResource("/elasticsearch/mappings/tagset");
+        URL directory = getClass().getResource("/elasticsearch/mappings/tagset/");
         File file = new File(directory.getPath());
+        List<Path> resources;
+        try {
+            resources = Files.walk(file.toPath()).filter(Files::isRegularFile).toList();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         boolean exists = file.exists();
         boolean isDir = file.isDirectory();
         String[] filesList = file.list();
 
         LOG.error("Directory found. Exists: {}, IsDir: {}, Files: {}", exists, isDir, filesList);
+        LOG.error("Found files: {}", resources);
+        try {
+            LOG.error("File content: {}", Files.readString(resources.get(0)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         try (InputStream mappings = loadFileInputStream(MAPPINGS_PATH)) {
             if (!indexExists()) {
