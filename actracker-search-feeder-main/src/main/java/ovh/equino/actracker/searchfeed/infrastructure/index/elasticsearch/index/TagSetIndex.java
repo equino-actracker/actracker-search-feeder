@@ -16,6 +16,8 @@ import java.net.URL;
 import java.nio.file.*;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TagSetIndex {
@@ -73,26 +75,40 @@ public class TagSetIndex {
         LOG.error("Source code path is {} and isjar={}", jarFile.getPath(), jarFile.isFile());
         URL resource = getClass().getResource(MAPPINGS_DIR_PATH);
         URI resourceUri = resource.toURI();
-        File file1 = new File(resourceUri);
-        LOG.error("Resource path: {}, URI: {}", resource.getPath(), resourceUri);
-        File file = new File(resource.getPath());
-        LOG.error("File exists: {}, isDir: {}", file1.exists(), file1.isDirectory());
-        String[] subFiles = file1.list();
-        LOG.error("Subfiles: {}", subFiles);
+//        File file1 = new File(resourceUri);
+//        LOG.error("Resource path: {}, URI: {}", resource.getPath(), resourceUri);
+//        File file = new File(resource.getPath());
+//        LOG.error("File exists: {}, isDir: {}", file1.exists(), file1.isDirectory());
+//        String[] subFiles = file1.list();
+//        LOG.error("Subfiles: {}", subFiles);
 
-//        Path mappingsPath;
-//        if ("jar".equals(resourceUri.getScheme())) {
-//            FileSystem fileSystem = FileSystems.newFileSystem(resourceUri, Collections.emptyMap());
-//            mappingsPath = fileSystem.getPath(MAPPINGS_DIR_PATH);
-//            LOG.error("Found path in jar: {}", mappingsPath);
-//        } else {
-//            mappingsPath = Paths.get(resourceUri);
-//            LOG.error("Found path in filesystem: {}", mappingsPath);
-//        }
-//        Stream<Path> walk = Files.walk(mappingsPath, 1);
-//        for (Iterator<Path> it = walk.iterator(); it.hasNext();){
-//            System.out.println(it.next());
-//        }
+        Path mappingsPath;
+        if ("jar".equals(resourceUri.getScheme())) {
+            try (FileSystem fileSystem = FileSystems.newFileSystem(resourceUri, Collections.emptyMap())){
+                Path resourcePath = fileSystem.getPath(MAPPINGS_DIR_PATH);
+
+                // Get all contents of a resource (skip resource itself), if entry is a directory remove trailing /
+                List<String> resourcesNames =
+                        Files.walk(resourcePath, 1)
+                                .skip(1)
+                                .map(p -> {
+                                    String name = p.getFileName().toString();
+                                    if (name.endsWith("/")) {
+                                        name = name.substring(0, name.length() - 1);
+                                    }
+                                    return name;
+                                })
+                                .sorted()
+                                .collect(Collectors.toList());
+                LOG.error("Subfiles names from Jar: {}", resourcesNames);
+
+//                return resourcesNames.toArray(new String[resourcesNames.size()]);
+            }
+        } else {
+            mappingsPath = Paths.get(resourceUri);
+            LOG.error("Found path in filesystem: {}", mappingsPath);
+        }
+
 
 //        if (jarFile.isFile()) {  // Run with JAR file
 //            final JarFile jar = new JarFile(jarFile);
