@@ -13,11 +13,10 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.stream.Stream;
 
 public class TagSetIndex {
 
@@ -88,6 +87,10 @@ public class TagSetIndex {
         } else {
             mappingsPath = Paths.get(resourceUri);
             LOG.error("Found path in filesystem: {}", mappingsPath);
+        }
+        Stream<Path> walk = Files.walk(mappingsPath, 1);
+        for (Iterator<Path> it = walk.iterator(); it.hasNext();){
+            System.out.println(it.next());
         }
 
 //        if (jarFile.isFile()) {  // Run with JAR file
