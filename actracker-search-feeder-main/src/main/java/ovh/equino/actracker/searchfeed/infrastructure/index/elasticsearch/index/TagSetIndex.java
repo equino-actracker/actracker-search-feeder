@@ -72,6 +72,10 @@ public class TagSetIndex {
         LOG.error("Source code path is {} and isjar={}", jarFile.getPath(), jarFile.isFile());
         URL resource = getClass().getResource(MAPPINGS_DIR_PATH);
         LOG.error("Resource path: {}", resource.getPath());
+        File file = new File(resource.getPath());
+        LOG.error("File exists: {}, isDir: {}", file.exists(), file.isDirectory());
+        String[] subFiles = file.list();
+        LOG.error("Subfiles: {}", subFiles);
 
 //        if (jarFile.isFile()) {  // Run with JAR file
 //            final JarFile jar = new JarFile(jarFile);
