@@ -13,12 +13,11 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.nio.file.Paths;
+import java.util.Collections;
 
 public class TagSetIndex {
 
@@ -80,6 +79,16 @@ public class TagSetIndex {
         LOG.error("File exists: {}, isDir: {}", file.exists(), file.isDirectory());
         String[] subFiles = file.list();
         LOG.error("Subfiles: {}", subFiles);
+
+        Path mappingsPath;
+        if ("jar".equals(resourceUri.getScheme())) {
+            FileSystem fileSystem = FileSystems.newFileSystem(resourceUri, Collections.emptyMap());
+            mappingsPath = fileSystem.getPath(MAPPINGS_DIR_PATH);
+            LOG.error("Found path in jar: {}", mappingsPath);
+        } else {
+            mappingsPath = Paths.get(resourceUri);
+            LOG.error("Found path in filesystem: {}", mappingsPath);
+        }
 
 //        if (jarFile.isFile()) {  // Run with JAR file
 //            final JarFile jar = new JarFile(jarFile);
