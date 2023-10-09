@@ -17,6 +17,7 @@ import java.nio.file.*;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -90,7 +91,9 @@ public class TagSetIndex {
                 // Get all contents of a resource (skip resource itself), if entry is a directory remove trailing /
                 List<String> resourcesNames =
                         Files.walk(filesystemRoot)
-                                .map(p -> p.getFileName().toString())
+                                .map(Path::getFileName)
+                                .filter(Objects::nonNull)
+                                .map(Path::toString)
                                 .sorted()
                                 .collect(Collectors.toList());
                 LOG.error("Subfiles names from Jar: {}", resourcesNames);
