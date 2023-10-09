@@ -69,30 +69,30 @@ public class TagSetIndex {
 
     private void getAllFilesInDir() throws IOException {
         final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
-        LOG.error("Source code path is {}", jarFile.getPath());
+        LOG.error("Source code path is {} and isjar={}", jarFile.getPath(), jarFile.isFile());
 
-        if (jarFile.isFile()) {  // Run with JAR file
-            final JarFile jar = new JarFile(jarFile);
-            final Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
-            while (entries.hasMoreElements()) {
-                final String name = entries.nextElement().getName();
-                if (name.startsWith(MAPPINGS_DIR_PATH)) { //filter according to the path
-                    LOG.error("Mapping found in Jar: {}", name);
-                }
-            }
-            jar.close();
-        } else { // Run with IDE
-            final URL url = getClass().getResource(MAPPINGS_DIR_PATH);
-            if (url != null) {
-                try {
-                    final File apps = new File(url.toURI());
-                    for (File app : apps.listFiles()) {
-                        LOG.error("Mapping found in Filesystem: {}", app);
-                    }
-                } catch (URISyntaxException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        }
+//        if (jarFile.isFile()) {  // Run with JAR file
+//            final JarFile jar = new JarFile(jarFile);
+//            final Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
+//            while (entries.hasMoreElements()) {
+//                final String name = entries.nextElement().getName();
+//                if (name.startsWith(MAPPINGS_DIR_PATH)) { //filter according to the path
+//                    LOG.error("Mapping found in Jar: {}", name);
+//                }
+//            }
+//            jar.close();
+//        } else { // Run with IDE
+//            final URL url = getClass().getResource(MAPPINGS_DIR_PATH);
+//            if (url != null) {
+//                try {
+//                    final File apps = new File(url.toURI());
+//                    for (File app : apps.listFiles()) {
+//                        LOG.error("Mapping found in Filesystem: {}", app);
+//                    }
+//                } catch (URISyntaxException ex) {
+//                    throw new RuntimeException(ex);
+//                }
+//            }
+//        }
     }
 }
