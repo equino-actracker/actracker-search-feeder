@@ -40,6 +40,8 @@ public class TagSetIndex {
             getAllFilesInDir();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
         }
 
         try (InputStream mappings = loadFileInputStream(MAPPINGS_PATH)) {
