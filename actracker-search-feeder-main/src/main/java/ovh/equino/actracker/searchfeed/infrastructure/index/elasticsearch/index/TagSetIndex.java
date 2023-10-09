@@ -85,19 +85,12 @@ public class TagSetIndex {
         Path mappingsPath;
         if ("jar".equals(resourceUri.getScheme())) {
             try (FileSystem fileSystem = FileSystems.newFileSystem(resourceUri, Collections.emptyMap())){
-                Path resourcePath = fileSystem.getPath(MAPPINGS_DIR_PATH);
+                Path filesystemRoot = fileSystem.getPath("/");
 
                 // Get all contents of a resource (skip resource itself), if entry is a directory remove trailing /
                 List<String> resourcesNames =
-                        Files.walk(fileSystem.getPath("/"), 1)
-                                .skip(1)
-                                .map(p -> {
-                                    String name = p.getFileName().toString();
-                                    if (name.endsWith("/")) {
-                                        name = name.substring(0, name.length() - 1);
-                                    }
-                                    return name;
-                                })
+                        Files.walk(filesystemRoot)
+                                .map(p -> p.getFileName().toString())
                                 .sorted()
                                 .collect(Collectors.toList());
                 LOG.error("Subfiles names from Jar: {}", resourcesNames);
