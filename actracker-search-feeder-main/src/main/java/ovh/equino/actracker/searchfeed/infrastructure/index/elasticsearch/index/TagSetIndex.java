@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -67,11 +68,12 @@ public class TagSetIndex {
         return getClass().getResourceAsStream(path);
     }
 
-    private void getAllFilesInDir() throws IOException {
+    private void getAllFilesInDir() throws IOException, URISyntaxException {
         final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
         LOG.error("Source code path is {} and isjar={}", jarFile.getPath(), jarFile.isFile());
         URL resource = getClass().getResource(MAPPINGS_DIR_PATH);
-        LOG.error("Resource path: {}", resource.getPath());
+        URI resourceUri = resource.toURI();
+        LOG.error("Resource path: {}, URI: {}", resource.getPath(), resourceUri);
         File file = new File(resource.getPath());
         LOG.error("File exists: {}, isDir: {}", file.exists(), file.isDirectory());
         String[] subFiles = file.list();
