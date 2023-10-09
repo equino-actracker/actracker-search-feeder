@@ -89,7 +89,7 @@ public class TagSetIndex {
 
                 // Get all contents of a resource (skip resource itself), if entry is a directory remove trailing /
                 List<String> resourcesNames =
-                        Files.walk(resourcePath, 1)
+                        Files.walk(fileSystem.getPath(MAPPINGS_DIR_PATH), 1)
                                 .skip(1)
                                 .map(p -> {
                                     String name = p.getFileName().toString();
