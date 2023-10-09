@@ -10,16 +10,21 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class TagSetIndex {
 
     Logger LOG = LoggerFactory.getLogger(TagSetIndex.class);
 
     private static final String MAPPINGS_PATH = "/elasticsearch/mappings/tagset/v0001.json";
+    private static final String MAPPINGS_DIR_PATH = "/elasticsearch/mappings/tagset/";
     private final String indexName;
 
     private final ElasticsearchClient client;
@@ -30,22 +35,11 @@ public class TagSetIndex {
     }
 
     public void create() {
-        URL directory = getClass().getResource("/elasticsearch/mappings/tagset/");
-        File file = new File(directory.getPath());
-        List<String> resources;
         try {
-            resources = Files.walk(file.toPath()).filter(Files::isRegularFile).map(Path::getFileName).map(Path::toString).toList();
+            getAllFilesInDir();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        boolean exists = file.exists();
-        boolean isDir = file.isDirectory();
-        String[] filesList = file.list();
-
-        LOG.error("Directory found. Exists: {}, IsDir: {}, Files: {}", exists, isDir, filesList);
-        LOG.error("Found files: {}", resources);
-//        InputStream inputStream = loadFileInputStream(resources.get(0).toString());
-//        LOG.error("input stream: {}", inputStream);
 
         try (InputStream mappings = loadFileInputStream(MAPPINGS_PATH)) {
             if (!indexExists()) {
@@ -71,5 +65,33 @@ public class TagSetIndex {
 
     private InputStream loadFileInputStream(final String path) {
         return getClass().getResourceAsStream(path);
+    }
+
+    private void getAllFilesInDir() throws IOException {
+        final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+
+        if (jarFile.isFile()) {  // Run with JAR file
+            final JarFile jar = new JarFile(jarFile);
+            final Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
+            while (entries.hasMoreElements()) {
+                final String name = entries.nextElement().getName();
+                if (name.startsWith(MAPPINGS_DIR_PATH)) { //filter according to the path
+                    LOG.error("Mapping found in Jar: {}", name);
+                }
+            }
+            jar.close();
+        } else { // Run with IDE
+            final URL url = getClass().getResource(MAPPINGS_DIR_PATH);
+            if (url != null) {
+                try {
+                    final File apps = new File(url.toURI());
+                    for (File app : apps.listFiles()) {
+                        LOG.error("Mapping found in Filesystem: {}", app);
+                    }
+                } catch (URISyntaxException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
     }
 }
