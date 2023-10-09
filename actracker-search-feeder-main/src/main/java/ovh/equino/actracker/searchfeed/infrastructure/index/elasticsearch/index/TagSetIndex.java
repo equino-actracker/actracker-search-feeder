@@ -73,25 +73,26 @@ public class TagSetIndex {
         LOG.error("Source code path is {} and isjar={}", jarFile.getPath(), jarFile.isFile());
         URL resource = getClass().getResource(MAPPINGS_DIR_PATH);
         URI resourceUri = resource.toURI();
+        File file1 = new File(resourceUri);
         LOG.error("Resource path: {}, URI: {}", resource.getPath(), resourceUri);
         File file = new File(resource.getPath());
-        LOG.error("File exists: {}, isDir: {}", file.exists(), file.isDirectory());
-        String[] subFiles = file.list();
+        LOG.error("File exists: {}, isDir: {}", file1.exists(), file1.isDirectory());
+        String[] subFiles = file1.list();
         LOG.error("Subfiles: {}", subFiles);
 
-        Path mappingsPath;
-        if ("jar".equals(resourceUri.getScheme())) {
-            FileSystem fileSystem = FileSystems.newFileSystem(resourceUri, Collections.emptyMap());
-            mappingsPath = fileSystem.getPath(MAPPINGS_DIR_PATH);
-            LOG.error("Found path in jar: {}", mappingsPath);
-        } else {
-            mappingsPath = Paths.get(resourceUri);
-            LOG.error("Found path in filesystem: {}", mappingsPath);
-        }
-        Stream<Path> walk = Files.walk(mappingsPath, 1);
-        for (Iterator<Path> it = walk.iterator(); it.hasNext();){
-            System.out.println(it.next());
-        }
+//        Path mappingsPath;
+//        if ("jar".equals(resourceUri.getScheme())) {
+//            FileSystem fileSystem = FileSystems.newFileSystem(resourceUri, Collections.emptyMap());
+//            mappingsPath = fileSystem.getPath(MAPPINGS_DIR_PATH);
+//            LOG.error("Found path in jar: {}", mappingsPath);
+//        } else {
+//            mappingsPath = Paths.get(resourceUri);
+//            LOG.error("Found path in filesystem: {}", mappingsPath);
+//        }
+//        Stream<Path> walk = Files.walk(mappingsPath, 1);
+//        for (Iterator<Path> it = walk.iterator(); it.hasNext();){
+//            System.out.println(it.next());
+//        }
 
 //        if (jarFile.isFile()) {  // Run with JAR file
 //            final JarFile jar = new JarFile(jarFile);
