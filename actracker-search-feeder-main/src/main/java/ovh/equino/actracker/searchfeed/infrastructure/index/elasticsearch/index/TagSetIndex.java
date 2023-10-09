@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,9 +32,9 @@ public class TagSetIndex {
     public void create() {
         URL directory = getClass().getResource("/elasticsearch/mappings/tagset/");
         File file = new File(directory.getPath());
-        List<Path> resources;
+        List<String> resources;
         try {
-            resources = Files.walk(file.toPath()).filter(Files::isRegularFile).toList();
+            resources = Files.walk(file.toPath()).filter(Files::isRegularFile).map(Path::getFileName).map(Path::toString).toList();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -45,11 +44,8 @@ public class TagSetIndex {
 
         LOG.error("Directory found. Exists: {}, IsDir: {}, Files: {}", exists, isDir, filesList);
         LOG.error("Found files: {}", resources);
-        try {
-            LOG.error("File content: {}", Files.readString(resources.get(0)));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        InputStream inputStream = loadFileInputStream(resources.get(0).toString());
+//        LOG.error("input stream: {}", inputStream);
 
         try (InputStream mappings = loadFileInputStream(MAPPINGS_PATH)) {
             if (!indexExists()) {
