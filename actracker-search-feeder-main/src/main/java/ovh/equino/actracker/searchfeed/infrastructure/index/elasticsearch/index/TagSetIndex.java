@@ -20,39 +20,39 @@ public class TagSetIndex {
 
     private static final Logger LOG = LoggerFactory.getLogger(TagSetIndex.class);
 
+    private static final String COMMON_MAPPINGS_DIR_PATH = "/elasticsearch/mappings";
     private static final String MAPPINGS_DIR_PATH = "/elasticsearch/mappings/tagset";
     private static final String INDEX_NAME = "tagset";
     private static final String MAPPING_FILE_EXTENSION = ".json";
 
     private final ElasticsearchClient client;
-    private final String environment;
+    private final List<VersionedIndex> versionedIndices;
 
     public TagSetIndex(ElasticsearchClient client, String environment) {
         this.client = client;
-        this.environment = environment;
+        List<String> indexVersions = getIndexVersionsFromMappingsFiles();
+        versionedIndices = indexVersions.stream()
+                .map(version -> new VersionedIndex(COMMON_MAPPINGS_DIR_PATH, INDEX_NAME, version, environment, client))
+                .toList();
     }
 
     public void create() {
+        versionedIndices.forEach(VersionedIndex::create);
+        LOG.info("Elasticsearch index {} created", INDEX_NAME);
+    }
+
+    private List<String> getIndexVersionsFromMappingsFiles() {
         try {
-            getAllFilesInDir();
-        } catch (IOException | URISyntaxException e) {
-            throw new RuntimeException(e);
+            List<Path> mappingsPaths = getMappingsPaths();
+            return mappingsPaths.stream()
+                    .map(Path::getFileName)
+                    .map(Path::toString)
+                    .map(path -> substringBefore(path, MAPPING_FILE_EXTENSION))
+                    .toList();
+        } catch (Exception e) {
+            String message = "Could not find index mapping files in resource %s".formatted(MAPPING_FILE_EXTENSION);
+            throw new RuntimeException(message, e);
         }
-    }
-
-    private void getAllFilesInDir() throws IOException, URISyntaxException {
-        List<String> indexVersions = getVersions();
-
-        System.out.println("Versions: " + indexVersions);
-    }
-
-    private List<String> getVersions() throws IOException, URISyntaxException {
-        List<Path> mappingsPaths = getMappingsPaths();
-        return mappingsPaths.stream()
-                .map(Path::getFileName)
-                .map(Path::toString)
-                .map(path -> substringBefore(path, MAPPING_FILE_EXTENSION))
-                .toList();
     }
 
     private List<Path> getMappingsPaths() throws IOException, URISyntaxException {
@@ -76,11 +76,8 @@ public class TagSetIndex {
     }
 
     private List<Path> getMappingsPathsFromFilesystem(URI resourceUri) throws IOException {
-        List<Path> mappingsPaths;
         Path resourcesPath = Paths.get(resourceUri);
-        extractMappingsPaths(resourcesPath);
-        mappingsPaths = extractMappingsPaths(resourcesPath);
-        return mappingsPaths;
+        return extractMappingsPaths(resourcesPath);
     }
 
     private List<Path> extractMappingsPaths(Path resourcesPath) throws IOException {

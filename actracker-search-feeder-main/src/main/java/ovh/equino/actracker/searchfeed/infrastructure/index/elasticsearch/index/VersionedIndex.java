@@ -16,6 +16,7 @@ class VersionedIndex {
 
     private final String versionedIndexName;
     private final ElasticsearchClient client;
+    private final String mappingPath;
 
     VersionedIndex(String commonMappingPath,
                    String generalIndexName,
@@ -24,13 +25,15 @@ class VersionedIndex {
                    ElasticsearchClient client) {
 
         this.versionedIndexName = "%s_%s_%s".formatted(generalIndexName, version, environment);
+        this.mappingPath = "%s/%s/%s.json".formatted(commonMappingPath, generalIndexName, version);
         this.client = client;
 
-        String mappingPath = "%s/%s/%s.json".formatted(commonMappingPath, generalIndexName, version);
+    }
 
+    void create() {
         try (InputStream mappingsContent = loadFileInputStream(mappingPath)) {
             if (indexExists(versionedIndexName)) {
-                LOG.info("Elasticsearch version index {} already exists. Skipping.", versionedIndexName);
+                LOG.info("Elasticsearch versioned index {} already exists. Skipping.", versionedIndexName);
             } else {
                 createIndex(mappingsContent);
                 LOG.info("Elasticsearch versioned index {} created.", versionedIndexName);
