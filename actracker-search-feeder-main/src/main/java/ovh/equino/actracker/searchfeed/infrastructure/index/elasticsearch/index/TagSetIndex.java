@@ -1,49 +1,149 @@
 package ovh.equino.actracker.searchfeed.infrastructure.index.elasticsearch.index;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch.indices.CreateIndexRequest;
-import co.elastic.clients.elasticsearch.indices.ExistsRequest;
+import co.elastic.clients.elasticsearch.indices.DeleteAliasRequest;
+import co.elastic.clients.elasticsearch.indices.ExistsAliasRequest;
+import co.elastic.clients.elasticsearch.indices.PutAliasRequest;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang3.StringUtils.substringBefore;
 
 public class TagSetIndex {
 
-    private static final String MAPPINGS_PATH = "/elasticsearch/mappings/tagset/v0001.json";
-    private final String indexName;
+    private static final Logger LOG = LoggerFactory.getLogger(TagSetIndex.class);
 
+    private static final String COMMON_MAPPINGS_DIR_PATH = "/elasticsearch/mappings";
+    private static final String INDEX_NAME = "tagset";
+    private static final String MAPPING_FILE_EXTENSION = ".json";
+
+    private final String mappingsDirPath;
     private final ElasticsearchClient client;
+    private final List<VersionedIndex> versionedIndices;
 
     public TagSetIndex(ElasticsearchClient client, String environment) {
         this.client = client;
-        this.indexName = "%s_%s_%s".formatted("tagset", "v0001", environment);
+        this.mappingsDirPath = "%s/%s".formatted(COMMON_MAPPINGS_DIR_PATH, INDEX_NAME);
+        List<String> indexVersions = getIndexVersionsFromMappingsFiles();
+        versionedIndices = indexVersions.stream()
+                .map(version -> new VersionedIndex(COMMON_MAPPINGS_DIR_PATH, INDEX_NAME, version, environment, client))
+                .toList();
     }
 
-    public void create() {
-        try (InputStream mappings = loadFileInputStream(MAPPINGS_PATH)) {
-            if (!indexExists()) {
-                CreateIndexRequest createIndexRequest = new CreateIndexRequest.Builder()
-                        .index(indexName)
-                        .withJson(mappings)
-                        .build();
-                client.indices().create(createIndexRequest);
-            }
-        } catch (IOException e) {
-            String message = "Unable to create index '%s'".formatted(indexName);
+    private List<String> getIndexVersionsFromMappingsFiles() {
+        try {
+            List<Path> mappingsPaths = getMappingsPaths();
+            return mappingsPaths.stream()
+                    .map(Path::getFileName)
+                    .map(Path::toString)
+                    .map(path -> substringBefore(path, MAPPING_FILE_EXTENSION))
+                    .toList();
+        } catch (Exception e) {
+            String message = "Could not find index mapping files in resource %s".formatted(mappingsDirPath);
             throw new RuntimeException(message, e);
         }
     }
 
-    private boolean indexExists() throws IOException {
-        ExistsRequest indexExistsRequest = new ExistsRequest.Builder()
-                .index(indexName)
-                .build();
-        BooleanResponse exists = client.indices().exists(indexExistsRequest);
-        return exists.value();
+    private List<Path> getMappingsPaths() throws IOException, URISyntaxException {
+        URL mappingsDirUrl = getClass().getResource(mappingsDirPath);
+        URI mappingsDirUri = requireNonNull(mappingsDirUrl).toURI();
+
+        if ("jar".equals(mappingsDirUri.getScheme())) {
+            return getMappingsPathsFromJar(mappingsDirUri);
+        } else {
+            return getMappingsPathsFromFilesystem(mappingsDirUri);
+        }
     }
 
-    private InputStream loadFileInputStream(final String path) {
-        return getClass().getResourceAsStream(path);
+    private List<Path> getMappingsPathsFromJar(URI resourceUri) throws IOException {
+        List<Path> mappingsPaths;
+        try (FileSystem fileSystem = FileSystems.newFileSystem(resourceUri, Collections.emptyMap())) {
+            Path resourcesPath = fileSystem.getPath("/");
+            mappingsPaths = extractMappingsPaths(resourcesPath);
+        }
+        return mappingsPaths;
+    }
+
+    private List<Path> getMappingsPathsFromFilesystem(URI resourceUri) throws IOException {
+        Path resourcesPath = Paths.get(resourceUri);
+        return extractMappingsPaths(resourcesPath);
+    }
+
+    private List<Path> extractMappingsPaths(Path resourcesPath) throws IOException {
+        return Files.walk(resourcesPath)
+                .filter(Objects::nonNull)
+                .filter(path -> path.toString().contains(mappingsDirPath))
+                .filter(path -> path.toString().endsWith(MAPPING_FILE_EXTENSION))
+                .toList();
+    }
+
+    public void create() {
+        versionedIndices.forEach(VersionedIndex::create);
+        versionedIndices.forEach(this::refreshAlias);
+        LOG.info("Elasticsearch index {} created", INDEX_NAME);
+    }
+
+    private void refreshAlias(VersionedIndex versionedIndex) {
+        String versionedIndexName = versionedIndex.indexName();
+        try {
+            String aliasedVersion = getAliasedVersionFromFile();
+            if (aliasedVersion.equals(versionedIndex.version())) {
+                recreateAlias(versionedIndexName);
+            } else {
+                deleteAliasIfExists(versionedIndexName);
+            }
+        } catch (IOException e) {
+            String message = "Cannot recreate Elasticsearch alias %s for index %s"
+                    .formatted(INDEX_NAME, versionedIndexName);
+            throw new RuntimeException(message, e);
+        }
+    }
+
+    private void deleteAliasIfExists(String versionedIndex) throws IOException {
+        if (aliasExists(versionedIndex)) {
+            DeleteAliasRequest deleteAliasRequest = new DeleteAliasRequest.Builder()
+                    .name(INDEX_NAME)
+                    .index(versionedIndex)
+                    .build();
+            client.indices().deleteAlias(deleteAliasRequest);
+            LOG.info("Elasticsearch alias {} deleted for index {}", INDEX_NAME, versionedIndex);
+        }
+    }
+
+    private void recreateAlias(String versionedIndex) throws IOException {
+        PutAliasRequest putAliasRequest = new PutAliasRequest.Builder()
+                .name(INDEX_NAME)
+                .index(versionedIndex)
+                .build();
+        client.indices().putAlias(putAliasRequest);
+        LOG.info("Elasticsearch alias {} set for index {}", INDEX_NAME, versionedIndex);
+    }
+
+    private boolean aliasExists(String versionedIndex) throws IOException {
+        ExistsAliasRequest aliasExistsRequest = new ExistsAliasRequest.Builder()
+                .name(INDEX_NAME)
+                .index(versionedIndex)
+                .build();
+        BooleanResponse aliasExistsResponse = client.indices().existsAlias(aliasExistsRequest);
+        return aliasExistsResponse.value();
+    }
+
+    private String getAliasedVersionFromFile() throws IOException {
+        String aliasFilePath = "%s/alias".formatted(mappingsDirPath);
+        try (InputStream aliasFileContent = getClass().getResourceAsStream(aliasFilePath)) {
+            return new String(requireNonNull(aliasFileContent).readAllBytes());
+        }
     }
 }

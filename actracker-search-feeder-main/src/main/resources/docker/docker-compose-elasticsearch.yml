@@ -2,7 +2,7 @@ version: '3'
 services:
 
   elasticsearch-actracker-search-feeder:
-    image: 'elasticsearch:8.10.2'
+    image: 'elasticsearch:8.6.2'
     ports:
       - 9200:9200
       - 9300:9300
