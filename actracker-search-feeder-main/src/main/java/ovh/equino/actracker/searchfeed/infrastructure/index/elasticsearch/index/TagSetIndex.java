@@ -51,7 +51,7 @@ public class TagSetIndex {
                     .map(path -> substringBefore(path, MAPPING_FILE_EXTENSION))
                     .toList();
         } catch (Exception e) {
-            String message = "Could not find index mapping files in resource %s".formatted(MAPPING_FILE_EXTENSION);
+            String message = "Could not find index mapping files in resource %s".formatted(mappingsDirPath);
             throw new RuntimeException(message, e);
         }
     }
@@ -92,20 +92,22 @@ public class TagSetIndex {
     public void create() {
         versionedIndices.forEach(VersionedIndex::create);
         versionedIndices.forEach(this::refreshAlias);
-//        recreateIndexAlias();
         LOG.info("Elasticsearch index {} created", INDEX_NAME);
     }
 
     private void refreshAlias(VersionedIndex versionedIndex) {
-        String aliasedVersion = getAliasedVersionFromFile();
+        String versionedIndexName = versionedIndex.indexName();
         try {
+            String aliasedVersion = getAliasedVersionFromFile();
             if (aliasedVersion.equals(versionedIndex.version())) {
-                recreateAlias(versionedIndex.indexName());
+                recreateAlias(versionedIndexName);
             } else {
-                deleteAliasIfExists(versionedIndex.indexName());
+                deleteAliasIfExists(versionedIndexName);
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            String message = "Cannot recreate Elasticsearch alias %s for index %s"
+                    .formatted(INDEX_NAME, versionedIndexName);
+            throw new RuntimeException(message, e);
         }
     }
 
@@ -138,16 +140,10 @@ public class TagSetIndex {
         return aliasExistsResponse.value();
     }
 
-    private String getAliasedVersionFromFile() {
-        String aliasedVersion;
+    private String getAliasedVersionFromFile() throws IOException {
         String aliasFilePath = "%s/alias".formatted(mappingsDirPath);
         try (InputStream aliasFileContent = getClass().getResourceAsStream(aliasFilePath)) {
-            aliasedVersion = new String(requireNonNull(aliasFileContent).readAllBytes());
-
-        } catch (IOException e) {
-            String message = "Cannot create alias %s".formatted(INDEX_NAME);
-            throw new RuntimeException(message, e);
+            return new String(requireNonNull(aliasFileContent).readAllBytes());
         }
-        return aliasedVersion;
     }
 }
