@@ -1,7 +1,10 @@
 package ovh.equino.actracker.searchfeed.infrastructure.index.elasticsearch.index;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.indices.DeleteAliasRequest;
+import co.elastic.clients.elasticsearch.indices.ExistsAliasRequest;
 import co.elastic.clients.elasticsearch.indices.PutAliasRequest;
+import co.elastic.clients.transport.endpoints.BooleanResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,25 +91,51 @@ public class TagSetIndex {
 
     public void create() {
         versionedIndices.forEach(VersionedIndex::create);
+        versionedIndices.forEach(this::refreshAlias);
 //        recreateIndexAlias();
         LOG.info("Elasticsearch index {} created", INDEX_NAME);
     }
 
-    private void recreateIndexAlias() {
+    private void refreshAlias(VersionedIndex versionedIndex) {
         String aliasedVersion = getAliasedVersionFromFile();
-        String aliasedIndex = getIndexMatchingVersion(aliasedVersion).indexName();
+        try {
+            if (aliasedVersion.equals(versionedIndex.version())) {
+                recreateAlias(versionedIndex.indexName());
+            } else {
+                deleteAliasIfExists(versionedIndex.indexName());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void deleteAliasIfExists(String versionedIndex) throws IOException {
+        if (aliasExists(versionedIndex)) {
+            DeleteAliasRequest deleteAliasRequest = new DeleteAliasRequest.Builder()
+                    .name(INDEX_NAME)
+                    .index(versionedIndex)
+                    .build();
+            client.indices().deleteAlias(deleteAliasRequest);
+            LOG.info("Elasticsearch alias {} deleted for index {}", INDEX_NAME, versionedIndex);
+        }
+    }
+
+    private void recreateAlias(String versionedIndex) throws IOException {
         PutAliasRequest putAliasRequest = new PutAliasRequest.Builder()
                 .name(INDEX_NAME)
-                .index(aliasedIndex)
+                .index(versionedIndex)
                 .build();
-        try {
-            client.indices().putAlias(putAliasRequest);
-            LOG.info("Elasticsearch alias {} created aliasing index {}", INDEX_NAME, aliasedIndex);
-        } catch (IOException e) {
-            String message = "Couldn't create Elasticsearch alias %s matching index %s"
-                    .formatted(INDEX_NAME, aliasedIndex);
-            throw new RuntimeException(message, e);
-        }
+        client.indices().putAlias(putAliasRequest);
+        LOG.info("Elasticsearch alias {} set for index {}", INDEX_NAME, versionedIndex);
+    }
+
+    private boolean aliasExists(String versionedIndex) throws IOException {
+        ExistsAliasRequest aliasExistsRequest = new ExistsAliasRequest.Builder()
+                .name(INDEX_NAME)
+                .index(versionedIndex)
+                .build();
+        BooleanResponse aliasExistsResponse = client.indices().existsAlias(aliasExistsRequest);
+        return aliasExistsResponse.value();
     }
 
     private String getAliasedVersionFromFile() {
@@ -121,17 +150,4 @@ public class TagSetIndex {
         }
         return aliasedVersion;
     }
-
-    private VersionedIndex getIndexMatchingVersion(String aliasedVersion) {
-        VersionedIndex indexToAlias = versionedIndices.stream()
-                .filter(versionedIndex -> aliasedVersion.equals(versionedIndex.version()))
-                .findAny()
-                .orElseThrow(() -> {
-                    String message = "Could not find index with version %s to alias it.".formatted(aliasedVersion);
-                    return new RuntimeException(message);
-                });
-        return indexToAlias;
-    }
-
-
 }
