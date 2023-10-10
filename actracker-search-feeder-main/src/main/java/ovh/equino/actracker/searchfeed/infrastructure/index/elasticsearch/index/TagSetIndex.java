@@ -13,12 +13,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang3.StringUtils.substringBefore;
+
 public class TagSetIndex {
 
     private static final Logger LOG = LoggerFactory.getLogger(TagSetIndex.class);
 
     private static final String MAPPINGS_DIR_PATH = "/elasticsearch/mappings/tagset";
     private static final String INDEX_NAME = "tagset";
+    private static final String MAPPING_FILE_EXTENSION = ".json";
 
     private final ElasticsearchClient client;
     private final String environment;
@@ -37,32 +41,53 @@ public class TagSetIndex {
     }
 
     private void getAllFilesInDir() throws IOException, URISyntaxException {
+        List<String> indexVersions = getVersions();
+
+        System.out.println("Versions: " + indexVersions);
+    }
+
+    private List<String> getVersions() throws IOException, URISyntaxException {
+        List<Path> mappingsPaths = getMappingsPaths();
+        return mappingsPaths.stream()
+                .map(Path::getFileName)
+                .map(Path::toString)
+                .map(path -> substringBefore(path, MAPPING_FILE_EXTENSION))
+                .toList();
+    }
+
+    private List<Path> getMappingsPaths() throws IOException, URISyntaxException {
         URL mappingsDirUrl = getClass().getResource(MAPPINGS_DIR_PATH);
-        URI mappingsDirUri = mappingsDirUrl.toURI();
-        Path mappingsDirPath = getMappingDirPath(mappingsDirUri);
+        URI mappingsDirUri = requireNonNull(mappingsDirUrl).toURI();
 
-        List<String> versions = extractVersions(mappingsDirPath);
-        System.out.println("Versions: " + versions);
-    }
-
-    private Path getMappingDirPath(URI resourceUri) throws IOException {
-        Path resourcesPath;
-        if ("jar".equals(resourceUri.getScheme())) {
-            try (FileSystem fileSystem = FileSystems.newFileSystem(resourceUri, Collections.emptyMap())) {
-                resourcesPath = fileSystem.getPath("/");
-            }
+        if ("jar".equals(mappingsDirUri.getScheme())) {
+            return getMappingsPathsFromJar(mappingsDirUri);
         } else {
-            resourcesPath = Paths.get(resourceUri);
+            return getMappingsPathsFromFilesystem(mappingsDirUri);
         }
-        return resourcesPath;
     }
 
-    private List<String> extractVersions(Path resourcesPath) throws IOException {
+    private List<Path> getMappingsPathsFromJar(URI resourceUri) throws IOException {
+        List<Path> mappingsPaths;
+        try (FileSystem fileSystem = FileSystems.newFileSystem(resourceUri, Collections.emptyMap())) {
+            Path resourcesPath = fileSystem.getPath("/");
+            mappingsPaths = extractMappingsPaths(resourcesPath);
+        }
+        return mappingsPaths;
+    }
+
+    private List<Path> getMappingsPathsFromFilesystem(URI resourceUri) throws IOException {
+        List<Path> mappingsPaths;
+        Path resourcesPath = Paths.get(resourceUri);
+        extractMappingsPaths(resourcesPath);
+        mappingsPaths = extractMappingsPaths(resourcesPath);
+        return mappingsPaths;
+    }
+
+    private List<Path> extractMappingsPaths(Path resourcesPath) throws IOException {
         return Files.walk(resourcesPath)
                 .filter(Objects::nonNull)
-                .map(Path::toString)
-                .filter(path -> path.contains(MAPPINGS_DIR_PATH))
-                .filter(path -> path.endsWith(".json"))
+                .filter(path -> path.toString().contains(MAPPINGS_DIR_PATH))
+                .filter(path -> path.toString().endsWith(MAPPING_FILE_EXTENSION))
                 .toList();
     }
 }
