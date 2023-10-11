@@ -34,19 +34,21 @@ public class TagSetIndex {
     private static final Logger LOG = LoggerFactory.getLogger(TagSetIndex.class);
 
     private static final String COMMON_MAPPINGS_DIR_PATH = "/elasticsearch/mappings";
-    private static final String INDEX_NAME = "tagset";
+//    private static final String INDEX_NAME = "tagset";
     private static final String MAPPING_FILE_EXTENSION = ".json";
 
     private final String mappingsDirPath;
+    private final String indexAlias;
     private final ElasticsearchClient client;
     private final List<VersionedIndex> versionedIndices;
 
     public TagSetIndex(ElasticsearchClient client, String environment) {
         this.client = client;
         this.mappingsDirPath = "%s/%s".formatted(COMMON_MAPPINGS_DIR_PATH, INDEX_NAME);
+        this.indexAlias = "%s_%s".formatted("tagset", environment);
         List<String> indexVersions = getIndexVersionsFromMappingsFiles();
         versionedIndices = indexVersions.stream()
-                .map(version -> new VersionedIndex(COMMON_MAPPINGS_DIR_PATH, INDEX_NAME, version, environment, client))
+                .map(version -> new VersionedIndex(COMMON_MAPPINGS_DIR_PATH, indexAlias, version, client))
                 .toList();
     }
 
@@ -101,7 +103,7 @@ public class TagSetIndex {
         versionedIndices.forEach(VersionedIndex::create);
         versionedIndices.forEach(this::refreshAlias);
         removeDecommissionedIndices(versionedIndices);
-        LOG.info("Elasticsearch index {} created", INDEX_NAME);
+        LOG.info("Elasticsearch index {} created", indexAlias);
     }
 
     private void refreshAlias(VersionedIndex versionedIndex) {
@@ -115,7 +117,7 @@ public class TagSetIndex {
             }
         } catch (IOException e) {
             String message = "Cannot recreate Elasticsearch alias %s for index %s"
-                    .formatted(INDEX_NAME, versionedIndexName);
+                    .formatted(indexAlias, versionedIndexName);
             throw new RuntimeException(message, e);
         }
     }
@@ -123,26 +125,26 @@ public class TagSetIndex {
     private void deleteAliasIfExists(String versionedIndex) throws IOException {
         if (aliasExists(versionedIndex)) {
             DeleteAliasRequest deleteAliasRequest = new DeleteAliasRequest.Builder()
-                    .name(INDEX_NAME)
+                    .name(indexAlias)
                     .index(versionedIndex)
                     .build();
             client.indices().deleteAlias(deleteAliasRequest);
-            LOG.info("Elasticsearch alias {} unset for index {}", INDEX_NAME, versionedIndex);
+            LOG.info("Elasticsearch alias {} unset for index {}", indexAlias, versionedIndex);
         }
     }
 
     private void recreateAlias(String versionedIndex) throws IOException {
         PutAliasRequest putAliasRequest = new PutAliasRequest.Builder()
-                .name(INDEX_NAME)
+                .name(indexAlias)
                 .index(versionedIndex)
                 .build();
         client.indices().putAlias(putAliasRequest);
-        LOG.info("Elasticsearch alias {} set for index {}", INDEX_NAME, versionedIndex);
+        LOG.info("Elasticsearch alias {} set for index {}", indexAlias, versionedIndex);
     }
 
     private boolean aliasExists(String versionedIndex) throws IOException {
         ExistsAliasRequest aliasExistsRequest = new ExistsAliasRequest.Builder()
-                .name(INDEX_NAME)
+                .name(indexAlias)
                 .index(versionedIndex)
                 .build();
         BooleanResponse aliasExistsResponse = client.indices().existsAlias(aliasExistsRequest);
@@ -178,7 +180,7 @@ public class TagSetIndex {
         IndicesResponse createdIndices = client.cat().indices();
         return createdIndices.valueBody().stream()
                 .map(IndicesRecord::index)
-                .filter(index -> startsWith(index, INDEX_NAME + '_'))
+                .filter(index -> startsWith(index, indexAlias))
                 .filter(not(maintainedIndices::contains))
                 .toList();
     }

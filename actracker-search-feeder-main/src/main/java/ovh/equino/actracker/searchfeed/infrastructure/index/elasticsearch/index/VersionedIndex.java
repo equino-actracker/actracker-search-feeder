@@ -22,10 +22,9 @@ class VersionedIndex {
     VersionedIndex(String commonMappingPath,
                    String generalIndexName,
                    String version,
-                   String environment,
                    ElasticsearchClient client) {
 
-        this.versionedIndexName = "%s_%s_%s".formatted(generalIndexName, version, environment);
+        this.versionedIndexName = "%s_%s".formatted(generalIndexName, version);
         this.mappingPath = "%s/%s/%s.json".formatted(commonMappingPath, generalIndexName, version);
         this.version = version;
         this.client = client;
