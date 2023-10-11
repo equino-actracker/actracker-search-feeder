@@ -34,7 +34,7 @@ public class TagSetIndex {
     private static final Logger LOG = LoggerFactory.getLogger(TagSetIndex.class);
 
     private static final String COMMON_MAPPINGS_DIR_PATH = "/elasticsearch/mappings";
-//    private static final String INDEX_NAME = "tagset";
+    private static final String INDEX_NAME = "tagset";
     private static final String MAPPING_FILE_EXTENSION = ".json";
 
     private final String mappingsDirPath;
@@ -45,7 +45,7 @@ public class TagSetIndex {
     public TagSetIndex(ElasticsearchClient client, String environment) {
         this.client = client;
         this.mappingsDirPath = "%s/%s".formatted(COMMON_MAPPINGS_DIR_PATH, INDEX_NAME);
-        this.indexAlias = "%s_%s".formatted("tagset", environment);
+        this.indexAlias = "%s_%s".formatted(INDEX_NAME, environment);
         List<String> indexVersions = getIndexVersionsFromMappingsFiles();
         versionedIndices = indexVersions.stream()
                 .map(version -> new VersionedIndex(COMMON_MAPPINGS_DIR_PATH, indexAlias, version, client))
