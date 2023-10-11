@@ -1,7 +1,10 @@
 package ovh.equino.actracker.searchfeed.infrastructure.index.elasticsearch.index;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.cat.IndicesResponse;
+import co.elastic.clients.elasticsearch.cat.indices.IndicesRecord;
 import co.elastic.clients.elasticsearch.indices.DeleteAliasRequest;
+import co.elastic.clients.elasticsearch.indices.DeleteIndexRequest;
 import co.elastic.clients.elasticsearch.indices.ExistsAliasRequest;
 import co.elastic.clients.elasticsearch.indices.PutAliasRequest;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
@@ -17,8 +20,13 @@ import java.nio.file.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.toUnmodifiableSet;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.startsWith;
 import static org.apache.commons.lang3.StringUtils.substringBefore;
 
 public class TagSetIndex {
@@ -92,6 +100,7 @@ public class TagSetIndex {
     public void create() {
         versionedIndices.forEach(VersionedIndex::create);
         versionedIndices.forEach(this::refreshAlias);
+        removeDecommissionedIndices(versionedIndices);
         LOG.info("Elasticsearch index {} created", INDEX_NAME);
     }
 
@@ -118,7 +127,7 @@ public class TagSetIndex {
                     .index(versionedIndex)
                     .build();
             client.indices().deleteAlias(deleteAliasRequest);
-            LOG.info("Elasticsearch alias {} deleted for index {}", INDEX_NAME, versionedIndex);
+            LOG.info("Elasticsearch alias {} unset for index {}", INDEX_NAME, versionedIndex);
         }
     }
 
@@ -145,5 +154,39 @@ public class TagSetIndex {
         try (InputStream aliasFileContent = getClass().getResourceAsStream(aliasFilePath)) {
             return new String(requireNonNull(aliasFileContent).readAllBytes());
         }
+    }
+
+    private void removeDecommissionedIndices(List<VersionedIndex> versionedIndices) {
+        Set<String> maintainedIndices = versionedIndices.stream()
+                .map(VersionedIndex::indexName)
+                .collect(toUnmodifiableSet());
+        try {
+            List<String> decommissionedIndices = fetchDecommissionedIndices(maintainedIndices);
+            if (isEmpty(decommissionedIndices)) {
+                LOG.info("No decommissioned indices to delete. Skipping.");
+            } else {
+                deleteIndices(decommissionedIndices);
+                LOG.info("Decommissioned indices were deleted: {}", decommissionedIndices);
+            }
+        } catch (Exception e) {
+            String message = "Unable to clean all decommissioned indices.";
+            throw new RuntimeException(message, e);
+        }
+    }
+
+    private List<String> fetchDecommissionedIndices(Set<String> maintainedIndices) throws IOException {
+        IndicesResponse createdIndices = client.cat().indices();
+        return createdIndices.valueBody().stream()
+                .map(IndicesRecord::index)
+                .filter(index -> startsWith(index, INDEX_NAME + '_'))
+                .filter(not(maintainedIndices::contains))
+                .toList();
+    }
+
+    private void deleteIndices(List<String> indicesToDelete) throws IOException {
+        DeleteIndexRequest deleteIndicesRequest = new DeleteIndexRequest.Builder()
+                .index(indicesToDelete)
+                .build();
+        client.indices().delete(deleteIndicesRequest);
     }
 }
