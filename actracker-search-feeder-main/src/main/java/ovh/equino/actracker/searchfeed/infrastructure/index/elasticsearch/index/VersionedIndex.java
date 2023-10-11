@@ -19,13 +19,13 @@ class VersionedIndex {
     private final ElasticsearchClient client;
     private final String mappingPath;
 
-    VersionedIndex(String commonMappingPath,
+    VersionedIndex(String mappingsDirPath,
                    String generalIndexName,
                    String version,
                    ElasticsearchClient client) {
 
         this.versionedIndexName = "%s_%s".formatted(generalIndexName, version);
-        this.mappingPath = "%s/%s/%s.json".formatted(commonMappingPath, generalIndexName, version);
+        this.mappingPath = "%s/%s.json".formatted(mappingsDirPath, version);
         this.version = version;
         this.client = client;
     }

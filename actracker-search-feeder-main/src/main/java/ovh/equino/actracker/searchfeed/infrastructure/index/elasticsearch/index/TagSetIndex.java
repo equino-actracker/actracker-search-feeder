@@ -48,7 +48,7 @@ public class TagSetIndex {
         this.indexAlias = "%s_%s".formatted(INDEX_NAME, environment);
         List<String> indexVersions = getIndexVersionsFromMappingsFiles();
         versionedIndices = indexVersions.stream()
-                .map(version -> new VersionedIndex(COMMON_MAPPINGS_DIR_PATH, indexAlias, version, client))
+                .map(version -> new VersionedIndex(mappingsDirPath, indexAlias, version, client))
                 .toList();
     }
 
@@ -59,6 +59,7 @@ public class TagSetIndex {
                     .map(Path::getFileName)
                     .map(Path::toString)
                     .map(path -> substringBefore(path, MAPPING_FILE_EXTENSION))
+                    .sorted()
                     .toList();
         } catch (Exception e) {
             String message = "Could not find index mapping files in resource %s".formatted(mappingsDirPath);
