@@ -29,23 +29,23 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.startsWith;
 import static org.apache.commons.lang3.StringUtils.substringBefore;
 
-abstract class ElasticsearchIndex {
+abstract class ElasticIndex {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ElasticsearchIndex.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ElasticIndex.class);
     private static final String COMMON_MAPPINGS_DIR_PATH = "/elasticsearch/mappings";
     private static final String MAPPING_FILE_EXTENSION = ".json";
 
     private final String mappingsDirPath;
     private final String indexAlias;
     private final ElasticsearchClient client;
-    private final List<VersionedIndex> versionedIndices;
+    private final List<ElasticVersionedIndex> versionedIndices;
 
-    protected ElasticsearchIndex(String indexName, String environment, ElasticsearchClient client) {
+    protected ElasticIndex(String indexName, String environment, ElasticsearchClient client) {
         this.mappingsDirPath = "%s/%s".formatted(COMMON_MAPPINGS_DIR_PATH, indexName);
         this.indexAlias = "%s_%s".formatted(indexName, environment);
         List<String> indexVersions = getIndexVersionsFromMappingsFiles();
         versionedIndices = indexVersions.stream()
-                .map(version -> new VersionedIndex(mappingsDirPath, indexAlias, version, client))
+                .map(version -> new ElasticVersionedIndex(mappingsDirPath, indexAlias, version, client))
                 .toList();
         this.client = client;
     }
@@ -99,13 +99,13 @@ abstract class ElasticsearchIndex {
     }
 
     public void create() {
-        versionedIndices.forEach(VersionedIndex::create);
+        versionedIndices.forEach(ElasticVersionedIndex::create);
         versionedIndices.forEach(this::refreshAlias);
         removeDecommissionedIndices(versionedIndices);
         LOG.info("Elasticsearch index {} created", indexAlias);
     }
 
-    private void refreshAlias(VersionedIndex versionedIndex) {
+    private void refreshAlias(ElasticVersionedIndex versionedIndex) {
         String versionedIndexName = versionedIndex.indexName();
         try {
             String aliasedVersion = getAliasedVersionFromFile();
@@ -157,9 +157,9 @@ abstract class ElasticsearchIndex {
         }
     }
 
-    private void removeDecommissionedIndices(List<VersionedIndex> versionedIndices) {
+    private void removeDecommissionedIndices(List<ElasticVersionedIndex> versionedIndices) {
         Set<String> maintainedIndices = versionedIndices.stream()
-                .map(VersionedIndex::indexName)
+                .map(ElasticVersionedIndex::indexName)
                 .collect(toUnmodifiableSet());
         try {
             List<String> decommissionedIndices = fetchDecommissionedIndices(maintainedIndices);

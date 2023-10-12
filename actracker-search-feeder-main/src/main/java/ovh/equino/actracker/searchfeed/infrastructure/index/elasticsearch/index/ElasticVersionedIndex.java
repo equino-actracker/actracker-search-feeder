@@ -10,19 +10,19 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 
-class VersionedIndex {
+class ElasticVersionedIndex {
 
-    private static final Logger LOG = LoggerFactory.getLogger(VersionedIndex.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ElasticVersionedIndex.class);
 
     private final String version;
     private final String versionedIndexName;
     private final ElasticsearchClient client;
     private final String mappingPath;
 
-    VersionedIndex(String mappingsDirPath,
-                   String generalIndexName,
-                   String version,
-                   ElasticsearchClient client) {
+    ElasticVersionedIndex(String mappingsDirPath,
+                          String generalIndexName,
+                          String version,
+                          ElasticsearchClient client) {
 
         this.versionedIndexName = "%s_%s".formatted(generalIndexName, version);
         this.mappingPath = "%s/%s.json".formatted(mappingsDirPath, version);

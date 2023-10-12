@@ -2,11 +2,11 @@ package ovh.equino.actracker.searchfeed.infrastructure.index.elasticsearch.index
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 
-public class TagSetIndex extends ElasticsearchIndex {
+public class ElasticTagIndex extends ElasticIndex {
 
-    private static final String INDEX_NAME = "tagset";
+    private static final String INDEX_NAME = "tag";
 
-    public TagSetIndex(ElasticsearchClient client, String environment) {
+    public ElasticTagIndex(ElasticsearchClient client, String environment) {
         super(INDEX_NAME, environment, client);
     }
 }
