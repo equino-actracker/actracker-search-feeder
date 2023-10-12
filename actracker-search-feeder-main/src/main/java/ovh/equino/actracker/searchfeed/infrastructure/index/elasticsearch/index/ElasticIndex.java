@@ -41,7 +41,7 @@ abstract class ElasticIndex {
     private final List<ElasticVersionedIndex> versionedIndices;
 
     protected ElasticIndex(String indexName, String environment, ElasticsearchClient client) {
-        this.mappingsDirPath = "%s/%s".formatted(COMMON_MAPPINGS_DIR_PATH, indexName);
+        this.mappingsDirPath = "%s/%s/".formatted(COMMON_MAPPINGS_DIR_PATH, indexName);
         this.indexAlias = "%s_%s".formatted(indexName, environment);
         List<String> indexVersions = getIndexVersionsFromMappingsFiles();
         versionedIndices = indexVersions.stream()
