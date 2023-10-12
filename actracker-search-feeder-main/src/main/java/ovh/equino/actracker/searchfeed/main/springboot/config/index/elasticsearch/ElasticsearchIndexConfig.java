@@ -28,7 +28,10 @@ class ElasticsearchIndexConfig {
 
     @PostConstruct
     void createIndex() {
+        activityIndex.create();
+        tagIndex.create();
         tagSetIndex.create();
+        dashboardIndex.create();
     }
 
 }
