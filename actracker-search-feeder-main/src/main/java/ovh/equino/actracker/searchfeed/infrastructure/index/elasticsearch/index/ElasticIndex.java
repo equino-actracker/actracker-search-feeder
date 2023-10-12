@@ -164,10 +164,10 @@ abstract class ElasticIndex {
         try {
             List<String> decommissionedIndices = fetchDecommissionedIndices(maintainedIndices);
             if (isEmpty(decommissionedIndices)) {
-                LOG.info("No decommissioned indices to delete. Skipping.");
+                LOG.info("No decommissioned indices of {} to delete. Skipping.", indexAlias);
             } else {
                 deleteIndices(decommissionedIndices);
-                LOG.info("Decommissioned indices were deleted: {}", decommissionedIndices);
+                LOG.info("Decommissioned indices of {} were deleted: {}", indexAlias, decommissionedIndices);
             }
         } catch (Exception e) {
             String message = "Unable to clean all decommissioned indices.";
