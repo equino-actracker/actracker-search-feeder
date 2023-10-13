@@ -170,7 +170,7 @@ abstract class ElasticIndex {
                 LOG.info("Decommissioned indices of {} were deleted: {}", indexAlias, decommissionedIndices);
             }
         } catch (Exception e) {
-            String message = "Unable to clean all decommissioned indices.";
+            String message = "Unable to clean all decommissioned indices of %s.".formatted(indexAlias);
             throw new RuntimeException(message, e);
         }
     }
