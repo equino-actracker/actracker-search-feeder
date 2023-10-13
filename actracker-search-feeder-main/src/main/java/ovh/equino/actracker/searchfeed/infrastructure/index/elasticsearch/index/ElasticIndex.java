@@ -41,7 +41,7 @@ abstract class ElasticIndex {
     private final List<ElasticVersionedIndex> versionedIndices;
 
     protected ElasticIndex(String indexName, String environment, ElasticsearchClient client) {
-        this.mappingsDirPath = "%s/%s/".formatted(COMMON_MAPPINGS_DIR_PATH, indexName);
+        this.mappingsDirPath = "%s/%s".formatted(COMMON_MAPPINGS_DIR_PATH, indexName);
         this.indexAlias = "%s_%s".formatted(indexName, environment);
         List<String> indexVersions = getIndexVersionsFromMappingsFiles();
         versionedIndices = indexVersions.stream()
@@ -93,7 +93,7 @@ abstract class ElasticIndex {
     private List<Path> extractMappingsPaths(Path resourcesPath) throws IOException {
         return Files.walk(resourcesPath)
                 .filter(Objects::nonNull)
-                .filter(path -> path.toString().contains(mappingsDirPath))
+                .filter(path -> path.toString().contains(mappingsDirPath + '/'))
                 .filter(path -> path.toString().endsWith(MAPPING_FILE_EXTENSION))
                 .toList();
     }
