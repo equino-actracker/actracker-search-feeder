@@ -3,7 +3,12 @@ package ovh.equino.actracker.searchfeed.main.springboot.config.index.elasticsear
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityIndex;
+import ovh.equino.actracker.searchfeed.domain.model.dashboard.DashboardIndex;
+import ovh.equino.actracker.searchfeed.domain.model.tag.TagIndex;
+import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetIndex;
 import ovh.equino.actracker.searchfeed.infrastructure.index.elasticsearch.index.ElasticActivityIndex;
 import ovh.equino.actracker.searchfeed.infrastructure.index.elasticsearch.index.ElasticDashboardIndex;
 import ovh.equino.actracker.searchfeed.infrastructure.index.elasticsearch.index.ElasticTagIndex;
@@ -32,6 +37,26 @@ class ElasticsearchIndexConfig {
         tagIndex.create();
         tagSetIndex.create();
         dashboardIndex.create();
+    }
+
+    @Bean
+    ActivityIndex activityIndex() {
+        return activityIndex;
+    }
+
+    @Bean
+    TagIndex tagIndex() {
+        return tagIndex;
+    }
+
+    @Bean
+    TagSetIndex tagSetIndex() {
+        return tagSetIndex;
+    }
+
+    @Bean
+    DashboardIndex dashboardIndex() {
+        return dashboardIndex;
     }
 
 }
