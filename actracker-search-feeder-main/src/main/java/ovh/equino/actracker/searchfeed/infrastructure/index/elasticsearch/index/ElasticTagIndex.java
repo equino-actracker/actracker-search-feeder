@@ -18,7 +18,11 @@ public class ElasticTagIndex extends ElasticIndex implements TagIndex {
 
     @Override
     public void index(TagGraph entityGraph) {
-        LOG.info("Indexing tag document with ID={} to Elasticsearch", entityGraph.entityId().id());
+        TagDocument tagDocument = new TagDocument(entityGraph.entityId().id().toString(),
+                "Dummy tag name"
+        );
+        super.indexDocument(tagDocument);
+        LOG.info("Tag document with ID={} successfully indexed to Elasticsearch", entityGraph.entityId().id());
     }
 
     @Override
