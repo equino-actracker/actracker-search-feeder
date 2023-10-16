@@ -18,11 +18,11 @@ public class ElasticTagIndex extends ElasticIndex implements TagIndex {
 
     @Override
     public void index(TagGraph entityGraph) {
-        LOG.info("Indexing tag graph with ID={} to Elasticsearch", entityGraph.entityId().id());
+        LOG.info("Indexing tag document with ID={} to Elasticsearch", entityGraph.entityId().id());
     }
 
     @Override
     public void delete(TagId id) {
-        LOG.info("Deleting tag graph with ID={} from Elasticsearch", id.id());
+        LOG.info("Deleting tag document with ID={} from Elasticsearch", id.id());
     }
 }

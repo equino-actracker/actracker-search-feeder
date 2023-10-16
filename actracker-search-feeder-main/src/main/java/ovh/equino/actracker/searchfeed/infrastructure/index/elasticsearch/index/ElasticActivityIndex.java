@@ -18,11 +18,11 @@ public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex 
 
     @Override
     public void index(ActivityGraph entityGraph) {
-        LOG.info("Indexing activity graph with ID={} to Elasticsearch", entityGraph.entityId().id());
+        LOG.info("Indexing activity document with ID={} to Elasticsearch", entityGraph.entityId().id());
     }
 
     @Override
     public void delete(ActivityId id) {
-        LOG.info("Deleting activity graph with ID={} from Elasticsearch", id.id());
+        LOG.info("Deleting activity document with ID={} from Elasticsearch", id.id());
     }
 }
