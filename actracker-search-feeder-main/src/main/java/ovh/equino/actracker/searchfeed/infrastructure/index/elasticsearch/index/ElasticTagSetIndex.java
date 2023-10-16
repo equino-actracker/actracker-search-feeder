@@ -18,11 +18,17 @@ public class ElasticTagSetIndex extends ElasticIndex implements TagSetIndex {
 
     @Override
     public void index(TagSetGraph entityGraph) {
-        LOG.info("Indexing tag set graph with ID={} to Elasticsearch", entityGraph.entityId().id());
+        ElasticTagSetDocument document = new ElasticTagSetDocument(entityGraph.entityId().id().toString());
+        super.indexDocument(document);
+        LOG.info("TagSet document with ID={} successfully indexed to Elasticsearch.", entityGraph.entityId().id());
     }
 
     @Override
     public void delete(TagSetId id) {
-        LOG.info("Deleting tag set graph with ID={} from Elasticsearch", id.id());
+        super.deleteDocument(id.id().toString());
+        LOG.info("TagSet document with ID={} successfully deleted from Elasticsearch.", id.id());
+    }
+
+    private record ElasticTagSetDocument(String id) implements ElasticDocument {
     }
 }

@@ -190,4 +190,12 @@ abstract class ElasticIndex {
                 .build();
         client.indices().delete(deleteIndicesRequest);
     }
+
+    protected void indexDocument(ElasticDocument document) {
+        versionedIndices.forEach(versionedIndex -> versionedIndex.indexDocument(document));
+    }
+
+    protected void deleteDocument(String documentId) {
+        versionedIndices.forEach(versionedIndex -> versionedIndex.deleteDocument(documentId));
+    }
 }

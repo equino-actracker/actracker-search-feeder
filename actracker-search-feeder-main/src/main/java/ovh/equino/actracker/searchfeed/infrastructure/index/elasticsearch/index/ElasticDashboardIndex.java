@@ -18,11 +18,17 @@ public class ElasticDashboardIndex extends ElasticIndex implements DashboardInde
 
     @Override
     public void index(DashboardGraph entityGraph) {
-        LOG.info("Indexing dashboard graph with ID={} to Elasticsearch", entityGraph.entityId().id());
+        ElasticDashboardDocument document = new ElasticDashboardDocument(entityGraph.entityId().id().toString());
+        super.indexDocument(document);
+        LOG.info("Dashboard document with ID={} successfully indexed to Elasticsearch.", entityGraph.entityId().id());
     }
 
     @Override
     public void delete(DashboardId id) {
-        LOG.info("Deleting dashboard graph with ID={} from Elasticsearch", id.id());
+        super.deleteDocument(id.id().toString());
+        LOG.info("Dashboard document with ID={} successfully deleted from Elasticsearch.", id.id());
+    }
+
+    private record ElasticDashboardDocument(String id) implements ElasticDocument {
     }
 }
