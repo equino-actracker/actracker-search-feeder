@@ -7,7 +7,10 @@ import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityGraph;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityIndex;
 
+import java.time.Instant;
 import java.util.Collection;
+
+import static java.time.Instant.now;
 
 public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex {
 
@@ -23,6 +26,7 @@ public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex 
         ElasticActivityDocument document = new ElasticActivityDocument(
                 activityGraph.entityId().toString(),
                 activityGraph.activity().creatorId().toString(),
+                now().toEpochMilli(),
                 activityGraph.activity().title(),
                 activityGraph.activity().startTime() != null ? activityGraph.activity().startTime().toEpochMilli() : null,
                 activityGraph.activity().endTime() != null ? activityGraph.activity().endTime().toEpochMilli() : null,
@@ -43,6 +47,7 @@ public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex 
 
     private record ElasticActivityDocument(String id,
                                            String creator_id,
+                                           Long indexing_time,
                                            String title,
                                            Long start_time,
                                            Long end_time,

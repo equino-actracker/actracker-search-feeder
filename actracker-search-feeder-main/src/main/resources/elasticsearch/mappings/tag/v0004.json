@@ -8,6 +8,10 @@
       "creator_id": {
         "type": "keyword"
       },
+      "indexing_time": {
+        "type": "date",
+        "format": "epoch_millis"
+      },
       "name": {
         "type": "text"
       },

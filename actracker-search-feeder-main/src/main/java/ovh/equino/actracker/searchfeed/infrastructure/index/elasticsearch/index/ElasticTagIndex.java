@@ -11,6 +11,7 @@ import ovh.equino.actracker.searchfeed.domain.model.tag.TagIndex;
 
 import java.util.Collection;
 
+import static java.time.Instant.now;
 import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
@@ -28,6 +29,7 @@ public class ElasticTagIndex extends ElasticIndex implements TagIndex {
         ElasticTagDocument document = new ElasticTagDocument(
                 tagGraph.entityId().toString(),
                 tagGraph.tag().creatorId().toString(),
+                now().toEpochMilli(),
                 tagGraph.tag().name(),
                 toGranteeIds(tagGraph.tag())
         );
@@ -53,6 +55,7 @@ public class ElasticTagIndex extends ElasticIndex implements TagIndex {
 
     private record ElasticTagDocument(String id,
                                       String creator_id,
+                                      Long indexing_time,
                                       String name,
                                       Collection<String> grantees)
             implements ElasticDocument {

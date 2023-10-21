@@ -9,6 +9,8 @@ import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetIndex;
 
 import java.util.Collection;
 
+import static java.time.Instant.now;
+
 public class ElasticTagSetIndex extends ElasticIndex implements TagSetIndex {
 
     private static final Logger LOG = LoggerFactory.getLogger(ElasticTagSetIndex.class);
@@ -23,6 +25,7 @@ public class ElasticTagSetIndex extends ElasticIndex implements TagSetIndex {
         ElasticTagSetDocument document = new ElasticTagSetDocument(
                 tagSetGraph.entityId().toString(),
                 tagSetGraph.tagSet().creatorId().toString(),
+                now().toEpochMilli(),
                 tagSetGraph.tagSet().name(),
                 null
         );
@@ -38,6 +41,7 @@ public class ElasticTagSetIndex extends ElasticIndex implements TagSetIndex {
 
     private record ElasticTagSetDocument(String id,
                                          String creator_id,
+                                         Long indexing_time,
                                          String name,
                                          Collection<String> tags)
             implements ElasticDocument {

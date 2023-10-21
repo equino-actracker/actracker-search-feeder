@@ -11,6 +11,7 @@ import ovh.equino.actracker.searchfeed.domain.model.dashboard.DashboardIndex;
 
 import java.util.Collection;
 
+import static java.time.Instant.now;
 import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
@@ -28,6 +29,7 @@ public class ElasticDashboardIndex extends ElasticIndex implements DashboardInde
         ElasticDashboardDocument document = new ElasticDashboardDocument(
                 dashboardGraph.entityId().toString(),
                 dashboardGraph.dashboard().creatorId().toString(),
+                now().toEpochMilli(),
                 dashboardGraph.dashboard().name(),
                 toGranteeIds(dashboardGraph.dashboard())
         );
@@ -53,6 +55,7 @@ public class ElasticDashboardIndex extends ElasticIndex implements DashboardInde
 
     private record ElasticDashboardDocument(String id,
                                             String creator_id,
+                                            Long indexing_time,
                                             String name,
                                             Collection<String> grantees)
             implements ElasticDocument {
