@@ -31,4 +31,12 @@ public class Dashboard extends Entity<DashboardId> {
                 .stream()
                 .collect(toUnmodifiableSet());
     }
+
+    public String name() {
+        return name;
+    }
+
+    public Collection<GranteeId> grantees() {
+        return grantees;
+    }
 }

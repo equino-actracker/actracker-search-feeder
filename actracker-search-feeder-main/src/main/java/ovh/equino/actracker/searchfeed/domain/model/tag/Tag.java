@@ -31,4 +31,12 @@ public final class Tag extends Entity<TagId> {
                 .stream()
                 .collect(toUnmodifiableSet());
     }
+
+    public String name() {
+        return name;
+    }
+
+    public Collection<GranteeId> grantees() {
+        return grantees;
+    }
 }

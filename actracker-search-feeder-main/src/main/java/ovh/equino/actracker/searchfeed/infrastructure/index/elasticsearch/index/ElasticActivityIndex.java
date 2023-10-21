@@ -7,6 +7,11 @@ import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityGraph;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityIndex;
 
+import java.time.Instant;
+import java.util.Collection;
+
+import static java.time.Instant.now;
+
 public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex {
 
     private static final Logger LOG = LoggerFactory.getLogger(ElasticActivityIndex.class);
@@ -17,10 +22,21 @@ public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex 
     }
 
     @Override
-    public void index(ActivityGraph entityGraph) {
-        ElasticActivityDocument document = new ElasticActivityDocument(entityGraph.entityId().id().toString());
+    public void index(ActivityGraph activityGraph) {
+        ElasticActivityDocument document = new ElasticActivityDocument(
+                activityGraph.entityId().toString(),
+                activityGraph.activity().creatorId().toString(),
+                now().toEpochMilli(),
+                activityGraph.activity().title(),
+                activityGraph.activity().startTime() != null ? activityGraph.activity().startTime().toEpochMilli() : null,
+                activityGraph.activity().endTime() != null ? activityGraph.activity().endTime().toEpochMilli() : null,
+                activityGraph.activity().comment(),
+                null,
+                null,
+                null
+        );
         super.indexDocument(document);
-        LOG.info("Activity document with ID={} successfully indexed to Elasticsearch.", entityGraph.entityId().id());
+        LOG.info("Activity document with ID={} successfully indexed to Elasticsearch.", activityGraph.entityId().id());
     }
 
     @Override
@@ -29,6 +45,19 @@ public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex 
         LOG.info("Activity document with ID={} successfully deleted from Elasticsearch.", id.id());
     }
 
-    private record ElasticActivityDocument(String id) implements ElasticDocument {
+    private record ElasticActivityDocument(String id,
+                                           String creator_id,
+                                           Long indexing_time,
+                                           String title,
+                                           Long start_time,
+                                           Long end_time,
+                                           String comment,
+                                           Collection<String> tags,
+                                           Collection<String> grantees,
+                                           Collection<ElasticMetricValueDocument> metric_values)
+            implements ElasticDocument {
+    }
+
+    private record ElasticMetricValueDocument(String metric_id, String value) {
     }
 }
