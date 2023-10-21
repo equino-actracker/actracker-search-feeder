@@ -1,0 +1,19 @@
+{
+  "mappings": {
+    "dynamic": false,
+    "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "creator_id": {
+        "type": "keyword"
+      },
+      "name": {
+        "type": "text"
+      },
+      "tags": {
+        "type": "keyword"
+      }
+    }
+  }
+}

@@ -3,9 +3,16 @@ package ovh.equino.actracker.searchfeed.infrastructure.index.elasticsearch.index
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ovh.equino.actracker.searchfeed.domain.model.EntityId;
+import ovh.equino.actracker.searchfeed.domain.model.tag.Tag;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagGraph;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagIndex;
+
+import java.util.Collection;
+
+import static java.util.stream.Collectors.toSet;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 public class ElasticTagIndex extends ElasticIndex implements TagIndex {
 
@@ -17,10 +24,15 @@ public class ElasticTagIndex extends ElasticIndex implements TagIndex {
     }
 
     @Override
-    public void index(TagGraph entityGraph) {
-        ElasticTagDocument document = new ElasticTagDocument(entityGraph.entityId().id().toString());
+    public void index(TagGraph tagGraph) {
+        ElasticTagDocument document = new ElasticTagDocument(
+                tagGraph.entityId().toString(),
+                tagGraph.tag().creatorId().toString(),
+                tagGraph.tag().name(),
+                toGranteeIds(tagGraph.tag())
+        );
         super.indexDocument(document);
-        LOG.info("Tag document with ID={} successfully indexed to Elasticsearch.", entityGraph.entityId().id());
+        LOG.info("Tag document with ID={} successfully indexed to Elasticsearch.", tagGraph.entityId().id());
     }
 
     @Override
@@ -29,6 +41,20 @@ public class ElasticTagIndex extends ElasticIndex implements TagIndex {
         LOG.info("Tag document with ID={} successfully deleted from Elasticsearch.", id.id());
     }
 
-    private record ElasticTagDocument(String id) implements ElasticDocument {
+    private Collection<String> toGranteeIds(Tag tag) {
+        if (isEmpty(tag.grantees())) {
+            return null;
+        }
+        return tag.grantees()
+                .stream()
+                .map(EntityId::toString)
+                .collect(toSet());
+    }
+
+    private record ElasticTagDocument(String id,
+                                      String creator_id,
+                                      String name,
+                                      Collection<String> grantees)
+            implements ElasticDocument {
     }
 }

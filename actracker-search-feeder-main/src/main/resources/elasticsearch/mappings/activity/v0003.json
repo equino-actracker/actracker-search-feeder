@@ -1,0 +1,44 @@
+{
+  "mappings": {
+    "dynamic": false,
+    "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "creator_id": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "text"
+      },
+      "start_time": {
+        "type": "date",
+        "format": "epoch_millis"
+      },
+      "end_time": {
+        "type": "date",
+        "format": "epoch_millis"
+      },
+      "comment": {
+        "type": "text"
+      },
+      "tags": {
+        "type": "keyword"
+      },
+      "grantees": {
+        "type": "keyword"
+      },
+      "metric_values": {
+        "type": "nested",
+        "properties": {
+          "metric_id": {
+            "type": "keyword"
+          },
+          "value": {
+            "type": "double"
+          }
+        }
+      }
+    }
+  }
+}

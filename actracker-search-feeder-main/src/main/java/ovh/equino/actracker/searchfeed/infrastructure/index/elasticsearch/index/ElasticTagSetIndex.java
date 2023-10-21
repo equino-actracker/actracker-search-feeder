@@ -7,6 +7,8 @@ import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetGraph;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetId;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetIndex;
 
+import java.util.Collection;
+
 public class ElasticTagSetIndex extends ElasticIndex implements TagSetIndex {
 
     private static final Logger LOG = LoggerFactory.getLogger(ElasticTagSetIndex.class);
@@ -17,10 +19,15 @@ public class ElasticTagSetIndex extends ElasticIndex implements TagSetIndex {
     }
 
     @Override
-    public void index(TagSetGraph entityGraph) {
-        ElasticTagSetDocument document = new ElasticTagSetDocument(entityGraph.entityId().id().toString());
+    public void index(TagSetGraph tagSetGraph) {
+        ElasticTagSetDocument document = new ElasticTagSetDocument(
+                tagSetGraph.entityId().toString(),
+                tagSetGraph.tagSet().creatorId().toString(),
+                tagSetGraph.tagSet().name(),
+                null
+        );
         super.indexDocument(document);
-        LOG.info("TagSet document with ID={} successfully indexed to Elasticsearch.", entityGraph.entityId().id());
+        LOG.info("TagSet document with ID={} successfully indexed to Elasticsearch.", tagSetGraph.entityId().id());
     }
 
     @Override
@@ -29,6 +36,10 @@ public class ElasticTagSetIndex extends ElasticIndex implements TagSetIndex {
         LOG.info("TagSet document with ID={} successfully deleted from Elasticsearch.", id.id());
     }
 
-    private record ElasticTagSetDocument(String id) implements ElasticDocument {
+    private record ElasticTagSetDocument(String id,
+                                         String creator_id,
+                                         String name,
+                                         Collection<String> tags)
+            implements ElasticDocument {
     }
 }
