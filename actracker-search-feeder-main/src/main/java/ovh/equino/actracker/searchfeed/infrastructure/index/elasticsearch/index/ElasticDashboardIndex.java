@@ -55,8 +55,7 @@ public class ElasticDashboardIndex extends ElasticIndex implements DashboardInde
 
     private record ElasticDashboardDocument(String id,
                                             String creator_id,
-                                            Long indexing_time
-            ,
+                                            Long indexing_time,
                                             String name,
                                             Collection<String> grantees)
             implements ElasticDocument {
