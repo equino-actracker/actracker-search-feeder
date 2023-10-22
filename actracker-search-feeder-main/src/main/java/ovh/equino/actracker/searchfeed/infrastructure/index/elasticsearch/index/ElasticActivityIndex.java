@@ -80,7 +80,12 @@ public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex 
         }
         return metricValues
                 .stream()
-                .map(metricValue -> new ElasticMetricValueDocument(metricValue.metricId().toString(), metricValue.value()))
+                .map(metricValue ->
+                        new ElasticMetricValueDocument(
+                                metricValue.metricId().toString(),
+                                metricValue.value()
+                        )
+                )
                 .toList();
     }
 

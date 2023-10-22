@@ -2,7 +2,6 @@ package ovh.equino.actracker.searchfeed.application.tagset;
 
 import ovh.equino.actracker.searchfeed.domain.model.Version;
 import ovh.equino.actracker.searchfeed.domain.model.creator.CreatorId;
-import ovh.equino.actracker.searchfeed.domain.model.metricValue.MetricValue;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSet;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetId;
@@ -12,9 +11,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNullElse;
+import static java.util.stream.Collectors.toUnmodifiableSet;
 
 public class TagSetService {
 
@@ -41,7 +40,7 @@ public class TagSetService {
         return requireNonNullElse(tagUuids, new ArrayList<UUID>())
                 .stream()
                 .map(TagId::new)
-                .collect(Collectors.toUnmodifiableSet());
+                .collect(toUnmodifiableSet());
     }
 
 }
