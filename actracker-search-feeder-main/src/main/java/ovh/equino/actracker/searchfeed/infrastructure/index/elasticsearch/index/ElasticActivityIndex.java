@@ -6,8 +6,10 @@ import org.slf4j.LoggerFactory;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityGraph;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityIndex;
+import ovh.equino.actracker.searchfeed.domain.model.metricValue.MetricValue;
 import ovh.equino.actracker.searchfeed.domain.model.tag.Tag;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
@@ -40,7 +42,7 @@ public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex 
                 activityGraph.activity().comment(),
                 toTagIds(activityGraph.tags()),
                 toGranteeIds(activityGraph.tags()),
-                null
+                toMetricValues(activityGraph.activity().metricValues())
         );
         super.indexDocument(document);
         LOG.info("Activity document with ID={} successfully indexed to Elasticsearch.", activityGraph.entityId().id());
@@ -72,6 +74,16 @@ public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex 
         return isNotEmpty(granteeIds) ? granteeIds : null;
     }
 
+    private Collection<ElasticMetricValueDocument> toMetricValues(Collection<MetricValue> metricValues) {
+        if (isEmpty(metricValues)) {
+            return null;
+        }
+        return metricValues
+                .stream()
+                .map(metricValue -> new ElasticMetricValueDocument(metricValue.metricId().toString(), metricValue.value()))
+                .toList();
+    }
+
     private record ElasticActivityDocument(String id,
                                            String creator_id,
                                            Long indexing_time,
@@ -85,6 +97,6 @@ public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex 
             implements ElasticDocument {
     }
 
-    private record ElasticMetricValueDocument(String metric_id, String value) {
+    private record ElasticMetricValueDocument(String metric_id, BigDecimal value) {
     }
 }
