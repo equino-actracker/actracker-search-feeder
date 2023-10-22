@@ -1,11 +1,11 @@
 package ovh.equino.actracker.searchfeed.domain.model.activity;
 
 import ovh.equino.actracker.searchfeed.domain.model.EntityGraph;
-import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
+import ovh.equino.actracker.searchfeed.domain.model.tag.Tag;
 
-import java.util.Set;
+import java.util.Collection;
 
-public record ActivityGraph(Activity activity, Set<TagId> tagIds) implements EntityGraph<ActivityId> {
+public record ActivityGraph(Activity activity, Collection<Tag> tags) implements EntityGraph<ActivityId> {
 
     @Override
     public ActivityId entityId() {

@@ -7,5 +7,5 @@ import java.util.Set;
 
 public interface TagStore extends EntityStore<TagId, Tag> {
 
-    Set<TagId> nonDeletedTags(Collection<TagId> tagIds);
+    Collection<Tag> nonDeletedTags(Collection<TagId> tags);
 }

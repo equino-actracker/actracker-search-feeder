@@ -1,10 +1,12 @@
 package ovh.equino.actracker.searchfeed.domain.services.tagset;
 
+import ovh.equino.actracker.searchfeed.domain.model.tag.Tag;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagStore;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.*;
 import ovh.equino.actracker.searchfeed.domain.services.EntityIndexer;
 
+import java.util.Collection;
 import java.util.Set;
 
 public final class TagSetIndexer extends EntityIndexer<TagSetId, TagSet, TagSetGraph> {
@@ -18,7 +20,7 @@ public final class TagSetIndexer extends EntityIndexer<TagSetId, TagSet, TagSetG
 
     @Override
     protected TagSetGraph buildEntityGraph(TagSet tagSet) {
-        Set<TagId> tags = tagStore.nonDeletedTags(tagSet.tags());
+        Collection<Tag> tags = tagStore.nonDeletedTags(tagSet.tags());
         return new TagSetGraph(tagSet, tags);
     }
 

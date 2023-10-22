@@ -6,11 +6,13 @@ import org.slf4j.LoggerFactory;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityGraph;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityIndex;
+import ovh.equino.actracker.searchfeed.domain.model.tag.Tag;
 
-import java.time.Instant;
 import java.util.Collection;
 
 import static java.time.Instant.now;
+import static java.util.stream.Collectors.toSet;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex {
 
@@ -31,7 +33,7 @@ public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex 
                 activityGraph.activity().startTime() != null ? activityGraph.activity().startTime().toEpochMilli() : null,
                 activityGraph.activity().endTime() != null ? activityGraph.activity().endTime().toEpochMilli() : null,
                 activityGraph.activity().comment(),
-                null,
+                toTagIds(activityGraph.tags()),
                 null,
                 null
         );
@@ -43,6 +45,16 @@ public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex 
     public void delete(ActivityId id) {
         super.deleteDocument(id.id().toString());
         LOG.info("Activity document with ID={} successfully deleted from Elasticsearch.", id.id());
+    }
+
+    private Collection<String> toTagIds(Collection<Tag> tags) {
+        if (isEmpty(tags)) {
+            return null;
+        }
+        return tags
+                .stream()
+                .map(tag -> tag.id().toString())
+                .collect(toSet());
     }
 
     private record ElasticActivityDocument(String id,
