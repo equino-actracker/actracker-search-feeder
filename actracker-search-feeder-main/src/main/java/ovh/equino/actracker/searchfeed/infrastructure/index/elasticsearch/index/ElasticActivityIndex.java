@@ -8,11 +8,16 @@ import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityId;
 import ovh.equino.actracker.searchfeed.domain.model.activity.ActivityIndex;
 import ovh.equino.actracker.searchfeed.domain.model.tag.Tag;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
+import java.util.Set;
 
 import static java.time.Instant.now;
-import static java.util.stream.Collectors.toSet;
+import static java.util.Objects.requireNonNullElse;
+import static java.util.stream.Collectors.toUnmodifiableSet;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 
 public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex {
 
@@ -34,7 +39,7 @@ public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex 
                 activityGraph.activity().endTime() != null ? activityGraph.activity().endTime().toEpochMilli() : null,
                 activityGraph.activity().comment(),
                 toTagIds(activityGraph.tags()),
-                null,
+                toGranteeIds(activityGraph.tags()),
                 null
         );
         super.indexDocument(document);
@@ -54,7 +59,17 @@ public class ElasticActivityIndex extends ElasticIndex implements ActivityIndex 
         return tags
                 .stream()
                 .map(tag -> tag.id().toString())
-                .collect(toSet());
+                .collect(toUnmodifiableSet());
+    }
+
+    private Collection<String> toGranteeIds(Collection<Tag> tags) {
+        Set<String> granteeIds = requireNonNullElse(tags, new ArrayList<Tag>())
+                .stream()
+                .map(Tag::grantees)
+                .flatMap(Collection::stream)
+                .map(Objects::toString)
+                .collect(toUnmodifiableSet());
+        return isNotEmpty(granteeIds) ? granteeIds : null;
     }
 
     private record ElasticActivityDocument(String id,
