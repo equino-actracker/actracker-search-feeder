@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import ovh.equino.actracker.searchfeed.domain.model.Entity;
 import ovh.equino.actracker.searchfeed.domain.model.Version;
 import ovh.equino.actracker.searchfeed.domain.model.creator.CreatorId;
+import ovh.equino.actracker.searchfeed.domain.model.metricValue.MetricValue;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
 
 import java.time.Instant;
+import java.util.Collection;
 import java.util.Set;
 
 public final class Activity extends Entity<ActivityId> {
@@ -16,6 +18,7 @@ public final class Activity extends Entity<ActivityId> {
     private final Instant endTime;
     private final String comment;
     private final Set<TagId> tags;
+    private final Collection<MetricValue> metricValues;
 
     public Activity(@JsonProperty("id") ActivityId id,
                     @JsonProperty("version") Version version,
@@ -25,7 +28,8 @@ public final class Activity extends Entity<ActivityId> {
                     @JsonProperty("startTime") Instant startTime,
                     @JsonProperty("endTime") Instant endTime,
                     @JsonProperty("comment") String comment,
-                    @JsonProperty("tags") Set<TagId> tags) {
+                    @JsonProperty("tags") Set<TagId> tags,
+                    @JsonProperty("metricValues") Collection<MetricValue> metricValues) {
 
         super(id, version, softDeleted, creatorId);
         this.title = title;
@@ -33,6 +37,7 @@ public final class Activity extends Entity<ActivityId> {
         this.endTime = endTime;
         this.comment = comment;
         this.tags = tags;
+        this.metricValues = metricValues;
     }
 
     public String title() {
@@ -53,5 +58,9 @@ public final class Activity extends Entity<ActivityId> {
 
     public Set<TagId> tags() {
         return tags;
+    }
+
+    public Collection<MetricValue> metricValues() {
+        return metricValues;
     }
 }

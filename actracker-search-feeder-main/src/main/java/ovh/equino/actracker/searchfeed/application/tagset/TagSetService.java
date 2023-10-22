@@ -2,6 +2,7 @@ package ovh.equino.actracker.searchfeed.application.tagset;
 
 import ovh.equino.actracker.searchfeed.domain.model.Version;
 import ovh.equino.actracker.searchfeed.domain.model.creator.CreatorId;
+import ovh.equino.actracker.searchfeed.domain.model.metricValue.MetricValue;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSet;
 import ovh.equino.actracker.searchfeed.domain.model.tagset.TagSetId;
@@ -42,4 +43,5 @@ public class TagSetService {
                 .map(TagId::new)
                 .collect(Collectors.toUnmodifiableSet());
     }
+
 }
