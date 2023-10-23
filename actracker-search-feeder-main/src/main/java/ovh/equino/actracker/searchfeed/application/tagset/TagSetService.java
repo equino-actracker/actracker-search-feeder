@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNullElse;
+import static java.util.stream.Collectors.toUnmodifiableSet;
 
 public class TagSetService {
 
@@ -40,6 +40,7 @@ public class TagSetService {
         return requireNonNullElse(tagUuids, new ArrayList<UUID>())
                 .stream()
                 .map(TagId::new)
-                .collect(Collectors.toUnmodifiableSet());
+                .collect(toUnmodifiableSet());
     }
+
 }

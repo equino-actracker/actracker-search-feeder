@@ -7,12 +7,10 @@ import ovh.equino.actracker.searchfeed.domain.model.creator.CreatorId;
 import ovh.equino.actracker.searchfeed.domain.model.tag.TagId;
 import ovh.equino.actracker.searchfeed.domain.services.activity.ActivityProcessor;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNullElse;
 
 public class ActivityService {
@@ -33,7 +31,8 @@ public class ActivityService {
                 indexActivityCommand.startTime(),
                 indexActivityCommand.endTime(),
                 indexActivityCommand.comment(),
-                toTagIds(indexActivityCommand.tags())
+                toTagIds(indexActivityCommand.tags()),
+                requireNonNullElse(indexActivityCommand.metricValues(), emptyList())
         );
 
         activityProcessor.processActivity(activity);
