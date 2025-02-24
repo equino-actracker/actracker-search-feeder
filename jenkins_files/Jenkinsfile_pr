@@ -38,7 +38,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                withMaven() {
+                withMaven {
                     sh './mvnw clean verify'
                 }
             }
