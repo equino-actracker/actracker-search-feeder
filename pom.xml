@@ -17,9 +17,14 @@
 
     <repositories>
         <repository>
-            <id>EquinoNexus</id>
-            <url>https://nexus.cloud.equino.ovh/repository/m2</url>
+            <id>mavenEquino</id>
+            <url>https://maven.cloud.equino.ovh/equino</url>
         </repository>
+        <repository>
+            <id>mavenEquinoSnapshot</id>
+            <url>https://maven.cloud.equino.ovh/equinoSnapshot</url>
+        </repository>
+
     </repositories>
 
     <modules>

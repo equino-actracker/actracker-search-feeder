@@ -7,6 +7,9 @@ pipeline {
 
     environment {
         GH_ACTOR = 'marcinciapa'
+        EQUINO_MAVEN_CREDENTIALS = credentials('EquinoReposilite')
+        ORG_GRADLE_PROJECT_mavenEquinoUsername = "${EQUINO_MAVEN_CREDENTIALS_USR}"
+        ORG_GRADLE_PROJECT_mavenEquinoPassword = "${EQUINO_MAVEN_CREDENTIALS_PSW}"
     }
 
     triggers {
@@ -42,7 +45,9 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh './mvnw clean verify'
+                withMaven {
+                    sh './mvnw clean verify'
+                }
             }
         }
 

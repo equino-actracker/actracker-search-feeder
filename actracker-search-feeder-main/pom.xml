@@ -16,7 +16,7 @@
         <dependency>
             <groupId>ovh.equino.actracker-api</groupId>
             <artifactId>actracker-api-domain</artifactId>
-            <version>0.86.0</version>
+            <version>0.99.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
